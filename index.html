@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>전지적 독자시점</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet"><style>
+:root {
+  --bg: #f3f3f0;
+  --bg2: #ffffff;
+  --panel: #ffffff;
+  --panel2: #f6f6f3;
+  --line: #e5e5e0;
+  --txt: #1b1b1b;
+  --muted: #6c6c67;
+  --dim: #9c9c96;
+  --gold: #a8c93c;
+  --gold2: #f0883e;
+  --amber: #f0883e;
+  --nav-bg: rgba(255,255,255,.85);
+  --h1-grad: linear-gradient(180deg,#1b1b1b,#1b1b1b);
+  --ring: rgba(240,136,62,.22);
+  --eyebrow-bg: #c2ea4c;
+  --eyebrow-ink: #1b1b1b;
+  --eyebrow-line: #c2ea4c;
+  --card-dark-bg: #1a1a1a;
+  --card-dark-ink: #f4f5f3;
+  --card-soft-bg: #e8e4d6;
+  --card-soft-ink: #1b1b1b;
+  --hero-bg: radial-gradient(1000px 480px at 80% -10%, rgba(182,227,74,.22), transparent 60%), linear-gradient(180deg,#ffffff,#f3f3f0);
+  --font-display: 'Montserrat', 'Noto Sans KR', sans-serif;
+  --font-body: 'Noto Sans KR', sans-serif;
+}*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--txt);font-family:var(--font-body,'Noto Sans KR',sans-serif);line-height:1.65;-webkit-font-smoothing:antialiased;word-break:keep-all;overflow-wrap:break-word}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+h1,h2,h3{font-family:var(--font-display,'Cinzel','Noto Sans KR',serif)}
+nav{position:sticky;top:0;z-index:50;background:var(--nav-bg,rgba(12,13,18,.82));backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
+.brand{font-weight:900;letter-spacing:.08em;font-size:19px;color:var(--gold2)}
+.brand small{display:block;font-weight:400;letter-spacing:.02em;font-size:10px;color:var(--dim);margin-top:-2px}
+.navlinks{display:flex;gap:26px;font-size:13.5px;color:var(--muted)}
+.navlinks a:hover{color:var(--gold2)}
+@media(max-width:860px){.navlinks{display:none}}
+.hero{position:relative;padding:90px 0 70px;overflow:hidden;border-bottom:1px solid var(--line);background:var(--hero-bg,linear-gradient(180deg,#0c1120,#0a0e1a))}
+.eyebrow{display:inline-block;font-size:12px;letter-spacing:.32em;background:var(--eyebrow-bg,transparent);color:var(--eyebrow-ink,var(--gold));text-transform:uppercase;border:1px solid var(--eyebrow-line,var(--line));padding:6px 14px;border-radius:999px}
+.hero h1{font-size:clamp(42px,7vw,84px);font-weight:900;letter-spacing:.04em;margin:22px 0 10px;line-height:1;background:var(--h1-grad,linear-gradient(180deg,#fff,var(--gold2) 70%,var(--gold)));-webkit-background-clip:text;background-clip:text;color:transparent}
+.tagline{font-size:clamp(15px,2.2vw,20px);color:var(--muted);max-width:620px;white-space:pre-line}
+.statusbar{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
+.chip{display:flex;flex-direction:column;gap:2px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 20px;min-width:135px}
+.chip .k{font-size:11px;letter-spacing:.16em;color:var(--dim);text-transform:uppercase}
+.chip .v{font-size:19px;font-weight:700;color:var(--gold2)}
+section{padding:74px 0}
+.sec-head{display:flex;align-items:baseline;gap:16px;margin-bottom:8px}
+.sec-num{color:var(--gold);font-size:15px;font-weight:700;letter-spacing:.1em}
+.sec-head h2{font-size:clamp(26px,3.6vw,38px);font-weight:700}
+.sec-sub{color:var(--muted);max-width:760px;margin-bottom:38px;font-size:15.5px}
+.tl{position:relative;margin-top:30px;padding-bottom:6px}
+.tl-steps{display:flex;justify-content:space-between;position:relative}
+.tl-track{position:absolute;left:0;right:0;top:12px;transform:translateY(-50%);height:4px;background:var(--line);border-radius:999px;z-index:0}
+.tl-fill{position:absolute;left:0;top:0;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--gold),var(--amber))}
+.tl-step{flex:1;text-align:center;position:relative;z-index:1}
+.tl-dotwrap{height:24px;display:flex;align-items:center;justify-content:center}
+.tl-step .dot{position:relative;width:16px;height:16px;border-radius:50%;background:var(--bg);border:3px solid var(--line)}
+.tl-step.is-done .dot{background:var(--gold);border-color:var(--gold)}
+.tl-step.is-current .dot{width:20px;height:20px;background:var(--gold);border-color:var(--gold)}
+.tl-step.is-current .dot::after{content:"";position:absolute;left:50%;top:50%;width:34px;height:34px;border-radius:50%;background:var(--ring,rgba(55,205,218,.22));transform:translate(-50%,-50%) scale(.8);z-index:-1;animation:tl-pulse 2.6s ease-in-out infinite}
+@keyframes tl-pulse{0%,100%{transform:translate(-50%,-50%) scale(.8);opacity:.65}50%{transform:translate(-50%,-50%) scale(1.4);opacity:.12}}
+@media(prefers-reduced-motion:reduce){.tl-step.is-current .dot::after{animation:none;transform:translate(-50%,-50%) scale(1);opacity:.4}}
+.tl-label{margin-top:12px;font-weight:700;font-size:14px}
+.tl-step.is-current .tl-label{color:var(--txt)}
+.tl-period{color:var(--dim);font-size:12px;margin-top:2px}
+.bar-pct{color:var(--gold2);font-weight:700}
+.bar-track{height:8px;background:var(--line);border-radius:8px;overflow:hidden}
+.bar-fill{height:100%;border-radius:8px;background:linear-gradient(90deg,var(--gold),var(--amber))}
+.summary-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(232px,1fr));gap:18px}
+.scard{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px}
+.scard-title{font-weight:800;font-size:18px;color:var(--txt);margin-bottom:8px}
+.scard-sub{font-size:13.5px;color:var(--muted);margin-bottom:18px}
+.scard-foot{display:flex;justify-content:space-between;align-items:center;margin-top:12px;font-size:13px}
+.scard-foot-label{color:var(--dim)}
+.summary-note{margin-top:24px;padding:14px 18px;border-left:3px solid var(--gold);background:var(--panel2,rgba(127,127,127,.06));border-radius:8px;color:var(--muted);font-size:13.5px}
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.card-thumb{display:block;position:relative;cursor:zoom-in}
+.card-thumb img,.card-thumb video{display:block;width:100%;height:auto;aspect-ratio:16/10;object-fit:cover}
+.card-zoom{position:absolute;top:10px;right:10px;width:30px;height:30px;border-radius:8px;background:rgba(10,10,12,.55);color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px;opacity:0;transition:opacity .18s ease}
+.card-thumb:hover .card-zoom{opacity:1}
+.card.is-wide{grid-column:1/-1}
+.card.is-wide .card-thumb img,.card.is-wide .card-thumb video{aspect-ratio:auto;max-height:440px;object-fit:contain;background:var(--bg2,#0e1322)}
+.card figcaption{padding:12px 14px;font-size:13.5px;color:var(--muted)}
+.lightbox{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;padding:4vh 4vw;background:rgba(8,9,12,.88);opacity:0;visibility:hidden;transition:opacity .25s ease,visibility .25s ease}
+.lightbox:target{opacity:1;visibility:visible}
+.lightbox-inner{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;box-shadow:0 30px 90px rgba(0,0,0,.55)}
+.lightbox img,.lightbox video{display:block;max-width:90vw;max-height:80vh;width:auto;height:auto;object-fit:contain;border-radius:8px}
+.lightbox-close{position:absolute;top:10px;left:10px;width:32px;height:32px;border-radius:9px;background:rgba(10,10,12,.6);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px}
+.lightbox-cap{display:block;margin-top:12px;font-size:13.5px;color:var(--muted);max-width:90vw}
+.prose{max-width:760px}
+.prose p{margin-bottom:14px;color:var(--muted)}
+/* 텍스트 필드에서 데이터의 \n 줄바꿈을 렌더 (제목·부제·카드 텍스트 등) */
+.hero h1,.sec-head h2,.sec-sub,.ucard-title,.ucard-sub,.scard-title,.scard-sub,.card figcaption,.lightbox-cap{white-space:pre-line}
+/* 본문(body·note·text)은 fmtBlock이 <p>/<br>/<ul>로 렌더 — 불릿 목록 지원 */
+.ucard-body p,.summary-note p{margin:0}
+.ucard-body p+.mlist,.ucard-body .mlist+p,.summary-note p+.mlist{margin-top:10px}
+.mlist{list-style:none;margin:0;padding:0}
+.mlist li{position:relative;padding-left:18px;line-height:1.6}
+.mlist li+li{margin-top:8px}
+.mlist li::before{content:"";position:absolute;left:3px;top:.62em;width:6px;height:6px;border-radius:50%;background:var(--gold)}
+/* 인라인 표기: `코드` 와 [링크](http…) (본문 링크는 target=_blank로 nav 링크와 구분) */
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.9em;background:rgba(127,127,127,.14);padding:1px 6px;border-radius:5px}
+a[target="_blank"]{color:var(--gold2);text-decoration:underline;text-underline-offset:2px}
+/* 인라인 **굵게**는 강조색(기본 --amber, ORV=오렌지)으로. --strong으로 재정의 가능 */
+strong{color:var(--strong,var(--amber))}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(248px,1fr));gap:18px}
+.ucard{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px 22px 24px}
+.ucard.is-dark{background:var(--card-dark-bg,#1a1a1a);border-color:var(--card-dark-bg,#1a1a1a)}
+.ucard.is-soft{background:var(--card-soft-bg,#e8e4d6);border-color:var(--card-soft-bg,#e8e4d6)}
+.ucard-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:14px}
+.ucard-badge{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.04em;padding:4px 11px;border-radius:999px;background:var(--gold);color:#1b1b1b}
+.ucard-badge.b-orange{background:var(--amber);color:#fff}
+.ucard-badge.b-dark{background:#1f1f1f;color:#f4f5f3}
+.ucard-status{font-size:11.5px;font-weight:700;white-space:nowrap}
+.ucard-status.t-hi{color:var(--gold2)}
+.ucard-status.t-mid{color:var(--txt)}
+.ucard-status.t-lo{color:var(--muted)}
+.ucard-status.t-zero{color:var(--dim)}
+.ucard.is-dark .ucard-status.t-mid{color:var(--card-dark-ink,#f4f5f3)}
+.ucard-prog{margin-top:18px}
+.ucard-prog .bar-track{height:7px}
+.ucard-prog-pct{margin-top:8px;text-align:right;font-size:12.5px;font-weight:700;color:var(--gold2)}
+.ucard-sub{font-size:12px;font-weight:600;color:var(--dim);margin-bottom:8px}
+.ucard-title{font-weight:800;font-size:16.5px;line-height:1.4;margin-bottom:10px;color:var(--txt)}
+.ucard-body{font-size:13.5px;line-height:1.65;color:var(--muted)}
+.ucard.is-dark .ucard-title{color:var(--card-dark-ink,#f4f5f3)}
+.ucard.is-dark .ucard-body{color:#c4c6c1}
+.ucard.is-dark .ucard-sub{color:#9a9c97}
+.ucard.is-soft .ucard-title{color:#1b1b1b}
+.ucard.is-soft .ucard-body{color:#5e5b50}
+.ucard.is-soft .ucard-sub{color:#86826f}
+footer{border-top:1px solid var(--line);padding:40px 0;color:var(--dim);font-size:13px}
+</style>
+</head>
+<body>
+<nav><div class="wrap">
+  <div class="brand">전지적 독자시점<small>PROJECT-ORVㆍB1 · 2026 Q3ㆍBETA PRODOCTION</small></div>
+  <div class="navlinks">
+    <a href="#roadmap">개발 로드맵</a><a href="#summary">이번 분기 요약</a><a href="#milestones">에픽별 작업 현황</a><a href="#art">아트 &amp; 인게임 미디어</a><a href="#notes">비고</a>  </div>
+</div></nav>
+<header class="hero"><div class="wrap">
+  <span class="eyebrow">PROJECT-ORVㆍB1 · 2026 Q3ㆍBETA PRODOCTION</span>
+  <h1>전지적 독자시점</h1>
+  <p class="tagline"> </p>
+  <div class="statusbar">
+          <div class="chip"><span class="k">PHASE</span><span class="v">베타 1차</span></div>
+          <div class="chip"><span class="k">PERIOD</span><span class="v">2026 Q3</span></div>
+          <div class="chip"><span class="k">MILESTONE</span><span class="v">B1</span></div>
+      </div>
+</div></header>
+<main>
+<section id="roadmap">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">01</span><h2>개발 로드맵</h2></div>
+    <p class="sec-sub">B1은 알파 빌드에서 구현된 주요 시스템을 실제 제작 및 재활용이 가능한 구조로 정리하고,금호역 이후 충무로역 공필두 전투까지의 플레이 구간을 확장하는 마일스톤 입니다.
+
+핵심은 단순 기능 추가가 아니라, <strong>전지적 독자 시점 세계관 안에 들어온 듯한 현장감과 체감</strong>을 플레이로 증명하는 것 입니다.</p>        <div class="tl">
+      <div class="tl-steps">
+        <div class="tl-track"><div class="tl-fill" style="width:50%"></div></div>
+                  <div class="tl-step is-done">
+            <span class="tl-dotwrap"><span class="dot"></span></span>
+            <div class="tl-label">프로토타입</div>
+            <div class="tl-period">25.09-10</div>
+          </div>
+                  <div class="tl-step is-done">
+            <span class="tl-dotwrap"><span class="dot"></span></span>
+            <div class="tl-label">알파</div>
+            <div class="tl-period">26.04-26</div>
+          </div>
+                  <div class="tl-step is-current">
+            <span class="tl-dotwrap"><span class="dot"></span></span>
+            <div class="tl-label">베타 1차</div>
+            <div class="tl-period">26.08-30</div>
+          </div>
+                  <div class="tl-step ">
+            <span class="tl-dotwrap"><span class="dot"></span></span>
+            <div class="tl-label">베타 2차</div>
+            <div class="tl-period">26.12-23</div>
+          </div>
+                  <div class="tl-step ">
+            <span class="tl-dotwrap"><span class="dot"></span></span>
+            <div class="tl-label">출시</div>
+            <div class="tl-period">27.08+</div>
+          </div>
+              </div>
+    </div>
+  </div>
+</section>
+
+<section id="summary">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">02</span><h2>이번 분기 요약</h2></div>
+    <p class="sec-sub">2026-06-25 기준 마일스톤 <strong>종합 진행률 28.7%</strong> (전월 대비 ▼8.0%P).
+분야별 진행 현황은 아래와 같습니다.</p>    <div class="summary-cards">
+              <div class="scard">
+          <div class="scard-title">캐릭터</div>
+          <div class="scard-sub">정희원 B1 완료 · 김독자 진행 중</div>          <div class="bar-track"><div class="bar-fill" style="width:63%"></div></div>
+          <div class="scard-foot"><span class="scard-foot-label">진행률</span><span class="bar-pct">63%</span></div>
+        </div>
+              <div class="scard">
+          <div class="scard-title">시스템</div>
+          <div class="scard-sub">퀘스트·세이브로드·요리·랜덤박스 등 6종</div>          <div class="bar-track"><div class="bar-fill" style="width:33%"></div></div>
+          <div class="scard-foot"><span class="scard-foot-label">진행률</span><span class="bar-pct">33%</span></div>
+        </div>
+              <div class="scard">
+          <div class="scard-title">몬스터</div>
+          <div class="scard-sub">그롤 · 스펙터</div>          <div class="bar-track"><div class="bar-fill" style="width:21%"></div></div>
+          <div class="scard-foot"><span class="scard-foot-label">진행률</span><span class="bar-pct">21%</span></div>
+        </div>
+              <div class="scard">
+          <div class="scard-title">플레이</div>
+          <div class="scard-sub">천인호 각성 · 장충단 · 환영감옥</div>          <div class="bar-track"><div class="bar-fill" style="width:8%"></div></div>
+          <div class="scard-foot"><span class="scard-foot-label">진행률</span><span class="bar-pct">8%</span></div>
+        </div>
+              <div class="scard">
+          <div class="scard-title">컷씬</div>
+          <div class="scard-sub">천인호 처치 · 금호역 · 심판의 시간</div>          <div class="bar-track"><div class="bar-fill" style="width:3%"></div></div>
+          <div class="scard-foot"><span class="scard-foot-label">진행률</span><span class="bar-pct">3%</span></div>
+        </div>
+          </div>
+    <div class="summary-note"><p>분야별 수치는 해당 분야 에픽들의 단순 평균(초안)이며, 마일스톤 종합 진행률(28.7%)·에픽별 세부는 ProjectORV 월간 리포트(2026/06/25) 기준입니다.</p></div>  </div>
+</section>
+
+<section id="milestones">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">03</span><h2>에픽별 작업 현황</h2></div>
+    <p class="sec-sub">2026-06-25 기준 16개 에픽 진행률(높은 순) · 종합 28.7% ▼8.0%P</p>    <div class="cards">
+                                      <div class="ucard is-dark">
+                    <div class="ucard-head">
+            <span class="ucard-badge b-orange">캐릭터</span>            <span class="ucard-status t-hi">완료</span>          </div>
+                              <div class="ucard-title">정희원 B1 스펙 (기본 콤보)</div>          <div class="ucard-body"><ul class="mlist"><li>전 분야 완료</li><li>마감 단계 도달</li><li>후속 디테일·연계 작업 이전 가능</li></ul></div>                    <div class="ucard-prog">
+            <div class="bar-track"><div class="bar-fill" style="width:100%"></div></div>
+            <div class="ucard-prog-pct">100%</div>
+          </div>
+                  </div>
+                                      <div class="ucard ">
+                    <div class="ucard-head">
+            <span class="ucard-badge b-orange">시스템</span>            <span class="ucard-status t-hi">마무리 단계</span>          </div>
+                              <div class="ucard-title">퀘스트 제작 방식 개선</div>          <div class="ucard-body"><ul class="mlist"><li>프로그램 구현 대부분 완료</li><li>기획서 미완</li><li>기획 확정·대기 작업 재개 필요</li></ul></div>                    <div class="ucard-prog">
+            <div class="bar-track"><div class="bar-fill" style="width:78%"></div></div>
+            <div class="ucard-prog-pct">78%</div>
+          </div>
+                  </div>
+                                      <div class="ucard ">
+                    <div class="ucard-head">
+            <span class="ucard-badge ">시스템</span>            <span class="ucard-status t-mid">진행 중</span>          </div>
+                              <div class="ucard-title">세이브·로드 시스템 구현</div>          <div class="ucard-body"><ul class="mlist"><li>기획서·UI 완료</li><li>세이브/로드 UI 구현 중</li><li>코어 기능·기획 검수 예정</li></ul></div>                    <div class="ucard-prog">
+            <div class="bar-track"><div class="bar-fill" style="width:40%"></div></div>
+            <div class="ucard-prog-pct">40%</div>
+          </div>
+                  </div>
+                                      <div class="ucard ">
+                    <div class="ucard-head">
+            <span class="ucard-badge ">시스템</span>            <span class="ucard-status t-mid">진행 중</span>          </div>
+                              <div class="ucard-title">요리 시스템 구현</div>          <div class="ucard-body"><ul class="mlist"><li>기획 완료</li><li>프로그램 코어·UI 구현 중</li><li>화로/냄비 추가 원화·모델링 착수 필요</li></ul></div>                    <div class="ucard-prog">
+            <div class="bar-track"><div class="bar-fill" style="width:38%"></div></div>
+            <div class="ucard-prog-pct">38%</div>
+          </div>
+                  </div>
+                                      <div class="ucard ">
+                    <div class="ucard-head">
+            <span class="ucard-badge ">몬스터</span>            <span class="ucard-status t-mid">진행 중</span>          </div>
+                              <div class="ucard-title">그롤</div>          <div class="ucard-body"><ul class="mlist"><li>아트 선행 진행 중</li><li>프로그램은 애니 모션 완료 대기(정상 흐름)</li></ul></div>                    <div class="ucard-prog">
+            <div class="bar-track"><div class="bar-fill" style="width:36%"></div></div>
+            <div class="ucard-prog-pct">36%</div>
+          </div>
+                  </div>
+                                      <div class="ucard ">
+                    <div class="ucard-head">
+            <span class="ucard-badge ">시스템</span>            <span class="ucard-status t-mid">진행 중</span>          </div>
+                              <div class="ucard-title">랜덤 아이템 박스 구현</div>          <div class="ucard-body"><ul class="mlist"><li>프로그램·아트 검수 요청 적체</li><li>검수 병목 우려</li><li>통과 시 완료율 상승</li></ul></div>                    <div class="ucard-prog">
+            <div class="bar-track"><div class="bar-fill" style="width:32%"></div></div>
+            <div class="ucard-prog-pct">32%</div>
+          </div>
+                  </div>
+                                      <div class="ucard ">
+                    <div class="ucard-head">
+            <span class="ucard-badge ">캐릭터</span>            <span class="ucard-status t-lo">초기</span>          </div>
+                              <div class="ucard-title">김독자</div>          <div class="ucard-body"><ul class="mlist"><li>기획 선행 미완 상태에서 아트 진행</li><li>후속 분야 착수 리스크</li></ul></div>                    <div class="ucard-prog">
+            <div class="bar-track"><div class="bar-fill" style="width:25%"></div></div>
+            <div class="ucard-prog-pct">25%</div>
+          </div>
+                  </div>
+                                      <div class="ucard ">
+                    <div class="ucard-head">
+            <span class="ucard-badge ">플레이</span>            <span class="ucard-status t-lo">초기</span>          </div>
+                              <div class="ucard-title">천인호 전투 — 정희원 각성</div>          <div class="ucard-body"><ul class="mlist"><li>전투 합 모션·영상 등 연출 물량 집중</li><li>일정 리스크 존재</li></ul></div>                    <div class="ucard-prog">
+            <div class="bar-track"><div class="bar-fill" style="width:19%"></div></div>
+            <div class="ucard-prog-pct">19%</div>
+          </div>
+                  </div>
+                                      <div class="ucard ">
+                    <div class="ucard-head">
+            <span class="ucard-badge ">시스템</span>            <span class="ucard-status t-lo">초기</span>          </div>
+                              <div class="ucard-title">도깨비방 구현</div>          <div class="ucard-body"><ul class="mlist"><li>기획 선행 진행 중</li><li>프로그램·아트는 기획 완료 후 착수 예정</li></ul></div>                    <div class="ucard-prog">
+            <div class="bar-track"><div class="bar-fill" style="width:5%"></div></div>
+            <div class="ucard-prog-pct">5%</div>
+          </div>
+                  </div>
+                                      <div class="ucard ">
+                    <div class="ucard-head">
+            <span class="ucard-badge ">컷씬</span>            <span class="ucard-status t-lo">초기</span>          </div>
+                              <div class="ucard-title">천인호 처치</div>          <div class="ucard-body"><ul class="mlist"><li>프리비즈 단계 진행 중인 초기 단계</li></ul></div>                    <div class="ucard-prog">
+            <div class="bar-track"><div class="bar-fill" style="width:5%"></div></div>
+            <div class="ucard-prog-pct">5%</div>
+          </div>
+                  </div>
+                                      <div class="ucard ">
+                    <div class="ucard-head">
+            <span class="ucard-badge ">컷씬</span>            <span class="ucard-status t-lo">초기</span>          </div>
+                              <div class="ucard-title">천인호에 의해 금호역 전투 개시</div>          <div class="ucard-body"><ul class="mlist"><li>프리비즈 단계 진행 중인 초기 단계</li></ul></div>                    <div class="ucard-prog">
+            <div class="bar-track"><div class="bar-fill" style="width:5%"></div></div>
+            <div class="ucard-prog-pct">5%</div>
+          </div>
+                  </div>
+                                      <div class="ucard ">
+                    <div class="ucard-head">
+            <span class="ucard-badge ">몬스터</span>            <span class="ucard-status t-lo">초기</span>          </div>
+                              <div class="ucard-title">스펙터</div>          <div class="ucard-body"><ul class="mlist"><li>기획서 검수·아트 모델링 진행 중</li><li>검수 완료 후 후속 공정</li></ul></div>                    <div class="ucard-prog">
+            <div class="bar-track"><div class="bar-fill" style="width:5%"></div></div>
+            <div class="ucard-prog-pct">5%</div>
+          </div>
+                  </div>
+                                      <div class="ucard ">
+                    <div class="ucard-head">
+            <span class="ucard-badge ">플레이</span>            <span class="ucard-status t-lo">초기</span>          </div>
+                              <div class="ucard-title">동대입구역 장충단 공원</div>          <div class="ucard-body"><ul class="mlist"><li>기획 검수·배경원화·이펙트 진행 중</li><li>검수 통과 후 프로그램 착수</li></ul></div>                    <div class="ucard-prog">
+            <div class="bar-track"><div class="bar-fill" style="width:5%"></div></div>
+            <div class="ucard-prog-pct">5%</div>
+          </div>
+                  </div>
+                                      <div class="ucard ">
+                    <div class="ucard-head">
+            <span class="ucard-badge ">시스템</span>            <span class="ucard-status t-lo">초기</span>          </div>
+                              <div class="ucard-title">멸살법 시스템 개편</div>          <div class="ucard-body"><ul class="mlist"><li>기획 검수 대기</li><li>프로그램 코어·UI 진행 중</li></ul></div>                    <div class="ucard-prog">
+            <div class="bar-track"><div class="bar-fill" style="width:5%"></div></div>
+            <div class="ucard-prog-pct">5%</div>
+          </div>
+                  </div>
+                                      <div class="ucard ">
+                    <div class="ucard-head">
+            <span class="ucard-badge b-dark">컷씬</span>            <span class="ucard-status t-zero">대기</span>          </div>
+                              <div class="ucard-title">정희원 각성과 심판의 시간 발동</div>          <div class="ucard-body"><ul class="mlist"><li>프리비즈 대기</li><li>미착수</li><li>아트 선행 공정 착수 필요</li></ul></div>                    <div class="ucard-prog">
+            <div class="bar-track"><div class="bar-fill" style="width:0%"></div></div>
+            <div class="ucard-prog-pct">0%</div>
+          </div>
+                  </div>
+                                      <div class="ucard ">
+                    <div class="ucard-head">
+            <span class="ucard-badge b-dark">플레이</span>            <span class="ucard-status t-zero">대기</span>          </div>
+                              <div class="ucard-title">스펙터 전투 — 환영감옥</div>          <div class="ucard-body"><ul class="mlist"><li>기획서 작성 대기</li><li>신규 에픽</li><li>기획 선행 필요</li></ul></div>                    <div class="ucard-prog">
+            <div class="bar-track"><div class="bar-fill" style="width:0%"></div></div>
+            <div class="ucard-prog-pct">0%</div>
+          </div>
+                  </div>
+          </div>
+  </div>
+</section>
+
+<section id="art">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">04</span><h2>아트 &amp; 인게임 미디어</h2></div>
+    <p class="sec-sub">원화·컨셉 및 인게임 액션 캡처 (썸네일 클릭 시 확대, GIF는 재생)</p>    <div class="gallery">
+              <figure class="card ">
+          <a class="card-thumb" href="#lb-art-0">
+                          <img src="assets/magic-furnace-grades.png" alt="마력화로 등급별(C~SSS) 원화 — 등급 상승 시 장식 강화, 점화 시 마력 화염 색 변화(청염 → SSS 자염)" loading="lazy">
+                        <span class="card-zoom" aria-hidden="true">⤢</span>
+          </a>
+          <figcaption>마력화로 등급별(C~SSS) 원화 — 등급 상승 시 장식 강화, 점화 시 마력 화염 색 변화(청염 → SSS 자염)</figcaption>        </figure>
+              <figure class="card ">
+          <a class="card-thumb" href="#lb-art-1">
+                          <img src="assets/yousangah-cat-suit.jpg" alt="유상아 — 부유고양이 슈트 (코스튬 컨셉)" loading="lazy">
+                        <span class="card-zoom" aria-hidden="true">⤢</span>
+          </a>
+          <figcaption>유상아 — 부유고양이 슈트 (코스튬 컨셉)</figcaption>        </figure>
+              <figure class="card ">
+          <a class="card-thumb" href="#lb-art-2">
+                          <img src="assets/image_JeongHuiwon_MikazukiRep.png" alt="정희원 — 미카즈키 무기 표현" loading="lazy">
+                        <span class="card-zoom" aria-hidden="true">⤢</span>
+          </a>
+          <figcaption>정희원 — 미카즈키 무기 표현</figcaption>        </figure>
+              <figure class="card ">
+          <a class="card-thumb" href="#lb-art-3">
+                          <img src="assets/item-box-compare.png" alt="아이템 박스 — 한정판 / 일반 비교" loading="lazy">
+                        <span class="card-zoom" aria-hidden="true">⤢</span>
+          </a>
+          <figcaption>아이템 박스 — 한정판 / 일반 비교</figcaption>        </figure>
+              <figure class="card ">
+          <a class="card-thumb" href="#lb-art-4">
+                          <img src="assets/image-20260611-052845.png" alt="인게임 스크린샷 (2026.06.11)" loading="lazy">
+                        <span class="card-zoom" aria-hidden="true">⤢</span>
+          </a>
+          <figcaption>인게임 스크린샷 (2026.06.11)</figcaption>        </figure>
+              <figure class="card ">
+          <a class="card-thumb" href="#lb-art-5">
+                          <img src="assets/gwangsin-gatekeeper.png" alt="광신의 수문장 — 원화/컨셉" loading="lazy">
+                        <span class="card-zoom" aria-hidden="true">⤢</span>
+          </a>
+          <figcaption>광신의 수문장 — 원화/컨셉</figcaption>        </figure>
+              <figure class="card ">
+          <a class="card-thumb" href="#lb-art-6">
+                          <img src="assets/kimdokja-face-sheet.jpg" alt="김독자 — 얼굴 퀄리티업 시트" loading="lazy">
+                        <span class="card-zoom" aria-hidden="true">⤢</span>
+          </a>
+          <figcaption>김독자 — 얼굴 퀄리티업 시트</figcaption>        </figure>
+              <figure class="card ">
+          <a class="card-thumb" href="#lb-art-7">
+                          <video src="assets/wjdgmldnjs_bcombo-1.mp4" autoplay muted loop playsinline></video>
+                        <span class="card-zoom" aria-hidden="true">⤢</span>
+          </a>
+          <figcaption>전투 콤보 — B 콤보 #1 (인게임 캡처)</figcaption>        </figure>
+              <figure class="card ">
+          <a class="card-thumb" href="#lb-art-8">
+                          <video src="assets/wjdgmldnjs_bcombo-2.mp4" autoplay muted loop playsinline></video>
+                        <span class="card-zoom" aria-hidden="true">⤢</span>
+          </a>
+          <figcaption>전투 콤보 — B 콤보 #2 (인게임 캡처)</figcaption>        </figure>
+              <figure class="card ">
+          <a class="card-thumb" href="#lb-art-9">
+                          <video src="assets/wjdgmldnjs_bcombo-all.mp4" autoplay muted loop playsinline></video>
+                        <span class="card-zoom" aria-hidden="true">⤢</span>
+          </a>
+          <figcaption>전투 콤보 — 전체 콤보 흐름 (인게임 캡처)</figcaption>        </figure>
+              <figure class="card ">
+          <a class="card-thumb" href="#lb-art-10">
+                          <video src="assets/A_Mn_JeongHuiwon_F_Battle_Action_Command_Dodge_B.mp4" autoplay muted loop playsinline></video>
+                        <span class="card-zoom" aria-hidden="true">⤢</span>
+          </a>
+          <figcaption>정희원 — 전투 회피 액션 (Dodge B)</figcaption>        </figure>
+              <figure class="card ">
+          <a class="card-thumb" href="#lb-art-11">
+                          <video src="assets/A_Mn_KimDokja_M_Neutral_Interaction_FieldObj_RandomItemBox_Open-Normal_3.mp4" autoplay muted loop playsinline></video>
+                        <span class="card-zoom" aria-hidden="true">⤢</span>
+          </a>
+          <figcaption>김독자 — 랜덤 아이템 박스 오픈 인터랙션</figcaption>        </figure>
+              <figure class="card ">
+          <a class="card-thumb" href="#lb-art-12">
+                          <video src="assets/orvv-7800-play.mp4" autoplay muted loop playsinline></video>
+                        <span class="card-zoom" aria-hidden="true">⤢</span>
+          </a>
+          <figcaption>인게임 플레이 캡처 (ORVV-7800)</figcaption>        </figure>
+          </div>
+          <a class="lightbox" id="lb-art-0" href="#art">
+        <span class="lightbox-inner">
+                      <img src="assets/magic-furnace-grades.png" alt="마력화로 등급별(C~SSS) 원화 — 등급 상승 시 장식 강화, 점화 시 마력 화염 색 변화(청염 → SSS 자염)">
+                    <span class="lightbox-close" aria-hidden="true">✕</span>
+          <span class="lightbox-cap">마력화로 등급별(C~SSS) 원화 — 등급 상승 시 장식 강화, 점화 시 마력 화염 색 변화(청염 → SSS 자염)</span>        </span>
+      </a>
+          <a class="lightbox" id="lb-art-1" href="#art">
+        <span class="lightbox-inner">
+                      <img src="assets/yousangah-cat-suit.jpg" alt="유상아 — 부유고양이 슈트 (코스튬 컨셉)">
+                    <span class="lightbox-close" aria-hidden="true">✕</span>
+          <span class="lightbox-cap">유상아 — 부유고양이 슈트 (코스튬 컨셉)</span>        </span>
+      </a>
+          <a class="lightbox" id="lb-art-2" href="#art">
+        <span class="lightbox-inner">
+                      <img src="assets/image_JeongHuiwon_MikazukiRep.png" alt="정희원 — 미카즈키 무기 표현">
+                    <span class="lightbox-close" aria-hidden="true">✕</span>
+          <span class="lightbox-cap">정희원 — 미카즈키 무기 표현</span>        </span>
+      </a>
+          <a class="lightbox" id="lb-art-3" href="#art">
+        <span class="lightbox-inner">
+                      <img src="assets/item-box-compare.png" alt="아이템 박스 — 한정판 / 일반 비교">
+                    <span class="lightbox-close" aria-hidden="true">✕</span>
+          <span class="lightbox-cap">아이템 박스 — 한정판 / 일반 비교</span>        </span>
+      </a>
+          <a class="lightbox" id="lb-art-4" href="#art">
+        <span class="lightbox-inner">
+                      <img src="assets/image-20260611-052845.png" alt="인게임 스크린샷 (2026.06.11)">
+                    <span class="lightbox-close" aria-hidden="true">✕</span>
+          <span class="lightbox-cap">인게임 스크린샷 (2026.06.11)</span>        </span>
+      </a>
+          <a class="lightbox" id="lb-art-5" href="#art">
+        <span class="lightbox-inner">
+                      <img src="assets/gwangsin-gatekeeper.png" alt="광신의 수문장 — 원화/컨셉">
+                    <span class="lightbox-close" aria-hidden="true">✕</span>
+          <span class="lightbox-cap">광신의 수문장 — 원화/컨셉</span>        </span>
+      </a>
+          <a class="lightbox" id="lb-art-6" href="#art">
+        <span class="lightbox-inner">
+                      <img src="assets/kimdokja-face-sheet.jpg" alt="김독자 — 얼굴 퀄리티업 시트">
+                    <span class="lightbox-close" aria-hidden="true">✕</span>
+          <span class="lightbox-cap">김독자 — 얼굴 퀄리티업 시트</span>        </span>
+      </a>
+          <a class="lightbox" id="lb-art-7" href="#art">
+        <span class="lightbox-inner">
+                      <video src="assets/wjdgmldnjs_bcombo-1.mp4" controls autoplay loop playsinline></video>
+                    <span class="lightbox-close" aria-hidden="true">✕</span>
+          <span class="lightbox-cap">전투 콤보 — B 콤보 #1 (인게임 캡처)</span>        </span>
+      </a>
+          <a class="lightbox" id="lb-art-8" href="#art">
+        <span class="lightbox-inner">
+                      <video src="assets/wjdgmldnjs_bcombo-2.mp4" controls autoplay loop playsinline></video>
+                    <span class="lightbox-close" aria-hidden="true">✕</span>
+          <span class="lightbox-cap">전투 콤보 — B 콤보 #2 (인게임 캡처)</span>        </span>
+      </a>
+          <a class="lightbox" id="lb-art-9" href="#art">
+        <span class="lightbox-inner">
+                      <video src="assets/wjdgmldnjs_bcombo-all.mp4" controls autoplay loop playsinline></video>
+                    <span class="lightbox-close" aria-hidden="true">✕</span>
+          <span class="lightbox-cap">전투 콤보 — 전체 콤보 흐름 (인게임 캡처)</span>        </span>
+      </a>
+          <a class="lightbox" id="lb-art-10" href="#art">
+        <span class="lightbox-inner">
+                      <video src="assets/A_Mn_JeongHuiwon_F_Battle_Action_Command_Dodge_B.mp4" controls autoplay loop playsinline></video>
+                    <span class="lightbox-close" aria-hidden="true">✕</span>
+          <span class="lightbox-cap">정희원 — 전투 회피 액션 (Dodge B)</span>        </span>
+      </a>
+          <a class="lightbox" id="lb-art-11" href="#art">
+        <span class="lightbox-inner">
+                      <video src="assets/A_Mn_KimDokja_M_Neutral_Interaction_FieldObj_RandomItemBox_Open-Normal_3.mp4" controls autoplay loop playsinline></video>
+                    <span class="lightbox-close" aria-hidden="true">✕</span>
+          <span class="lightbox-cap">김독자 — 랜덤 아이템 박스 오픈 인터랙션</span>        </span>
+      </a>
+          <a class="lightbox" id="lb-art-12" href="#art">
+        <span class="lightbox-inner">
+                      <video src="assets/orvv-7800-play.mp4" controls autoplay loop playsinline></video>
+                    <span class="lightbox-close" aria-hidden="true">✕</span>
+          <span class="lightbox-cap">인게임 플레이 캡처 (ORVV-7800)</span>        </span>
+      </a>
+      </div>
+</section>
+
+<section id="notes">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">05</span><h2>비고</h2></div>
+    <div class="prose"><p>본 보고서는 샘플 데이터입니다.</p></div>
+  </div>
+</section>
+</main>
+<footer><div class="wrap">전지적 독자시점 — 2026 Q3ㆍBETA PRODOCTION 제작 진행 보고</div></footer>
+</body>
+</html>
