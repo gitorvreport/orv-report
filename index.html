@@ -790,6 +790,8 @@ footer{border-top:1px solid var(--line);padding:40px 0;color:var(--dim);font-siz
       }
       if (!res.ok) throw new Error("서버 오류 (HTTP " + res.status + ")");
       alert("저장됐습니다. 약 1~2분 후 사이트에 반영됩니다.");
+      location.replace(location.pathname);   // ?edit=1 제거 → 기본 주소로 이동(편집 모드 종료)
+      return;
     }).catch(function (e) {
       alert("저장 실패: " + e.message);
     }).then(function () {
