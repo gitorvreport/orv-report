@@ -919,7 +919,7 @@ function fmtBlock(s) {
     });
     if (clone.querySelector("body")) clone.querySelector("body").classList.remove("edit-on");
     // 임베드 원본 JSON(report-src)도 편집·삭제분을 반영해 갱신 → 저장된 페이지를 다시 ?edit=1로 열어도 최신 상태에서 시작.
-    //   (</script> 만 이스케이프 — render.js와 동일 규칙)
+    //   (닫는 script 태그 시퀀스만 이스케이프 — render.js와 동일 규칙. 주석에도 그 시퀀스를 literal로 쓰면 인라인 스크립트가 조기 종료되므로 주의)
     var srcOut = clone.querySelector("#report-src");
     if (srcOut) srcOut.textContent = buildExport().replace(/<\/(script)/gi, "<\\/$1");
     return "<!DOCTYPE html>\n" + clone.outerHTML;
