@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-<html lang="ko">
-<head>
+<html lang="ko"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>전지적 독자시점</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet"><style>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&amp;family=Noto+Sans+KR:wght@300;400;500;700;900&amp;display=swap" rel="stylesheet"><style>
 :root {
   --bg: #f3f3f0;
   --bg2: #ffffff;
@@ -77,10 +76,12 @@ section{padding:74px 0}
 .bar-pct{color:var(--gold2);font-weight:700}
 .bar-track{height:8px;background:var(--line);border-radius:8px;overflow:hidden}
 .bar-fill{height:100%;border-radius:8px;background:linear-gradient(90deg,var(--gold),var(--amber))}
-.summary-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(232px,1fr));gap:18px}
-.scard{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px}
+.summary-cards{display:flex;flex-wrap:wrap;justify-content:center;gap:18px}
+.scard{flex:1 1 330px;max-width:365px;display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px}
 .scard-title{font-weight:800;font-size:18px;color:var(--txt);margin-bottom:8px}
 .scard-sub{font-size:13.5px;color:var(--muted);margin-bottom:18px}
+/* 진행바·푸터를 카드 하단에 고정 → sub 길이와 무관하게 같은 줄에서 정렬 */
+.scard .bar-track{margin-top:auto}
 .scard-foot{display:flex;justify-content:space-between;align-items:center;margin-top:12px;font-size:13px}
 .scard-foot-label{color:var(--dim)}
 .summary-note{margin-top:24px;padding:14px 18px;border-left:3px solid var(--gold);background:var(--panel2,rgba(127,127,127,.06));border-radius:8px;color:var(--muted);font-size:13.5px}
@@ -105,10 +106,10 @@ section{padding:74px 0}
 .prose{max-width:760px}
 .prose p{margin-bottom:14px;color:var(--muted)}
 /* 텍스트 필드에서 데이터의 \n 줄바꿈을 렌더 (제목·부제·카드 텍스트 등) */
-.hero h1,.sec-head h2,.sec-sub,.ucard-title,.ucard-sub,.scard-title,.scard-sub,.card figcaption,.lightbox-cap{white-space:pre-line}
-/* 본문(body·note·text)은 fmtBlock이 <p>/<br>/<ul>로 렌더 — 불릿 목록 지원 */
-.ucard-body p,.summary-note p{margin:0}
-.ucard-body p+.mlist,.ucard-body .mlist+p,.summary-note p+.mlist{margin-top:10px}
+.hero h1,.sec-head h2,.sec-sub,.ucard-title,.ucard-sub,.scard-title,.card figcaption,.lightbox-cap{white-space:pre-line}
+/* 본문(body·note·text·요약 부제)은 fmtBlock이 <p>/<br>/<ul>로 렌더 — 불릿 목록 지원 */
+.ucard-body p,.summary-note p,.scard-sub p{margin:0}
+.ucard-body p+.mlist,.ucard-body .mlist+p,.summary-note p+.mlist,.scard-sub p+.mlist{margin-top:10px}
 .mlist{list-style:none;margin:0;padding:0}
 .mlist li{position:relative;padding-left:18px;line-height:1.6}
 .mlist li+li{margin-top:8px}
@@ -118,21 +119,31 @@ code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.9em;b
 a[target="_blank"]{color:var(--gold2);text-decoration:underline;text-underline-offset:2px}
 /* 인라인 **굵게**는 강조색(기본 --amber, ORV=오렌지)으로. --strong으로 재정의 가능 */
 strong{color:var(--strong,var(--amber))}
-.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(248px,1fr));gap:18px}
-.ucard{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px 22px 24px}
+.cards{display:flex;flex-wrap:wrap;justify-content:center;gap:18px}
+/* 카드 분류 서브헤더: 한 줄 전체 폭을 차지해 그룹을 구분(다음 카드가 새 행부터 흐름) */
+.cards-group-head{flex:0 0 100%;width:100%;margin:20px 0 2px;padding-bottom:9px;border-bottom:1px solid var(--line);font-size:14.5px;font-weight:800;letter-spacing:.01em;color:var(--gold2)}
+.cards-group-head:first-child{margin-top:2px}
+.ucard{flex:1 1 330px;max-width:365px;display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px 22px 24px}
 .ucard.is-dark{background:var(--card-dark-bg,#1a1a1a);border-color:var(--card-dark-bg,#1a1a1a)}
 .ucard.is-soft{background:var(--card-soft-bg,#e8e4d6);border-color:var(--card-soft-bg,#e8e4d6)}
 .ucard-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:14px}
 .ucard-badge{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.04em;padding:4px 11px;border-radius:999px;background:var(--gold);color:#1b1b1b}
 .ucard-badge.b-orange{background:var(--amber);color:#fff}
 .ucard-badge.b-dark{background:#1f1f1f;color:#f4f5f3}
+/* 작업유형별 배지 색 (테마에서 --badge-* 로 덮어쓰기 가능) */
+.ucard-badge.b-sys{background:var(--badge-sys,var(--gold));color:#1b1b1b}
+.ucard-badge.b-char{background:var(--badge-char,#f0883e);color:#fff}
+.ucard-badge.b-mon{background:var(--badge-mon,#d2553f);color:#fff}
+.ucard-badge.b-play{background:var(--badge-play,#2f8fb0);color:#fff}
+.ucard-badge.b-cut{background:var(--badge-cut,#8b6db0);color:#fff}
 .ucard-status{font-size:11.5px;font-weight:700;white-space:nowrap}
 .ucard-status.t-hi{color:var(--gold2)}
 .ucard-status.t-mid{color:var(--txt)}
 .ucard-status.t-lo{color:var(--muted)}
 .ucard-status.t-zero{color:var(--dim)}
 .ucard.is-dark .ucard-status.t-mid{color:var(--card-dark-ink,#f4f5f3)}
-.ucard-prog{margin-top:18px}
+/* 진행바를 카드 하단에 고정 → 본문 길이와 무관하게 같은 행에서 정렬(§02 카드와 동일) */
+.ucard-prog{margin-top:auto;padding-top:18px}
 .ucard-prog .bar-track{height:7px}
 .ucard-prog-pct{margin-top:8px;text-align:right;font-size:12.5px;font-weight:700;color:var(--gold2)}
 .ucard-sub{font-size:12px;font-weight:600;color:var(--dim);margin-bottom:8px}
@@ -190,18 +201,18 @@ footer{border-top:1px solid var(--line);padding:40px 0;color:var(--dim);font-siz
 .edit-bar button.ghost{background:transparent;border:1px solid rgba(255,255,255,.22);color:#cfd3da}
 </style>
 </head>
-<body>
+<body class="">
 <div class="topbar">
 <div class="secbar" data-edit="security.banner"><div class="wrap">⚠ CONFIDENTIAL — <strong>com2us 내부 공유용</strong> · 외부 공개 금지 · 무단 반출·캡쳐 금지</div></div>
 <nav><div class="wrap">
   <div class="brand">전지적 독자시점<small>PROJECT-ORV · 2026.06ㆍBETA 1-1</small></div>
   <div class="navlinks">
-    <a href="#roadmap">개발 로드맵</a><a href="#summary">이번 달 요약</a><a href="#milestones">에픽별 작업 현황</a><a href="#art">아트 &amp; 인게임 미디어</a><a href="#notes">비고</a>  </div>
+    <a href="#roadmap">개발 로드맵</a><a href="#summary">마일스톤 목표와 현재 상태</a><a href="#milestones">에픽별 목표와 현재 상태</a><a href="#art">아트 &amp; 인게임 미디어</a><a href="#notes">비고</a>  </div>
 </div></nav>
 </div>
 <header class="hero"><div class="wrap">
   <span class="eyebrow">PROJECT-ORV · 2026.06ㆍBETA 1-1</span>
-  <h1 data-edit="meta.title">전지적 독자시점</h1>
+  <h1 data-edit="meta.title" class="">전지적 독자시점</h1>
   <p class="tagline" data-edit="meta.tagline"> </p>
   <div class="statusbar">
           <div class="chip"><span class="k">MILESTONES</span><span class="v">베타</span></div>
@@ -210,12 +221,12 @@ footer{border-top:1px solid var(--line);padding:40px 0;color:var(--dim);font-siz
       </div>
 </div></header>
 <main>
-<section id="roadmap" data-node="sections.0">
+<section id="roadmap" data-node="sections.0" class="">
   <div class="wrap">
-    <div class="sec-head"><span class="sec-num">01</span><h2 data-edit="sections.0.title">개발 로드맵</h2></div>
-    <p class="sec-sub" data-edit="sections.0.subtitle">베타는 알파 빌드에서 구현된 주요 시스템을 실제 제작 및 재활용이 가능한 구조로 정리하고,금호역 이후 충무로역 공필두 전투까지의 플레이 구간을 확장하는 마일스톤 입니다.
+    <div class="sec-head"><span class="sec-num">01</span><h2 data-edit="sections.0.title" class="">개발 로드맵</h2></div>
+    <p class="sec-sub" data-edit="sections.0.subtitle">베타는 알파 기간에 구현된 주요 시스템을 실제 제작 및 재활용이 가능한 구조로 정리하고, 전투 플레이의 기조를 확정하고, 금호역 이후의 원작의 서사와 무대를 플레이 구간으로 확장하는 마일스톤 입니다.
 
-핵심은 단순 기능 추가가 아니라, <strong>전지적 독자 시점 세계관 안에 들어온 듯한 현장감과 체감</strong>을 플레이로 증명하는 것 입니다.</p>        <div class="tl">
+핵심은 단순 기능 추가가 아니라, <strong>전지적 독자 시점 세계관 안에 들어온 듯한 현장감과 체감</strong>을 플레이로 만드는 것입니다.</p>        <div class="tl">
       <div class="tl-steps">
         <div class="tl-track"><div class="tl-fill" style="width:50%"></div></div>
                   <div class="tl-step is-done" data-node="sections.0.phases.0">
@@ -233,12 +244,12 @@ footer{border-top:1px solid var(--line);padding:40px 0;color:var(--dim);font-siz
             <div class="tl-label" data-edit="sections.0.phases.2.label">베타</div>
             <div class="tl-period" data-edit="sections.0.phases.2.period">27.12-31</div>
           </div>
-                  <div class="tl-step " data-node="sections.0.phases.3">
+                  <div class="tl-step" data-node="sections.0.phases.3">
             <span class="tl-dotwrap"><span class="dot"></span></span>
             <div class="tl-label" data-edit="sections.0.phases.3.label">소프트런칭</div>
             <div class="tl-period" data-edit="sections.0.phases.3.period">28.06-30</div>
           </div>
-                  <div class="tl-step " data-node="sections.0.phases.4">
+                  <div class="tl-step" data-node="sections.0.phases.4">
             <span class="tl-dotwrap"><span class="dot"></span></span>
             <div class="tl-label" data-edit="sections.0.phases.4.label">글로벌런칭</div>
             <div class="tl-period" data-edit="sections.0.phases.4.period">28.10-31</div>
@@ -248,168 +259,175 @@ footer{border-top:1px solid var(--line);padding:40px 0;color:var(--dim);font-siz
   </div>
 </section>
 
-<section id="summary" data-node="sections.1">
+<section id="summary" data-node="sections.1" class="">
   <div class="wrap">
-    <div class="sec-head"><span class="sec-num">02</span><h2 data-edit="sections.1.title">이번 달 요약</h2></div>
-    <p class="sec-sub" data-edit="sections.1.subtitle">3개월 간 총 16개의 EPIC으로 진행 중이며, 26.6월 말 기준 <strong>종합 진행률 28.7%</strong>.
-분야별 진행 현황은 아래와 같습니다.</p>    <div class="summary-cards">
+    <div class="sec-head"><span class="sec-num">02</span><h2 data-edit="sections.1.title" class="">마일스톤&nbsp;B1&nbsp;목표와 진행</h2></div>
+    <p class="sec-sub" data-edit="sections.1.subtitle">B1은 <strong>알파 빌드의 시스템을 확장 가능한 구조로 정리</strong>하고, <strong>신규 시스템·플레이어블 캐릭터·핵심 시나리오 플레이</strong>를 더해 전독시 세계관의 체감을 확장하는 마일스톤입니다.&nbsp;<div>작업별 목표와 현재까지 진행률은 아래와 같습니다.<br></div></p>    <div class="summary-cards">
               <div class="scard" data-node="sections.1.items.0">
-          <div class="scard-title" data-edit="sections.1.items.0.label">캐릭터</div>
-          <div class="scard-sub" data-edit="sections.1.items.0.sub">정희원 B1 완료 · 김독자 진행 중</div>          <div class="bar-track"><div class="bar-fill" style="width:63%"></div></div>
-          <div class="scard-foot"><span class="scard-foot-label">진행률</span><span class="bar-pct">63%</span></div>
+          <div class="scard-title" data-edit="sections.1.items.0.label">시스템 구조화 및 리뉴얼</div>
+          <div class="scard-sub" data-edit="sections.1.items.0.sub"><p>알파에서 개별 구현한 기능을 더 큰 콘텐츠로 확장이 가능한 구조로 재정리·개편합니다.</p><ul class="mlist"><li>세이브·로드 / 로딩 시스템 개편</li><li>퀘스트 / 다이얼로그 시스템 개편</li><li>멸살법 시스템 개편</li></ul></div>          <div class="bar-track"><div class="bar-fill" style="width:41%"></div></div>
+          <div class="scard-foot"><span class="scard-foot-label">진행률</span><span class="bar-pct">41%</span></div>
         </div>
               <div class="scard" data-node="sections.1.items.1">
-          <div class="scard-title" data-edit="sections.1.items.1.label">시스템</div>
-          <div class="scard-sub" data-edit="sections.1.items.1.sub">퀘스트·세이브로드·요리·랜덤박스 등 6종</div>          <div class="bar-track"><div class="bar-fill" style="width:33%"></div></div>
-          <div class="scard-foot"><span class="scard-foot-label">진행률</span><span class="bar-pct">33%</span></div>
+          <div class="scard-title" data-edit="sections.1.items.1.label">신규 시스템</div>
+          <div class="scard-sub" data-edit="sections.1.items.1.sub"><p>이번 마일스톤에 새로 추가되는 시스템입니다.</p><ul class="mlist"><li>요리 (재료 조리·버프)</li><li>랜덤 아이템 박스 (언박싱 연출)</li><li>도깨비방</li></ul></div>          <div class="bar-track"><div class="bar-fill" style="width:25%"></div></div>
+          <div class="scard-foot"><span class="scard-foot-label">진행률</span><span class="bar-pct">25%</span></div>
         </div>
               <div class="scard" data-node="sections.1.items.2">
-          <div class="scard-title" data-edit="sections.1.items.2.label">몬스터</div>
-          <div class="scard-sub" data-edit="sections.1.items.2.sub">그롤 · 스펙터</div>          <div class="bar-track"><div class="bar-fill" style="width:21%"></div></div>
-          <div class="scard-foot"><span class="scard-foot-label">진행률</span><span class="bar-pct">21%</span></div>
+          <div class="scard-title" data-edit="sections.1.items.2.label">전투 및 플레이 퀄리티 향상</div>
+          <div class="scard-sub" data-edit="sections.1.items.2.sub"><p>기존 전투 매커니즘 및 플레이어블 캐릭터의 조작감을 더 정교하게 향상하고, 퀄리티를 끌어올립니다.</p><ul class="mlist"><li>김독자 전투 모션 퀄리티업</li><li>김독자 로코모션 강화 (Clunky 완화)</li><li>턴 · 계단 오르기 · 볼터블 액션 개선</li></ul></div>          <div class="bar-track"><div class="bar-fill" style="width:25%"></div></div>
+          <div class="scard-foot"><span class="scard-foot-label">진행률</span><span class="bar-pct">25%</span></div>
         </div>
               <div class="scard" data-node="sections.1.items.3">
-          <div class="scard-title" data-edit="sections.1.items.3.label">플레이</div>
-          <div class="scard-sub" data-edit="sections.1.items.3.sub">천인호 각성 · 장충단 · 환영감옥</div>          <div class="bar-track"><div class="bar-fill" style="width:8%"></div></div>
-          <div class="scard-foot"><span class="scard-foot-label">진행률</span><span class="bar-pct">8%</span></div>
+          <div class="scard-title" data-edit="sections.1.items.3.label">플레이어블 캐릭터 확장</div>
+          <div class="scard-sub" data-edit="sections.1.items.3.sub"><p>김독자 패밀리 플레이어블 캐릭터의 기본 액션셋을 구현합니다.</p><ul class="mlist"><li>정희원 — 기본 액션셋 완료</li><li>유중혁 — 김독자 퀄리티 향상 기준 확립 후 작업</li></ul></div>          <div class="bar-track"><div class="bar-fill" style="width:50%"></div></div>
+          <div class="scard-foot"><span class="scard-foot-label">진행률</span><span class="bar-pct">50%</span></div>
         </div>
               <div class="scard" data-node="sections.1.items.4">
-          <div class="scard-title" data-edit="sections.1.items.4.label">컷씬</div>
-          <div class="scard-sub" data-edit="sections.1.items.4.sub">천인호 처치 · 금호역 · 심판의 시간</div>          <div class="bar-track"><div class="bar-fill" style="width:3%"></div></div>
-          <div class="scard-foot"><span class="scard-foot-label">진행률</span><span class="bar-pct">3%</span></div>
+          <div class="scard-title" data-edit="sections.1.items.4.label">핵심 시나리오 플레이 구현</div>
+          <div class="scard-sub" data-edit="sections.1.items.4.sub"><p>금호역 천인호 전투 이후 ~ 충무로역 공필두 전투까지의 핵심 플레이를 구현합니다.</p><ul class="mlist"><li>정희원 각성 · 천인호 전투</li><li>장충단 공원 · 약수–동대입구 구간</li><li>스펙터 전투 (환영감옥)</li></ul></div>          <div class="bar-track"><div class="bar-fill" style="width:9%"></div></div>
+          <div class="scard-foot"><span class="scard-foot-label">진행률</span><span class="bar-pct">9%</span></div>
         </div>
           </div>
-    <div class="summary-note" data-edit="sections.1.note"><p>분야별 수치는 해당 분야 에픽들의 단순 평균(초안)이며, 마일스톤 종합 진행률(28.7%)·에픽별 세부는 ProjectORV 월간 리포트(2026/06/25) 기준입니다.</p></div>  </div>
+    <div class="summary-note" data-edit="sections.1.note"><p><strong>B1의 가장 중요한 목표는 '내가 전독시 세계관 안에 들어와 있다'는 체감</strong>입니다. 특히 <em>정희원 각성·천인호 전투</em>와 <em>스펙터 전투(환영감옥 기믹)</em>를 최우선 퀄리티 장면으로 끌어올립니다.<br><br></p><p><i>- 진행률 수치는 해당 카테고리 속한 에픽들의 단순 평균이며, 향후 구현 테스트 및 디렉팅 과정에서 더 많은 작업이슈가 발생하면, 진행률에 변동이 있을 수 있습니다.</i>&nbsp;</p></div>  </div>
 </section>
 
-<section id="milestones" data-node="sections.2">
+<section id="milestones" data-node="sections.2" class="">
   <div class="wrap">
-    <div class="sec-head"><span class="sec-num">03</span><h2 data-edit="sections.2.title">에픽별 작업 현황</h2></div>
-    <p class="sec-sub" data-edit="sections.2.subtitle">2026-06-25 기준 16개 에픽 진행률(높은 순) · 종합 28.7% ▼8.0%P</p>    <div class="cards">
-                                      <div class="ucard is-dark" data-node="sections.2.cards.0">
+    <div class="sec-head"><span class="sec-num">03</span><h2 data-edit="sections.2.title" class="">EPIC별 목표와 상태</h2></div>
+    <p class="sec-sub" data-edit="sections.2.subtitle">B1마일스톤의 목표를 구성하는 EPIC을 그룹별로 묶어 정리하였습니다.&nbsp;<i style="font-size: 13.5px; white-space: normal;">(그룹 내 진행률 높은 순)&nbsp;</i><div>6월 말 기준 현재&nbsp;<strong style="color: rgb(240, 136, 62);">종합 진행률은 약 28.7%</strong>입니다.&nbsp;</div></p>    <div class="cards">
+              <h3 class="cards-group-head">시스템 구조화 및 리뉴얼</h3>                                <div class="ucard" data-node="sections.2.cards.0">
                     <div class="ucard-head">
-            <span class="ucard-badge b-orange" data-edit="sections.2.cards.0.badge">캐릭터</span>            <span class="ucard-status t-hi">완료</span>          </div>
-                              <div class="ucard-title" data-edit="sections.2.cards.0.title">정희원 B1 스펙 (기본 콤보)</div>          <div class="ucard-body" data-edit="sections.2.cards.0.body"><ul class="mlist"><li>전 분야 완료</li><li>마감 단계 도달</li><li>후속 디테일·연계 작업 이전 가능</li></ul></div>                    <div class="ucard-prog">
-            <div class="bar-track"><div class="bar-fill" style="width:100%"></div></div>
-            <div class="ucard-prog-pct">100%</div>
-          </div>
-                  </div>
-                                      <div class="ucard " data-node="sections.2.cards.1">
-                    <div class="ucard-head">
-            <span class="ucard-badge b-orange" data-edit="sections.2.cards.1.badge">시스템</span>            <span class="ucard-status t-hi">마무리 단계</span>          </div>
-                              <div class="ucard-title" data-edit="sections.2.cards.1.title">퀘스트 제작 방식 개선</div>          <div class="ucard-body" data-edit="sections.2.cards.1.body"><ul class="mlist"><li>프로그램 구현 대부분 완료</li><li>기획서 미완</li><li>기획 확정·대기 작업 재개 필요</li></ul></div>                    <div class="ucard-prog">
+            <span class="ucard-badge b-sys" data-edit="sections.2.cards.0.badge">시스템</span>            <span class="ucard-status t-hi">마무리 단계</span>          </div>
+                              <div class="ucard-title" data-edit="sections.2.cards.0.title">퀘스트 제작 방식 개선</div>          <div class="ucard-body" data-edit="sections.2.cards.0.body"><p>알파의 퀘스트 기능을, 앞으로 시나리오 콘텐츠를 빠르고 일관되게 찍어낼 수 있는 제작 파이프라인으로 재정리합니다. 이후 플레이 구간 생산 속도를 좌우합니다.</p><ul class="mlist"><li>프로그램 구현 대부분 완료</li><li>멸살법 시스템 개편과 연계하여 잔여 작업 마무리 예정</li></ul></div>                    <div class="ucard-prog">
             <div class="bar-track"><div class="bar-fill" style="width:78%"></div></div>
             <div class="ucard-prog-pct">78%</div>
           </div>
                   </div>
-                                      <div class="ucard " data-node="sections.2.cards.2">
+                                              <div class="ucard" data-node="sections.2.cards.1">
                     <div class="ucard-head">
-            <span class="ucard-badge " data-edit="sections.2.cards.2.badge">시스템</span>            <span class="ucard-status t-mid">진행 중</span>          </div>
-                              <div class="ucard-title" data-edit="sections.2.cards.2.title">세이브·로드 시스템 구현</div>          <div class="ucard-body" data-edit="sections.2.cards.2.body"><ul class="mlist"><li>기획서·UI 완료</li><li>세이브/로드 UI 구현 중</li><li>코어 기능·기획 검수 예정</li></ul></div>                    <div class="ucard-prog">
+            <span class="ucard-badge b-sys" data-edit="sections.2.cards.1.badge">시스템</span>            <span class="ucard-status t-mid">진행 중</span>          </div>
+                              <div class="ucard-title" data-edit="sections.2.cards.1.title">세이브·로드 시스템 구현</div>          <div class="ucard-body" data-edit="sections.2.cards.1.body"><p>알파의 세이브/로드를, 플레이 분량이 길어진 베타 플레이 구간에서도 안정적으로 동작하도록 개편합니다. 진행을 저장하고 이어서 플레이하는 기본기이자 구간 확장의 전제입니다.</p><ul class="mlist"><li>기획서·UI 완료</li><li>세이브/로드 UI 구현 중</li><li>코어 기능 구현·검수 진행 예정</li></ul></div>                    <div class="ucard-prog">
             <div class="bar-track"><div class="bar-fill" style="width:40%"></div></div>
             <div class="ucard-prog-pct">40%</div>
           </div>
                   </div>
-                                      <div class="ucard " data-node="sections.2.cards.3">
+                                              <div class="ucard" data-node="sections.2.cards.2">
                     <div class="ucard-head">
-            <span class="ucard-badge " data-edit="sections.2.cards.3.badge">시스템</span>            <span class="ucard-status t-mid">진행 중</span>          </div>
-                              <div class="ucard-title" data-edit="sections.2.cards.3.title">요리 시스템 구현</div>          <div class="ucard-body" data-edit="sections.2.cards.3.body"><ul class="mlist"><li>기획 완료</li><li>프로그램 코어·UI 구현 중</li><li>화로/냄비 추가 원화·모델링 착수 필요</li></ul></div>                    <div class="ucard-prog">
+            <span class="ucard-badge b-sys" data-edit="sections.2.cards.2.badge">시스템</span>            <span class="ucard-status t-lo">초기</span>          </div>
+                              <div class="ucard-title" data-edit="sections.2.cards.2.title">멸살법 시스템 개편</div>          <div class="ucard-body" data-edit="sections.2.cards.2.body"><p>전독시 세계관을 더욱 깊이 있게 구현하고, 작품 속의 서사를 재현하는 메인 시나리오 뿐 아니라, 오리지널 플레이와 유중혁의 행적까지 아우를 수 있는 '메타 시스템'으로, 퀘스트 시스템과 통합합니다.&nbsp;</p><p>이후 콘텐츠 확장의 핵심으로 기능하게 될 것입니다.&nbsp;</p><ul class="mlist"><li>컨셉 및 시스템 코어 기획 완료</li><li></li></ul><ul class="mlist"><li>프로그램 코어·UI 진행 중</li><li>퀘스트 시스템과의 통합 준비 중</li><li>「회차 공명」(유중혁으로 전환 플레이) 리서치 중</li></ul></div>                    <div class="ucard-prog">
+            <div class="bar-track"><div class="bar-fill" style="width:5%"></div></div>
+            <div class="ucard-prog-pct">5%</div>
+          </div>
+                  </div>
+              <h3 class="cards-group-head">신규 시스템</h3>                                <div class="ucard" data-node="sections.2.cards.3">
+                    <div class="ucard-head">
+            <span class="ucard-badge b-sys" data-edit="sections.2.cards.3.badge">시스템</span>            <span class="ucard-status t-mid">진행 중</span>          </div>
+                              <div class="ucard-title" data-edit="sections.2.cards.3.title">요리 시스템 구현</div>          <div class="ucard-body" data-edit="sections.2.cards.3.body"><p>이번 마일스톤에 새로 추가되는 성장 루프. <br>수집한 재료로 버프 음식을 조리해 전투 준비의 깊이와 반복 플레이 동기를 더합니다.</p><ul class="mlist"><li>기획 완료</li><li>프로그램 코어·UI 구현 중</li><li>화로·냄비 등 추가 아트 순차 진행</li></ul></div>                    <div class="ucard-prog">
             <div class="bar-track"><div class="bar-fill" style="width:38%"></div></div>
             <div class="ucard-prog-pct">38%</div>
           </div>
                   </div>
-                                      <div class="ucard " data-node="sections.2.cards.4">
+                                              <div class="ucard" data-node="sections.2.cards.4">
                     <div class="ucard-head">
-            <span class="ucard-badge " data-edit="sections.2.cards.4.badge">몬스터</span>            <span class="ucard-status t-mid">진행 중</span>          </div>
-                              <div class="ucard-title" data-edit="sections.2.cards.4.title">그롤</div>          <div class="ucard-body" data-edit="sections.2.cards.4.body"><ul class="mlist"><li>아트 선행 진행 중</li><li>프로그램은 애니 모션 완료 대기(정상 흐름)</li></ul></div>                    <div class="ucard-prog">
-            <div class="bar-track"><div class="bar-fill" style="width:36%"></div></div>
-            <div class="ucard-prog-pct">36%</div>
-          </div>
-                  </div>
-                                      <div class="ucard " data-node="sections.2.cards.5">
-                    <div class="ucard-head">
-            <span class="ucard-badge " data-edit="sections.2.cards.5.badge">시스템</span>            <span class="ucard-status t-mid">진행 중</span>          </div>
-                              <div class="ucard-title" data-edit="sections.2.cards.5.title">랜덤 아이템 박스 구현</div>          <div class="ucard-body" data-edit="sections.2.cards.5.body"><ul class="mlist"><li>프로그램·아트 검수 요청 적체</li><li>검수 병목 우려</li><li>통과 시 완료율 상승</li></ul></div>                    <div class="ucard-prog">
+            <span class="ucard-badge b-sys" data-edit="sections.2.cards.4.badge">시스템</span>            <span class="ucard-status t-mid">진행 중</span>          </div>
+                              <div class="ucard-title" data-edit="sections.2.cards.4.title">랜덤 아이템 박스 구현</div>          <div class="ucard-body" data-edit="sections.2.cards.4.body"><p>신규 보상 시스템. 전리품 언박싱의 쾌감을 연출해 반복 플레이의 동기를 강화합니다.</p><ul class="mlist"><li>프로그램·아트 구현 후 검수 진행 중</li><li>상자 모델링ㆍ획득 연출 컷씬 등 아트 순차 진행</li><li>진행상황 검수 완료 시 완료율 예정</li></ul></div>                    <div class="ucard-prog">
             <div class="bar-track"><div class="bar-fill" style="width:32%"></div></div>
             <div class="ucard-prog-pct">32%</div>
           </div>
                   </div>
-                                      <div class="ucard " data-node="sections.2.cards.6">
+                                              <div class="ucard" data-node="sections.2.cards.5">
                     <div class="ucard-head">
-            <span class="ucard-badge " data-edit="sections.2.cards.6.badge">캐릭터</span>            <span class="ucard-status t-lo">초기</span>          </div>
-                              <div class="ucard-title" data-edit="sections.2.cards.6.title">김독자</div>          <div class="ucard-body" data-edit="sections.2.cards.6.body"><ul class="mlist"><li>기획 선행 미완 상태에서 아트 진행</li><li>후속 분야 착수 리스크</li></ul></div>                    <div class="ucard-prog">
+            <span class="ucard-badge b-sys" data-edit="sections.2.cards.5.badge">시스템</span>            <span class="ucard-status t-lo">초기</span>          </div>
+                              <div class="ucard-title" data-edit="sections.2.cards.5.title">도깨비방 구현</div>          <div class="ucard-body" data-edit="sections.2.cards.5.body"><p>신규 거점 기능. 멸살법 시스템에서 회차(시나리오) 클리어 후 도깨비와 상호작용해 시나리오·보상으로 이어지는 관문 역할을 합니다.</p><ul class="mlist"><li>컨셉 및 시스템 코어 기획 완료</li><li>프로그램 코어·배경 샘플 진행 중</li><li>도깨비방에서 가능한 콘텐츠 10여종 세부 기획 중</li></ul></div>                    <div class="ucard-prog">
+            <div class="bar-track"><div class="bar-fill" style="width:5%"></div></div>
+            <div class="ucard-prog-pct">5%</div>
+          </div>
+                  </div>
+              <h3 class="cards-group-head">플레이어블 캐릭터 확장 및 강화</h3>                                <div class="ucard is-dark" data-node="sections.2.cards.6">
+                    <div class="ucard-head">
+            <span class="ucard-badge b-char" data-edit="sections.2.cards.6.badge">캐릭터</span>            <span class="ucard-status t-hi">완료</span>          </div>
+                              <div class="ucard-title" data-edit="sections.2.cards.6.title">정희원 기본 액션</div>          <div class="ucard-body" data-edit="sections.2.cards.6.body"><p>동료 플레이어블 캐릭터 확장 진행.&nbsp;</p><p>플레이어가 새로 조작하게 되는 캐릭터로, 기본 콤보의 구성을 통해 '김독자ㆍ유중혁ㆍ이현성과 다른' 여성 검사 캐릭터로서의 기준점을 만듭니다.&nbsp;</p><ul class="mlist"><li>기본 액션에 대한 전 분야 완료, 마감 단계 도달</li><li>향후 후속 디테일·연계 작업 예정</li></ul></div>                    <div class="ucard-prog">
+            <div class="bar-track"><div class="bar-fill" style="width:100%"></div></div>
+            <div class="ucard-prog-pct">100%</div>
+          </div>
+                  </div>
+                                              <div class="ucard" data-node="sections.2.cards.7">
+                    <div class="ucard-head">
+            <span class="ucard-badge b-char" data-edit="sections.2.cards.7.badge">캐릭터</span>            <span class="ucard-status t-lo">초기</span>          </div>
+                              <div class="ucard-title" data-edit="sections.2.cards.7.title">전투 매커니즘 및 김독자</div>          <div class="ucard-body" data-edit="sections.2.cards.7.body"><p>'전지적독자시점 게임'만의 전투 스타일 기조에 대해 더 깊이 고민하고, 주인공 김독자의 플레이 완성도를 끌어올립니다. 동시에, 로코모션(턴·계단 오르기·볼터블 등)과 비주얼을 다듬어 기본 조작·연출의 퀄리티를 높입니다.</p><ul class="mlist"><li>김독자 얼굴 퀄리티업 등 아트 퀄업 진행 중</li><li>OCS(ORVCombatSystem) 기조 정립 완료</li><li>새로운 전투 매커니즘 기조 확인용 샘플 제작</li><li>애니메이션, IK 시스템 파인튜닝 등 진행 중</li></ul></div>                    <div class="ucard-prog">
             <div class="bar-track"><div class="bar-fill" style="width:25%"></div></div>
             <div class="ucard-prog-pct">25%</div>
           </div>
                   </div>
-                                      <div class="ucard " data-node="sections.2.cards.7">
+                                              <div class="ucard" data-node="sections.2.cards.8">
                     <div class="ucard-head">
-            <span class="ucard-badge " data-edit="sections.2.cards.7.badge">플레이</span>            <span class="ucard-status t-lo">초기</span>          </div>
-                              <div class="ucard-title" data-edit="sections.2.cards.7.title">천인호 전투 — 정희원 각성</div>          <div class="ucard-body" data-edit="sections.2.cards.7.body"><ul class="mlist"><li>전투 합 모션·영상 등 연출 물량 집중</li><li>일정 리스크 존재</li></ul></div>                    <div class="ucard-prog">
-            <div class="bar-track"><div class="bar-fill" style="width:19%"></div></div>
-            <div class="ucard-prog-pct">19%</div>
-          </div>
-                  </div>
-                                      <div class="ucard " data-node="sections.2.cards.8">
-                    <div class="ucard-head">
-            <span class="ucard-badge " data-edit="sections.2.cards.8.badge">시스템</span>            <span class="ucard-status t-lo">초기</span>          </div>
-                              <div class="ucard-title" data-edit="sections.2.cards.8.title">도깨비방 구현</div>          <div class="ucard-body" data-edit="sections.2.cards.8.body"><ul class="mlist"><li>기획 선행 진행 중</li><li>프로그램·아트는 기획 완료 후 착수 예정</li></ul></div>                    <div class="ucard-prog">
-            <div class="bar-track"><div class="bar-fill" style="width:5%"></div></div>
-            <div class="ucard-prog-pct">5%</div>
-          </div>
-                  </div>
-                                      <div class="ucard " data-node="sections.2.cards.9">
-                    <div class="ucard-head">
-            <span class="ucard-badge " data-edit="sections.2.cards.9.badge">컷씬</span>            <span class="ucard-status t-lo">초기</span>          </div>
-                              <div class="ucard-title" data-edit="sections.2.cards.9.title">천인호 처치</div>          <div class="ucard-body" data-edit="sections.2.cards.9.body"><ul class="mlist"><li>프리비즈 단계 진행 중인 초기 단계</li></ul></div>                    <div class="ucard-prog">
-            <div class="bar-track"><div class="bar-fill" style="width:5%"></div></div>
-            <div class="ucard-prog-pct">5%</div>
-          </div>
-                  </div>
-                                      <div class="ucard " data-node="sections.2.cards.10">
-                    <div class="ucard-head">
-            <span class="ucard-badge " data-edit="sections.2.cards.10.badge">컷씬</span>            <span class="ucard-status t-lo">초기</span>          </div>
-                              <div class="ucard-title" data-edit="sections.2.cards.10.title">천인호에 의해 금호역 전투 개시</div>          <div class="ucard-body" data-edit="sections.2.cards.10.body"><ul class="mlist"><li>프리비즈 단계 진행 중인 초기 단계</li></ul></div>                    <div class="ucard-prog">
-            <div class="bar-track"><div class="bar-fill" style="width:5%"></div></div>
-            <div class="ucard-prog-pct">5%</div>
-          </div>
-                  </div>
-                                      <div class="ucard " data-node="sections.2.cards.11">
-                    <div class="ucard-head">
-            <span class="ucard-badge " data-edit="sections.2.cards.11.badge">몬스터</span>            <span class="ucard-status t-lo">초기</span>          </div>
-                              <div class="ucard-title" data-edit="sections.2.cards.11.title">스펙터</div>          <div class="ucard-body" data-edit="sections.2.cards.11.body"><ul class="mlist"><li>기획서 검수·아트 모델링 진행 중</li><li>검수 완료 후 후속 공정</li></ul></div>                    <div class="ucard-prog">
-            <div class="bar-track"><div class="bar-fill" style="width:5%"></div></div>
-            <div class="ucard-prog-pct">5%</div>
-          </div>
-                  </div>
-                                      <div class="ucard " data-node="sections.2.cards.12">
-                    <div class="ucard-head">
-            <span class="ucard-badge " data-edit="sections.2.cards.12.badge">플레이</span>            <span class="ucard-status t-lo">초기</span>          </div>
-                              <div class="ucard-title" data-edit="sections.2.cards.12.title">동대입구역 장충단 공원</div>          <div class="ucard-body" data-edit="sections.2.cards.12.body"><ul class="mlist"><li>기획 검수·배경원화·이펙트 진행 중</li><li>검수 통과 후 프로그램 착수</li></ul></div>                    <div class="ucard-prog">
-            <div class="bar-track"><div class="bar-fill" style="width:5%"></div></div>
-            <div class="ucard-prog-pct">5%</div>
-          </div>
-                  </div>
-                                      <div class="ucard " data-node="sections.2.cards.13">
-                    <div class="ucard-head">
-            <span class="ucard-badge " data-edit="sections.2.cards.13.badge">시스템</span>            <span class="ucard-status t-lo">초기</span>          </div>
-                              <div class="ucard-title" data-edit="sections.2.cards.13.title">멸살법 시스템 개편</div>          <div class="ucard-body" data-edit="sections.2.cards.13.body"><ul class="mlist"><li>기획 검수 대기</li><li>프로그램 코어·UI 진행 중</li></ul></div>                    <div class="ucard-prog">
-            <div class="bar-track"><div class="bar-fill" style="width:5%"></div></div>
-            <div class="ucard-prog-pct">5%</div>
-          </div>
-                  </div>
-                                      <div class="ucard " data-node="sections.2.cards.14">
-                    <div class="ucard-head">
-            <span class="ucard-badge b-dark" data-edit="sections.2.cards.14.badge">컷씬</span>            <span class="ucard-status t-zero">대기</span>          </div>
-                              <div class="ucard-title" data-edit="sections.2.cards.14.title">정희원 각성과 심판의 시간 발동</div>          <div class="ucard-body" data-edit="sections.2.cards.14.body"><ul class="mlist"><li>프리비즈 대기</li><li>미착수</li><li>아트 선행 공정 착수 필요</li></ul></div>                    <div class="ucard-prog">
+            <span class="ucard-badge b-char" data-edit="sections.2.cards.8.badge">캐릭터</span>            <span class="ucard-status t-zero">대기</span>          </div>
+                              <div class="ucard-title" data-edit="sections.2.cards.8.title">유중혁</div>          <div class="ucard-body" data-edit="sections.2.cards.8.body"><p>유중혁의 플레이 스타일 등을 수정될 전투 매커니즘에 맞게 수정하고, '김독자와는 다른 차원'을 보여줄 캐릭터로서 전투 스타일을 구축합니다.&nbsp;</p><ul class="mlist"><li>코스튬 컨셉 선행 예정</li><li>기본 액션셋 수정을 OCS 확정 및 김독자 구현 후 후속 진행 예정</li></ul></div>                    <div class="ucard-prog">
             <div class="bar-track"><div class="bar-fill" style="width:0%"></div></div>
             <div class="ucard-prog-pct">0%</div>
           </div>
                   </div>
-                                      <div class="ucard " data-node="sections.2.cards.15">
+              <h3 class="cards-group-head">핵심 시나리오 플레이 구현</h3>                                <div class="ucard" data-node="sections.2.cards.9">
                     <div class="ucard-head">
-            <span class="ucard-badge b-dark" data-edit="sections.2.cards.15.badge">플레이</span>            <span class="ucard-status t-zero">대기</span>          </div>
-                              <div class="ucard-title" data-edit="sections.2.cards.15.title">스펙터 전투 — 환영감옥</div>          <div class="ucard-body" data-edit="sections.2.cards.15.body"><ul class="mlist"><li>기획서 작성 대기</li><li>신규 에픽</li><li>기획 선행 필요</li></ul></div>                    <div class="ucard-prog">
+            <span class="ucard-badge b-mon" data-edit="sections.2.cards.9.badge">몬스터</span>            <span class="ucard-status t-mid">진행 중</span>          </div>
+                              <div class="ucard-title" data-edit="sections.2.cards.9.title">그롤</div>          <div class="ucard-body" data-edit="sections.2.cards.9.body"><p>핵심 시나리오 구간을 채우는 적 몬스터. 플레이어가 처음 맞붙는 위협의 비주얼·모션으로 전투의 현장감을 만듭니다.</p><ul class="mlist"><li>아트 선행 진행 중 (모델링ㆍ리깅 등)</li><li>애니 모션 완료 후 프로그램 진행 예정 (정상 공정)</li></ul></div>                    <div class="ucard-prog">
+            <div class="bar-track"><div class="bar-fill" style="width:36%"></div></div>
+            <div class="ucard-prog-pct">36%</div>
+          </div>
+                  </div>
+                                              <div class="ucard" data-node="sections.2.cards.10">
+                    <div class="ucard-head">
+            <span class="ucard-badge b-play" data-edit="sections.2.cards.10.badge">플레이</span>            <span class="ucard-status t-lo">초기</span>          </div>
+                              <div class="ucard-title" data-edit="sections.2.cards.10.title">천인호 전투 — 정희원 각성</div>          <div class="ucard-body" data-edit="sections.2.cards.10.body"><p>B1 최우선 퀄리티 장면. 처절한 정희원의 각성과 세계관 속 화신들의 모습을 플레이로 구현해 '전독시 세계관 안에 들어와 있다'는 체감을 증명합니다.</p><ul class="mlist"><li>전투 합 모션·영상 등 연출 프리비즈 완료</li><li>핵심 장면의 퀄리티를 위한 모션캡쳐 등 진행 중</li><li>애니 모션 작업 진행 중</li></ul></div>                    <div class="ucard-prog">
+            <div class="bar-track"><div class="bar-fill" style="width:19%"></div></div>
+            <div class="ucard-prog-pct">19%</div>
+          </div>
+                  </div>
+                                              <div class="ucard" data-node="sections.2.cards.11">
+                    <div class="ucard-head">
+            <span class="ucard-badge b-cut" data-edit="sections.2.cards.11.badge">컷씬</span>            <span class="ucard-status t-lo">초기</span>          </div>
+                              <div class="ucard-title" data-edit="sections.2.cards.11.title">천인호 처치</div>          <div class="ucard-body" data-edit="sections.2.cards.11.body"><p>천인호 전투의 결착을 그리는 컷씬. 원작 명장면을 연출로 재현해 스토리 몰입의 분기점을 만듭니다.</p><ul class="mlist"><li>프리비즈 단계 진행 중</li></ul></div>                    <div class="ucard-prog">
+            <div class="bar-track"><div class="bar-fill" style="width:5%"></div></div>
+            <div class="ucard-prog-pct">5%</div>
+          </div>
+                  </div>
+                                              <div class="ucard" data-node="sections.2.cards.12">
+                    <div class="ucard-head">
+            <span class="ucard-badge b-cut" data-edit="sections.2.cards.12.badge">컷씬</span>            <span class="ucard-status t-lo">초기</span>          </div>
+                              <div class="ucard-title" data-edit="sections.2.cards.12.title">천인호에 의해 금호역 전투 개시</div>          <div class="ucard-body" data-edit="sections.2.cards.12.body"><p>핵심 시나리오의 도입 컷씬. 천인호로 인해 전투 구간으로 진입하는 맥락과 긴장감을 부여합니다.</p><ul class="mlist"><li>프리비즈 단계 진행 중</li></ul></div>                    <div class="ucard-prog">
+            <div class="bar-track"><div class="bar-fill" style="width:5%"></div></div>
+            <div class="ucard-prog-pct">5%</div>
+          </div>
+                  </div>
+                                              <div class="ucard" data-node="sections.2.cards.13">
+                    <div class="ucard-head">
+            <span class="ucard-badge b-mon" data-edit="sections.2.cards.13.badge">몬스터</span>            <span class="ucard-status t-lo">초기</span>          </div>
+                              <div class="ucard-title" data-edit="sections.2.cards.13.title">스펙터</div>          <div class="ucard-body" data-edit="sections.2.cards.13.body"><p>환영감옥 구간을 채울 적 몬스터. 후속 핵심 시나리오 구간의 전투 밀도를 만듭니다.</p><ul class="mlist"><li>기획·아트 모델링 진행 중</li><li>검수 후 리깅ㆍ애니 모션 등 후속작업 진행 예정</li></ul></div>                    <div class="ucard-prog">
+            <div class="bar-track"><div class="bar-fill" style="width:5%"></div></div>
+            <div class="ucard-prog-pct">5%</div>
+          </div>
+                  </div>
+                                              <div class="ucard" data-node="sections.2.cards.14">
+                    <div class="ucard-head">
+            <span class="ucard-badge b-play" data-edit="sections.2.cards.14.badge">플레이</span>            <span class="ucard-status t-lo">초기</span>          </div>
+                              <div class="ucard-title" data-edit="sections.2.cards.14.title">동대입구역 장충단 공원</div>          <div class="ucard-body" data-edit="sections.2.cards.14.body"><p>약수–동대입구 구간으로 이어지는 탐험/퍼즐 무대(장충단 공원에서의 사명대사 &amp; 열사들의 동상 봉인을 푸는 퍼즐). 세계관의 현장감을 넓히는 공간입니다.</p><ul class="mlist"><li>기획·배경원화·이펙트 진행 중</li><li>블록아웃을 통한 플레이 메이킹ㆍ검증 진행 중</li></ul></div>                    <div class="ucard-prog">
+            <div class="bar-track"><div class="bar-fill" style="width:5%"></div></div>
+            <div class="ucard-prog-pct">5%</div>
+          </div>
+                  </div>
+                                              <div class="ucard" data-node="sections.2.cards.15">
+                    <div class="ucard-head">
+            <span class="ucard-badge b-cut" data-edit="sections.2.cards.15.badge">컷씬</span>            <span class="ucard-status t-zero">대기</span>          </div>
+                              <div class="ucard-title" data-edit="sections.2.cards.15.title">정희원 각성과 심판의 시간 발동</div>          <div class="ucard-body" data-edit="sections.2.cards.15.body"><p>정희원 서사의 정점을 담는 컷씬.&nbsp;<br>정희원이라는 주요 캐릭터의 임팩트를 극대화합니다.</p><ul class="mlist"><li>아트 선행 프리비즈 진행</li><li>후속 공정 순차 진행 예정</li></ul></div>                    <div class="ucard-prog">
+            <div class="bar-track"><div class="bar-fill" style="width:0%"></div></div>
+            <div class="ucard-prog-pct">0%</div>
+          </div>
+                  </div>
+                                              <div class="ucard" data-node="sections.2.cards.16">
+                    <div class="ucard-head">
+            <span class="ucard-badge b-play" data-edit="sections.2.cards.16.badge">플레이</span>            <span class="ucard-status t-zero">대기</span>          </div>
+                              <div class="ucard-title" data-edit="sections.2.cards.16.title">스펙터 전투 — 환영감옥</div>          <div class="ucard-body" data-edit="sections.2.cards.16.body"><p>B1 최우선 퀄리티 장면. 스펙터 전투를 환각 미로형 레벨로 구현하고, 캐릭터별 트라우마 장면을 표현합니다.</p><ul class="mlist"><li>기획·배경원화·이펙트 진행 중</li><li>블록아웃을 통한 플레이 메이킹ㆍ검증 진행 중</li></ul></div>                    <div class="ucard-prog">
             <div class="bar-track"><div class="bar-fill" style="width:0%"></div></div>
             <div class="ucard-prog-pct">0%</div>
           </div>
@@ -418,88 +436,88 @@ footer{border-top:1px solid var(--line);padding:40px 0;color:var(--dim);font-siz
   </div>
 </section>
 
-<section id="art" data-node="sections.3">
+<section id="art" data-node="sections.3" class="">
   <div class="wrap">
-    <div class="sec-head"><span class="sec-num">04</span><h2 data-edit="sections.3.title">아트 &amp; 인게임 미디어</h2></div>
+    <div class="sec-head"><span class="sec-num">04</span><h2 data-edit="sections.3.title" class="">아트 &amp; 인게임 미디어</h2></div>
     <p class="sec-sub" data-edit="sections.3.subtitle">원화·컨셉 및 인게임 액션 캡처 (썸네일 클릭 시 확대, GIF는 재생)</p>    <div class="gallery">
-              <figure class="card " data-node="sections.3.cards.0">
+              <figure class="card" data-node="sections.3.cards.0">
           <a class="card-thumb" href="#lb-art-0">
                           <img src="assets/magic-furnace-grades.5b1121c9.png" alt="마력화로 등급별(C~SSS) 원화 — 등급 상승 시 장식 강화, 점화 시 마력 화염 색 변화(청염 → SSS 자염)" loading="lazy">
                         <span class="card-zoom" aria-hidden="true">⤢</span>
           </a>
-          <figcaption data-edit="sections.3.cards.0.caption">마력화로 등급별(C~SSS) 원화 — 등급 상승 시 장식 강화, 점화 시 마력 화염 색 변화(청염 → SSS 자염)</figcaption>        </figure>
-              <figure class="card " data-node="sections.3.cards.1">
+          <figcaption data-edit="sections.3.cards.0.caption" class="">마력화로 등급별(C~SSS) 원화 — 등급 상승 시 장식 강화, 점화 시 마력 화염 색 변화(청염 → SSS 자염)</figcaption>        </figure>
+              <figure class="card" data-node="sections.3.cards.1">
           <a class="card-thumb" href="#lb-art-1">
                           <img src="assets/yousangah-cat-suit.a05af018.jpg" alt="유상아 — 부유고양이 슈트 (코스튬 컨셉)" loading="lazy">
                         <span class="card-zoom" aria-hidden="true">⤢</span>
           </a>
-          <figcaption data-edit="sections.3.cards.1.caption">유상아 — 부유고양이 슈트 (코스튬 컨셉)</figcaption>        </figure>
-              <figure class="card " data-node="sections.3.cards.2">
+          <figcaption data-edit="sections.3.cards.1.caption" class="">유상아 — 부유고양이 슈트 (코스튬 컨셉)</figcaption>        </figure>
+              <figure class="card" data-node="sections.3.cards.2">
           <a class="card-thumb" href="#lb-art-2">
                           <img src="assets/image_JeongHuiwon_MikazukiRep.1f2f4f4c.png" alt="정희원 — 미카즈키 무기 표현" loading="lazy">
                         <span class="card-zoom" aria-hidden="true">⤢</span>
           </a>
-          <figcaption data-edit="sections.3.cards.2.caption">정희원 — 미카즈키 무기 표현</figcaption>        </figure>
-              <figure class="card " data-node="sections.3.cards.3">
+          <figcaption data-edit="sections.3.cards.2.caption" class="">정희원 — 미카즈키 무기 표현</figcaption>        </figure>
+              <figure class="card" data-node="sections.3.cards.3">
           <a class="card-thumb" href="#lb-art-3">
                           <img src="assets/item-box-compare.5b2078ee.png" alt="아이템 박스 — 한정판 / 일반 비교" loading="lazy">
                         <span class="card-zoom" aria-hidden="true">⤢</span>
           </a>
-          <figcaption data-edit="sections.3.cards.3.caption">아이템 박스 — 한정판 / 일반 비교</figcaption>        </figure>
-              <figure class="card " data-node="sections.3.cards.4">
+          <figcaption data-edit="sections.3.cards.3.caption" class="">아이템 박스 — 한정판 / 일반 비교</figcaption>        </figure>
+              <figure class="card" data-node="sections.3.cards.4">
           <a class="card-thumb" href="#lb-art-4">
                           <img src="assets/image-20260611-052845.4a807613.png" alt="인게임 스크린샷 (2026.06.11)" loading="lazy">
                         <span class="card-zoom" aria-hidden="true">⤢</span>
           </a>
-          <figcaption data-edit="sections.3.cards.4.caption">인게임 스크린샷 (2026.06.11)</figcaption>        </figure>
-              <figure class="card " data-node="sections.3.cards.5">
+          <figcaption data-edit="sections.3.cards.4.caption" class="">인게임 스크린샷 (2026.06.11)</figcaption>        </figure>
+              <figure class="card" data-node="sections.3.cards.5">
           <a class="card-thumb" href="#lb-art-5">
                           <img src="assets/gwangsin-gatekeeper.f82d79e4.png" alt="광신의 수문장 — 원화/컨셉" loading="lazy">
                         <span class="card-zoom" aria-hidden="true">⤢</span>
           </a>
-          <figcaption data-edit="sections.3.cards.5.caption">광신의 수문장 — 원화/컨셉</figcaption>        </figure>
-              <figure class="card " data-node="sections.3.cards.6">
+          <figcaption data-edit="sections.3.cards.5.caption" class="">광신의 수문장 — 원화/컨셉</figcaption>        </figure>
+              <figure class="card" data-node="sections.3.cards.6">
           <a class="card-thumb" href="#lb-art-6">
                           <img src="assets/kimdokja-face-sheet.23642551.jpg" alt="김독자 — 얼굴 퀄리티업 시트" loading="lazy">
                         <span class="card-zoom" aria-hidden="true">⤢</span>
           </a>
-          <figcaption data-edit="sections.3.cards.6.caption">김독자 — 얼굴 퀄리티업 시트</figcaption>        </figure>
-              <figure class="card " data-node="sections.3.cards.7">
+          <figcaption data-edit="sections.3.cards.6.caption" class="">김독자 — 얼굴 퀄리티업 시트</figcaption>        </figure>
+              <figure class="card" data-node="sections.3.cards.7">
           <a class="card-thumb" href="#lb-art-7">
-                          <video src="assets/wjdgmldnjs_bcombo-1.02ec58cd.mp4" autoplay muted loop playsinline></video>
+                          <video src="assets/wjdgmldnjs_bcombo-1.02ec58cd.mp4" autoplay="" muted="" loop="" playsinline=""></video>
                         <span class="card-zoom" aria-hidden="true">⤢</span>
           </a>
-          <figcaption data-edit="sections.3.cards.7.caption">전투 콤보 — B 콤보 #1 (인게임 캡처)</figcaption>        </figure>
-              <figure class="card " data-node="sections.3.cards.8">
+          <figcaption data-edit="sections.3.cards.7.caption" class="">전투 콤보 — B 콤보 #1 (인게임 캡처)</figcaption>        </figure>
+              <figure class="card" data-node="sections.3.cards.8">
           <a class="card-thumb" href="#lb-art-8">
-                          <video src="assets/wjdgmldnjs_bcombo-2.85a11340.mp4" autoplay muted loop playsinline></video>
+                          <video src="assets/wjdgmldnjs_bcombo-2.85a11340.mp4" autoplay="" muted="" loop="" playsinline=""></video>
                         <span class="card-zoom" aria-hidden="true">⤢</span>
           </a>
-          <figcaption data-edit="sections.3.cards.8.caption">전투 콤보 — B 콤보 #2 (인게임 캡처)</figcaption>        </figure>
-              <figure class="card " data-node="sections.3.cards.9">
+          <figcaption data-edit="sections.3.cards.8.caption" class="">전투 콤보 — B 콤보 #2 (인게임 캡처)</figcaption>        </figure>
+              <figure class="card" data-node="sections.3.cards.9">
           <a class="card-thumb" href="#lb-art-9">
-                          <video src="assets/wjdgmldnjs_bcombo-all.dfdee08a.mp4" autoplay muted loop playsinline></video>
+                          <video src="assets/wjdgmldnjs_bcombo-all.dfdee08a.mp4" autoplay="" muted="" loop="" playsinline=""></video>
                         <span class="card-zoom" aria-hidden="true">⤢</span>
           </a>
-          <figcaption data-edit="sections.3.cards.9.caption">전투 콤보 — 전체 콤보 흐름 (인게임 캡처)</figcaption>        </figure>
-              <figure class="card " data-node="sections.3.cards.10">
+          <figcaption data-edit="sections.3.cards.9.caption" class="">전투 콤보 — 전체 콤보 흐름 (인게임 캡처)</figcaption>        </figure>
+              <figure class="card" data-node="sections.3.cards.10">
           <a class="card-thumb" href="#lb-art-10">
-                          <video src="assets/A_Mn_JeongHuiwon_F_Battle_Action_Command_Dodge_B.cdbd2cfc.mp4" autoplay muted loop playsinline></video>
+                          <video src="assets/A_Mn_JeongHuiwon_F_Battle_Action_Command_Dodge_B.cdbd2cfc.mp4" autoplay="" muted="" loop="" playsinline=""></video>
                         <span class="card-zoom" aria-hidden="true">⤢</span>
           </a>
-          <figcaption data-edit="sections.3.cards.10.caption">정희원 — 전투 회피 액션 (Dodge B)</figcaption>        </figure>
-              <figure class="card " data-node="sections.3.cards.11">
+          <figcaption data-edit="sections.3.cards.10.caption" class="">정희원 — 전투 회피 액션 (Dodge B)</figcaption>        </figure>
+              <figure class="card" data-node="sections.3.cards.11">
           <a class="card-thumb" href="#lb-art-11">
-                          <video src="assets/A_Mn_KimDokja_M_Neutral_Interaction_FieldObj_RandomItemBox_Open-Normal_3.bc736bc3.mp4" autoplay muted loop playsinline></video>
+                          <video src="assets/A_Mn_KimDokja_M_Neutral_Interaction_FieldObj_RandomItemBox_Open-Normal_3.bc736bc3.mp4" autoplay="" muted="" loop="" playsinline=""></video>
                         <span class="card-zoom" aria-hidden="true">⤢</span>
           </a>
-          <figcaption data-edit="sections.3.cards.11.caption">김독자 — 랜덤 아이템 박스 오픈 인터랙션</figcaption>        </figure>
-              <figure class="card " data-node="sections.3.cards.12">
+          <figcaption data-edit="sections.3.cards.11.caption" class="">김독자 — 랜덤 아이템 박스 오픈 인터랙션</figcaption>        </figure>
+              <figure class="card" data-node="sections.3.cards.12">
           <a class="card-thumb" href="#lb-art-12">
-                          <video src="assets/orvv-7800-play.a436aa40.mp4" autoplay muted loop playsinline></video>
+                          <video src="assets/orvv-7800-play.a436aa40.mp4" autoplay="" muted="" loop="" playsinline=""></video>
                         <span class="card-zoom" aria-hidden="true">⤢</span>
           </a>
-          <figcaption data-edit="sections.3.cards.12.caption">인게임 플레이 캡처 (ORVV-7800)</figcaption>        </figure>
+          <figcaption data-edit="sections.3.cards.12.caption" class="">인게임 플레이 캡처 (ORVV-7800)</figcaption>        </figure>
           </div>
           <a class="lightbox" id="lb-art-0" href="#art">
         <span class="lightbox-inner">
@@ -545,55 +563,55 @@ footer{border-top:1px solid var(--line);padding:40px 0;color:var(--dim);font-siz
       </a>
           <a class="lightbox" id="lb-art-7" href="#art">
         <span class="lightbox-inner">
-                      <video src="assets/wjdgmldnjs_bcombo-1.02ec58cd.mp4" controls autoplay loop playsinline></video>
+                      <video src="assets/wjdgmldnjs_bcombo-1.02ec58cd.mp4" controls="" autoplay="" loop="" playsinline=""></video>
                     <span class="lightbox-close" aria-hidden="true">✕</span>
           <span class="lightbox-cap">전투 콤보 — B 콤보 #1 (인게임 캡처)</span>        </span>
       </a>
           <a class="lightbox" id="lb-art-8" href="#art">
         <span class="lightbox-inner">
-                      <video src="assets/wjdgmldnjs_bcombo-2.85a11340.mp4" controls autoplay loop playsinline></video>
+                      <video src="assets/wjdgmldnjs_bcombo-2.85a11340.mp4" controls="" autoplay="" loop="" playsinline=""></video>
                     <span class="lightbox-close" aria-hidden="true">✕</span>
           <span class="lightbox-cap">전투 콤보 — B 콤보 #2 (인게임 캡처)</span>        </span>
       </a>
           <a class="lightbox" id="lb-art-9" href="#art">
         <span class="lightbox-inner">
-                      <video src="assets/wjdgmldnjs_bcombo-all.dfdee08a.mp4" controls autoplay loop playsinline></video>
+                      <video src="assets/wjdgmldnjs_bcombo-all.dfdee08a.mp4" controls="" autoplay="" loop="" playsinline=""></video>
                     <span class="lightbox-close" aria-hidden="true">✕</span>
           <span class="lightbox-cap">전투 콤보 — 전체 콤보 흐름 (인게임 캡처)</span>        </span>
       </a>
           <a class="lightbox" id="lb-art-10" href="#art">
         <span class="lightbox-inner">
-                      <video src="assets/A_Mn_JeongHuiwon_F_Battle_Action_Command_Dodge_B.cdbd2cfc.mp4" controls autoplay loop playsinline></video>
+                      <video src="assets/A_Mn_JeongHuiwon_F_Battle_Action_Command_Dodge_B.cdbd2cfc.mp4" controls="" autoplay="" loop="" playsinline=""></video>
                     <span class="lightbox-close" aria-hidden="true">✕</span>
           <span class="lightbox-cap">정희원 — 전투 회피 액션 (Dodge B)</span>        </span>
       </a>
           <a class="lightbox" id="lb-art-11" href="#art">
         <span class="lightbox-inner">
-                      <video src="assets/A_Mn_KimDokja_M_Neutral_Interaction_FieldObj_RandomItemBox_Open-Normal_3.bc736bc3.mp4" controls autoplay loop playsinline></video>
+                      <video src="assets/A_Mn_KimDokja_M_Neutral_Interaction_FieldObj_RandomItemBox_Open-Normal_3.bc736bc3.mp4" controls="" autoplay="" loop="" playsinline=""></video>
                     <span class="lightbox-close" aria-hidden="true">✕</span>
           <span class="lightbox-cap">김독자 — 랜덤 아이템 박스 오픈 인터랙션</span>        </span>
       </a>
           <a class="lightbox" id="lb-art-12" href="#art">
         <span class="lightbox-inner">
-                      <video src="assets/orvv-7800-play.a436aa40.mp4" controls autoplay loop playsinline></video>
+                      <video src="assets/orvv-7800-play.a436aa40.mp4" controls="" autoplay="" loop="" playsinline=""></video>
                     <span class="lightbox-close" aria-hidden="true">✕</span>
           <span class="lightbox-cap">인게임 플레이 캡처 (ORVV-7800)</span>        </span>
       </a>
       </div>
 </section>
 
-<section id="notes" data-node="sections.4">
+<section id="notes" data-node="sections.4" class="">
   <div class="wrap">
-    <div class="sec-head"><span class="sec-num">05</span><h2 data-edit="sections.4.title">비고</h2></div>
-    <div class="prose" data-edit="sections.4.body"><p>본 보고서는 샘플 데이터입니다.</p></div>
+    <div class="sec-head"><span class="sec-num">05</span><h2 data-edit="sections.4.title" class="">비고</h2></div>
+    <div class="prose" data-edit="sections.4.body"><p>본 보고서는 베타 마일스톤 착수 후 첫 제작 보고로, 이전 분기 대비 비교 없이 각 작업의 목표·기대 가치와 현재 상태를 전달하는 데 중점을 둡니다.</p><p>분야별 진행률은 초안 추정치이며, 세부 수치는 ProjectORV 월간 리포트(2026/06/25)를 기준으로 합니다.</p></div>
   </div>
 </section>
 </main>
 <section class="secfoot">
   <div class="wrap secfoot-grid">
-    <div class="secstamp"><span data-edit="security.stamp">CONFIDENTIAL</span></div>    <p class="secnotice" data-edit="security.notice">본 자료는 <strong>(주)오프비트</strong>의 기밀 정보입니다. 본 자료의 열람 권한은 지정된 수신인에게만 부여되며, 무단 복제·캡쳐·촬영·저장·전송 및 제3자 공유를 엄격히 금지합니다. 모든 접속 기록 및 열람 이력은 보안 목적으로 기록되며, 무단 유출 시 민·형사상 책임 및 손해배상의 대상이 될 수 있습니다.</p>        <div class="access">
+    <div class="secstamp"><span data-edit="security.stamp" class="">CONFIDENTIAL</span></div>    <p class="secnotice" data-edit="security.notice">본 자료는 <strong>(주)오프비트</strong>의 기밀 정보입니다. 본 자료의 열람 권한은 지정된 수신인에게만 부여되며, 무단 복제·캡쳐·촬영·저장·전송 및 제3자 공유를 엄격히 금지합니다. 모든 접속 기록 및 열람 이력은 보안 목적으로 기록되며, 무단 유출 시 민·형사상 책임 및 손해배상의 대상이 될 수 있습니다.</p>        <div class="access">
       <div class="access-head"><span class="access-dot" aria-hidden="true"></span>접속 정보 안내</div>
-      <p class="access-line">접속 IP <b data-acc="ip">조회 중…</b> · 지역 <b data-acc="region">—</b> · 접속 일시 <b data-acc="time">—</b></p>
+      <p class="access-line">접속 IP <b data-acc="ip">220.85.160.17</b> · 지역 <b data-acc="region">수도권</b> · 접속 일시 <b data-acc="time">2026-06-29  12:29</b></p>
       <p class="access-note" data-edit="security.accessNote">본 페이지의 접근 일시·IP·지역 정보는 보안 목적으로 안전하게 기록·보관됩니다.</p>    </div>
       </div>
 </section>
@@ -602,7 +620,7 @@ footer{border-top:1px solid var(--line);padding:40px 0;color:var(--dim);font-siz
   <p class="foot-copy">© (주)오프비트. All rights reserved. · 산출물 이미지·클립은 개발 중 빌드 기준이며 최종 품질과 다를 수 있습니다.</p>
 </div></footer>
 
-<script id="report-src" type="application/json">{"meta":{"game":"전지적 독자시점","milestone":"PROJECT-ORV","quarter":"2026.06ㆍBETA 1-1","title":"전지적 독자시점","tagline":" ","theme":"orv"},"security":{"banner":"⚠ CONFIDENTIAL — **com2us 내부 공유용** · 외부 공개 금지 · 무단 반출·캡쳐 금지","stamp":"CONFIDENTIAL","notice":"본 자료는 **(주)오프비트**의 기밀 정보입니다. 본 자료의 열람 권한은 지정된 수신인에게만 부여되며, 무단 복제·캡쳐·촬영·저장·전송 및 제3자 공유를 엄격히 금지합니다. 모든 접속 기록 및 열람 이력은 보안 목적으로 기록되며, 무단 유출 시 민·형사상 책임 및 손해배상의 대상이 될 수 있습니다.","accessLog":true,"accessNote":"본 페이지의 접근 일시·IP·지역 정보는 보안 목적으로 안전하게 기록·보관됩니다."},"edit":{"saveEndpoint":"https://orv-report-save.offbeat-696.workers.dev"},"statusbar":[{"k":"MILESTONES","v":"베타"},{"k":"PERIOD","v":"2026. 06"},{"k":"SPRINT","v":"B1-1"}],"sections":[{"type":"roadmap","id":"roadmap","num":"01","title":"개발 로드맵","subtitle":"베타는 알파 빌드에서 구현된 주요 시스템을 실제 제작 및 재활용이 가능한 구조로 정리하고,금호역 이후 충무로역 공필두 전투까지의 플레이 구간을 확장하는 마일스톤 입니다.\n\n핵심은 단순 기능 추가가 아니라, **전지적 독자 시점 세계관 안에 들어온 듯한 현장감과 체감**을 플레이로 증명하는 것 입니다.","phases":[{"label":"프로토타입","period":"24.12","done":true},{"label":"알파","period":"26.05-07","done":true},{"label":"베타","period":"27.12-31","current":true},{"label":"소프트런칭","period":"28.06-30","current":false},{"label":"글로벌런칭","period":"28.10-31"}]},{"type":"summary","id":"summary","num":"02","title":"이번 달 요약","subtitle":"3개월 간 총 16개의 EPIC으로 진행 중이며, 26.6월 말 기준 **종합 진행률 28.7%**.\n분야별 진행 현황은 아래와 같습니다.","items":[{"label":"캐릭터","sub":"정희원 B1 완료 · 김독자 진행 중","percent":63},{"label":"시스템","sub":"퀘스트·세이브로드·요리·랜덤박스 등 6종","percent":33},{"label":"몬스터","sub":"그롤 · 스펙터","percent":21},{"label":"플레이","sub":"천인호 각성 · 장충단 · 환영감옥","percent":8},{"label":"컷씬","sub":"천인호 처치 · 금호역 · 심판의 시간","percent":3}],"note":"분야별 수치는 해당 분야 에픽들의 단순 평균(초안)이며, 마일스톤 종합 진행률(28.7%)·에픽별 세부는 ProjectORV 월간 리포트(2026/06/25) 기준입니다."},{"type":"cards","id":"milestones","num":"03","title":"에픽별 작업 현황","subtitle":"2026-06-25 기준 16개 에픽 진행률(높은 순) · 종합 28.7% ▼8.0%P","cards":[{"badge":"캐릭터","badgeVariant":"orange","variant":"dark","title":"정희원 B1 스펙 (기본 콤보)","body":"- 전 분야 완료\n- 마감 단계 도달\n- 후속 디테일·연계 작업 이전 가능","percent":100},{"badge":"시스템","badgeVariant":"orange","title":"퀘스트 제작 방식 개선","body":"- 프로그램 구현 대부분 완료\n- 기획서 미완\n- 기획 확정·대기 작업 재개 필요","percent":78},{"badge":"시스템","title":"세이브·로드 시스템 구현","body":"- 기획서·UI 완료\n- 세이브/로드 UI 구현 중\n- 코어 기능·기획 검수 예정","percent":40},{"badge":"시스템","title":"요리 시스템 구현","body":"- 기획 완료\n- 프로그램 코어·UI 구현 중\n- 화로/냄비 추가 원화·모델링 착수 필요","percent":38},{"badge":"몬스터","title":"그롤","body":"- 아트 선행 진행 중\n- 프로그램은 애니 모션 완료 대기(정상 흐름)","percent":36},{"badge":"시스템","title":"랜덤 아이템 박스 구현","body":"- 프로그램·아트 검수 요청 적체\n- 검수 병목 우려\n- 통과 시 완료율 상승","percent":32},{"badge":"캐릭터","title":"김독자","body":"- 기획 선행 미완 상태에서 아트 진행\n- 후속 분야 착수 리스크","percent":25},{"badge":"플레이","title":"천인호 전투 — 정희원 각성","body":"- 전투 합 모션·영상 등 연출 물량 집중\n- 일정 리스크 존재","percent":19},{"badge":"시스템","title":"도깨비방 구현","body":"- 기획 선행 진행 중\n- 프로그램·아트는 기획 완료 후 착수 예정","percent":5},{"badge":"컷씬","title":"천인호 처치","body":"- 프리비즈 단계 진행 중인 초기 단계","percent":5},{"badge":"컷씬","title":"천인호에 의해 금호역 전투 개시","body":"- 프리비즈 단계 진행 중인 초기 단계","percent":5},{"badge":"몬스터","title":"스펙터","body":"- 기획서 검수·아트 모델링 진행 중\n- 검수 완료 후 후속 공정","percent":5},{"badge":"플레이","title":"동대입구역 장충단 공원","body":"- 기획 검수·배경원화·이펙트 진행 중\n- 검수 통과 후 프로그램 착수","percent":5},{"badge":"시스템","title":"멸살법 시스템 개편","body":"- 기획 검수 대기\n- 프로그램 코어·UI 진행 중","percent":5},{"badge":"컷씬","badgeVariant":"dark","title":"정희원 각성과 심판의 시간 발동","body":"- 프리비즈 대기\n- 미착수\n- 아트 선행 공정 착수 필요","percent":0},{"badge":"플레이","badgeVariant":"dark","title":"스펙터 전투 — 환영감옥","body":"- 기획서 작성 대기\n- 신규 에픽\n- 기획 선행 필요","percent":0}]},{"type":"gallery","id":"art","num":"04","title":"아트 & 인게임 미디어","subtitle":"원화·컨셉 및 인게임 액션 캡처 (썸네일 클릭 시 확대, GIF는 재생)","cards":[{"img":"assets/magic-furnace-grades.5b1121c9.png","caption":"마력화로 등급별(C~SSS) 원화 — 등급 상승 시 장식 강화, 점화 시 마력 화염 색 변화(청염 → SSS 자염)"},{"img":"assets/yousangah-cat-suit.a05af018.jpg","caption":"유상아 — 부유고양이 슈트 (코스튬 컨셉)"},{"img":"assets/image_JeongHuiwon_MikazukiRep.1f2f4f4c.png","caption":"정희원 — 미카즈키 무기 표현"},{"img":"assets/item-box-compare.5b2078ee.png","caption":"아이템 박스 — 한정판 / 일반 비교"},{"img":"assets/image-20260611-052845.4a807613.png","caption":"인게임 스크린샷 (2026.06.11)"},{"img":"assets/gwangsin-gatekeeper.f82d79e4.png","caption":"광신의 수문장 — 원화/컨셉"},{"img":"assets/kimdokja-face-sheet.23642551.jpg","caption":"김독자 — 얼굴 퀄리티업 시트"},{"caption":"전투 콤보 — B 콤보 #1 (인게임 캡처)","video":"assets/wjdgmldnjs_bcombo-1.02ec58cd.mp4"},{"caption":"전투 콤보 — B 콤보 #2 (인게임 캡처)","video":"assets/wjdgmldnjs_bcombo-2.85a11340.mp4"},{"caption":"전투 콤보 — 전체 콤보 흐름 (인게임 캡처)","video":"assets/wjdgmldnjs_bcombo-all.dfdee08a.mp4"},{"caption":"정희원 — 전투 회피 액션 (Dodge B)","video":"assets/A_Mn_JeongHuiwon_F_Battle_Action_Command_Dodge_B.cdbd2cfc.mp4"},{"caption":"김독자 — 랜덤 아이템 박스 오픈 인터랙션","video":"assets/A_Mn_KimDokja_M_Neutral_Interaction_FieldObj_RandomItemBox_Open-Normal_3.bc736bc3.mp4"},{"caption":"인게임 플레이 캡처 (ORVV-7800)","video":"assets/orvv-7800-play.a436aa40.mp4"}]},{"type":"text","id":"notes","num":"05","title":"비고","body":"본 보고서는 샘플 데이터입니다."}]}</script>
+<script id="report-src" type="application/json">{"meta":{"game":"전지적 독자시점","milestone":"PROJECT-ORV","quarter":"2026.06ㆍBETA 1-1","title":"전지적 독자시점","tagline":" ","theme":"orv"},"security":{"banner":"⚠ CONFIDENTIAL — **com2us 내부 공유용** · 외부 공개 금지 · 무단 반출·캡쳐 금지","stamp":"CONFIDENTIAL","notice":"본 자료는 **(주)오프비트**의 기밀 정보입니다. 본 자료의 열람 권한은 지정된 수신인에게만 부여되며, 무단 복제·캡쳐·촬영·저장·전송 및 제3자 공유를 엄격히 금지합니다. 모든 접속 기록 및 열람 이력은 보안 목적으로 기록되며, 무단 유출 시 민·형사상 책임 및 손해배상의 대상이 될 수 있습니다.","accessLog":true,"accessNote":"본 페이지의 접근 일시·IP·지역 정보는 보안 목적으로 안전하게 기록·보관됩니다."},"edit":{"saveEndpoint":"https://orv-report-save.offbeat-696.workers.dev"},"statusbar":[{"k":"MILESTONES","v":"베타"},{"k":"PERIOD","v":"2026. 06"},{"k":"SPRINT","v":"B1-1"}],"sections":[{"type":"roadmap","id":"roadmap","num":"01","title":"개발 로드맵","subtitle":"베타는 알파 빌드에서 구현된 주요 시스템을 실제 제작 및 재활용이 가능한 구조로 정리하고, 금호역 이후 충무로역 공필두 전투까지의 플레이 구간을 확장하는 마일스톤 입니다.\n\n핵심은 단순 기능 추가가 아니라, **전지적 독자 시점 세계관 안에 들어온 듯한 현장감과 체감**을 플레이로 증명하는 것 입니다.","phases":[{"label":"프로토타입","period":"24.12","done":true},{"label":"알파","period":"26.05-07","done":true},{"label":"베타","period":"27.12-31","current":true},{"label":"소프트런칭","period":"28.06-30","current":false},{"label":"글로벌런칭","period":"28.10-31"}]},{"type":"summary","id":"summary","num":"02","title":"마일스톤 목표와 현재 상태","subtitle":"B1은 **알파 빌드의 시스템을 확장 가능한 구조로 정리**하고, **신규 시스템·플레이어블 캐릭터·핵심 시나리오 플레이**를 더해 전독시 세계관의 체감을 확장하는 마일스톤입니다. 작업별 목표와 착수 후 현재 진행률은 아래와 같습니다.\n현재 종합 진행률 **28.7%**.","items":[{"label":"시스템 구조화 및 리뉴얼","sub":"알파에서 개별 구현한 기능을 콘텐츠 확장이 가능한 구조로 재정리·개편합니다.\n- 세이브·로드 / 로딩 시스템 개편\n- 퀘스트 / 다이얼로그 시스템 개편\n- 멸살법 시스템 개편","percent":41},{"label":"신규 시스템","sub":"이번 마일스톤에 새로 추가되는 시스템입니다.\n- 요리 (재료 조리·버프)\n- 랜덤 아이템 박스 (언박싱 연출)\n- 도깨비방","percent":25},{"label":"전투 및 플레이 퀄리티 향상","sub":"기존 플레이어블 캐릭터의 조작감을 끌어올립니다.\n- 김독자 로코모션 강화\n- 턴 · 계단 오르기 · 볼터블 액션","percent":25},{"label":"플레이어블 캐릭터 확장","sub":"동료 플레이어블 캐릭터의 기본 액션셋을 구현합니다.\n- 정희원 — 기본 액션셋 완료\n- 유상아 — 후속 진행 예정","percent":50},{"label":"핵심 시나리오 플레이 구현","sub":"금호역 천인호 전투 이후 ~ 충무로역 공필두 전투까지의 핵심 플레이를 구현합니다.\n- 정희원 각성 · 천인호 전투\n- 장충단 공원 · 약수–동대입구 구간\n- 스펙터 전투 (환영감옥)","percent":9}],"note":"**B1의 가장 중요한 목표는 '내가 전독시 세계관 안에 들어와 있다'는 체감**입니다. 특히 *정희원 각성·천인호 전투*와 *스펙터 전투(환영감옥 기믹)*를 최우선 퀄리티 장면으로 끌어올립니다.\n\n분야별 수치는 해당 방향에 속한 에픽들의 단순 평균(초안)이며, 종합 진행률(28.7%)·에픽별 세부는 ProjectORV 월간 리포트(2026/06/25) 기준입니다."},{"type":"cards","id":"milestones","num":"03","title":"에픽별 목표와 현재 상태","subtitle":"2026-06-25 기준 주요 EPIC을 핵심 방향별로 묶어 정리(방향 내 진행률 높은 순) · 각 항목의 목표와 현재 상태 · 종합 28.7%","cards":[{"group":"시스템 구조화 및 리뉴얼","badge":"시스템","badgeVariant":"sys","title":"퀘스트 제작 방식 개선","body":"알파의 퀘스트 기능을, 앞으로 시나리오 콘텐츠를 빠르고 일관되게 찍어낼 수 있는 제작 파이프라인으로 재정리합니다. 이후 플레이 구간 생산 속도를 좌우합니다.\n\n- 프로그램 구현 대부분 완료\n- 기획 확정과 함께 잔여 작업 마무리 예정","percent":78},{"group":"시스템 구조화 및 리뉴얼","badge":"시스템","badgeVariant":"sys","title":"세이브·로드 시스템 구현","body":"알파의 세이브/로드를, 길어진 베타 플레이 구간에서도 안정적으로 동작하도록 개편합니다. 진행을 저장하고 이어서 플레이하는 기본기이자 구간 확장의 전제입니다.\n\n- 기획서·UI 완료\n- 세이브/로드 UI 구현 중\n- 코어 기능 구현·검수 진행 예정","percent":40},{"group":"시스템 구조화 및 리뉴얼","badge":"시스템","badgeVariant":"sys","title":"멸살법 시스템 개편","body":"캐릭터 성장·스킬의 근간인 멸살법을, 이후 콘텐츠 확장이 가능한 구조로 개편합니다. 전투 빌드의 다양성을 좌우합니다.\n\n- 프로그램 코어·UI 진행 중\n- 기획 검수 진행 예정","percent":5},{"group":"신규 시스템","badge":"시스템","badgeVariant":"sys","title":"요리 시스템 구현","body":"이번 마일스톤에 새로 추가되는 성장 루프. 거점에서 재료로 버프 음식을 조리해 전투 준비의 깊이와 반복 플레이 동기를 더합니다.\n\n- 기획 완료\n- 프로그램 코어·UI 구현 중\n- 화로·냄비 등 추가 아트 순차 진행","percent":38},{"group":"신규 시스템","badge":"시스템","badgeVariant":"sys","title":"랜덤 아이템 박스 구현","body":"신규 보상 시스템. 전리품 언박싱의 쾌감을 연출해 반복 플레이의 동기를 강화합니다.\n\n- 프로그램·아트 구현 후 검수 진행 중\n- 검수 완료 시 완료율 상승","percent":32},{"group":"신규 시스템","badge":"시스템","badgeVariant":"sys","title":"도깨비방 구현","body":"신규 거점 기능. 도깨비와 상호작용해 시나리오·보상으로 이어지는 관문 역할을 합니다.\n\n- 기획 선행 진행 중\n- 기획 확정 후 프로그램·아트 착수 예정","percent":5},{"group":"플레이어블 캐릭터 확장 및 강화","badge":"캐릭터","badgeVariant":"char","variant":"dark","title":"정희원 B1 스펙 (기본 콤보)","body":"동료 플레이어블 캐릭터 확장의 첫 결과물. 플레이어가 새로 조작하게 되는 캐릭터로, 기본 콤보의 타격감으로 '직접 싸운다'는 체감을 처음 증명하는 기준점입니다.\n\n- 전 분야 완료, 마감 단계 도달\n- 후속 디테일·연계 작업 이전 가능","percent":100},{"group":"플레이어블 캐릭터 확장 및 강화","badge":"캐릭터","badgeVariant":"char","title":"김독자","body":"이미 플레이 가능한 주인공 김독자의 완성도를 끌어올립니다. 로코모션(턴·계단 오르기·볼터블 등)과 비주얼을 다듬어 기본 조작·연출의 퀄리티를 높입니다.\n\n- 얼굴 퀄리티업 등 아트 진행 중\n- 기획 확정과 함께 후속 분야 순차 착수","percent":25},{"group":"플레이어블 캐릭터 확장 및 강화","badge":"캐릭터","badgeVariant":"char","title":"유상아","body":"동료 플레이어블 캐릭터 확장의 후속. 정희원에 이어 플레이어가 조작할 캐릭터로, 파티 운용과 전투의 폭을 넓힙니다.\n\n- 코스튬 컨셉(부유고양이 슈트) 등 선행 검토\n- 기본 액션셋 후속 진행 예정","percent":0},{"group":"핵심 시나리오 플레이 구현","badge":"몬스터","badgeVariant":"mon","title":"그롤","body":"핵심 시나리오 구간을 채우는 적 몬스터. 플레이어가 처음 맞붙는 위협의 비주얼·모션으로 전투의 현장감을 만듭니다.\n\n- 아트 선행 진행 중\n- 애니 모션 완료 후 프로그램 진행(정상 공정)","percent":36},{"group":"핵심 시나리오 플레이 구현","badge":"플레이","badgeVariant":"play","title":"천인호 전투 — 정희원 각성","body":"B1 최우선 퀄리티 장면. 처절한 정희원의 각성과 세계관 속 화신들의 모습을 플레이로 구현해 '전독시 세계관 안에 들어와 있다'는 체감을 증명합니다.\n\n- 전투 합 모션·영상 등 연출 물량 집중\n- 핵심 장면인 만큼 퀄리티 우선 진행","percent":19},{"group":"핵심 시나리오 플레이 구현","badge":"컷씬","badgeVariant":"cut","title":"천인호 처치","body":"천인호 전투의 결착을 그리는 컷씬. 원작 명장면을 연출로 재현해 스토리 몰입의 분기점을 만듭니다.\n\n- 프리비즈 단계 진행 중","percent":5},{"group":"핵심 시나리오 플레이 구현","badge":"컷씬","badgeVariant":"cut","title":"천인호에 의해 금호역 전투 개시","body":"핵심 시나리오의 도입 컷씬. 천인호로 인해 전투 구간으로 진입하는 맥락과 긴장감을 부여합니다.\n\n- 프리비즈 단계 진행 중","percent":5},{"group":"핵심 시나리오 플레이 구현","badge":"몬스터","badgeVariant":"mon","title":"스펙터","body":"환영감옥 구간을 채울 적 몬스터. 후속 핵심 시나리오 구간의 전투 밀도를 만듭니다.\n\n- 기획·아트 모델링 진행 중\n- 검수 후 후속 공정 진행","percent":5},{"group":"핵심 시나리오 플레이 구현","badge":"플레이","badgeVariant":"play","title":"동대입구역 장충단 공원","body":"약수–동대입구 구간으로 이어지는 탐험/퍼즐 무대(사명대사 동상 퍼즐). 세계관의 현장감을 넓히는 공간입니다.\n\n- 기획·배경원화·이펙트 진행 중\n- 검수 후 프로그램 착수 예정","percent":5},{"group":"핵심 시나리오 플레이 구현","badge":"컷씬","badgeVariant":"cut","title":"정희원 각성과 심판의 시간 발동","body":"정희원 서사의 정점을 담는 컷씬. 각성과 '심판의 시간' 발동으로 캐릭터 임팩트를 극대화합니다.\n\n- 아트 선행 프리비즈 준비\n- 후속 공정 순차 진행 예정","percent":0},{"group":"핵심 시나리오 플레이 구현","badge":"플레이","badgeVariant":"play","title":"스펙터 전투 — 환영감옥","body":"B1 최우선 퀄리티 장면. 스펙터 전투를 환각 미로형 레벨로 구현하고, 캐릭터별 트라우마 장면을 표현합니다.\n\n- 신규 에픽 — 기획 선행 진행 예정\n- 기획 확정 후 본격 제작 착수","percent":0}]},{"type":"gallery","id":"art","num":"04","title":"아트 & 인게임 미디어","subtitle":"원화·컨셉 및 인게임 액션 캡처 (썸네일 클릭 시 확대, GIF는 재생)","cards":[{"img":"assets/magic-furnace-grades.5b1121c9.png","caption":"마력화로 등급별(C~SSS) 원화 — 등급 상승 시 장식 강화, 점화 시 마력 화염 색 변화(청염 → SSS 자염)"},{"img":"assets/yousangah-cat-suit.a05af018.jpg","caption":"유상아 — 부유고양이 슈트 (코스튬 컨셉)"},{"img":"assets/image_JeongHuiwon_MikazukiRep.1f2f4f4c.png","caption":"정희원 — 미카즈키 무기 표현"},{"img":"assets/item-box-compare.5b2078ee.png","caption":"아이템 박스 — 한정판 / 일반 비교"},{"img":"assets/image-20260611-052845.4a807613.png","caption":"인게임 스크린샷 (2026.06.11)"},{"img":"assets/gwangsin-gatekeeper.f82d79e4.png","caption":"광신의 수문장 — 원화/컨셉"},{"img":"assets/kimdokja-face-sheet.23642551.jpg","caption":"김독자 — 얼굴 퀄리티업 시트"},{"caption":"전투 콤보 — B 콤보 #1 (인게임 캡처)","video":"assets/wjdgmldnjs_bcombo-1.02ec58cd.mp4"},{"caption":"전투 콤보 — B 콤보 #2 (인게임 캡처)","video":"assets/wjdgmldnjs_bcombo-2.85a11340.mp4"},{"caption":"전투 콤보 — 전체 콤보 흐름 (인게임 캡처)","video":"assets/wjdgmldnjs_bcombo-all.dfdee08a.mp4"},{"caption":"정희원 — 전투 회피 액션 (Dodge B)","video":"assets/A_Mn_JeongHuiwon_F_Battle_Action_Command_Dodge_B.cdbd2cfc.mp4"},{"caption":"김독자 — 랜덤 아이템 박스 오픈 인터랙션","video":"assets/A_Mn_KimDokja_M_Neutral_Interaction_FieldObj_RandomItemBox_Open-Normal_3.bc736bc3.mp4"},{"caption":"인게임 플레이 캡처 (ORVV-7800)","video":"assets/orvv-7800-play.a436aa40.mp4"}]},{"type":"text","id":"notes","num":"05","title":"비고","body":"본 보고서는 베타 마일스톤 착수 후 첫 제작 보고로, 이전 분기 대비 비교 없이 각 작업의 목표·기대 가치와 현재 상태를 전달하는 데 중점을 둡니다.\n\n분야별 진행률은 초안 추정치이며, 세부 수치는 ProjectORV 월간 리포트(2026/06/25)를 기준으로 합니다."}]}</script>
 <script>window.__ORV_SAVE__ = "https://orv-report-save.offbeat-696.workers.dev";</script>
 <script>
 /* 라이트박스 닫기 — :target 기반 팝업을 JS로 닫는다.
@@ -831,5 +849,6 @@ footer{border-top:1px solid var(--line);padding:40px 0;color:var(--dim);font-siz
   });
 })();
 </script>
-</body>
-</html>
+
+
+<deepl-input-controller translate="no"></deepl-input-controller></body><chatgpt-sidebar data-rendered="true" data-gpts-theme="light"></chatgpt-sidebar></html>
