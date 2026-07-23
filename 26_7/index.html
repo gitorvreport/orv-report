@@ -132,7 +132,7 @@ strong{color:var(--strong,var(--amber))}
 .cgroup-first{margin-top:6px}
 .cards{display:flex;flex-wrap:wrap;justify-content:center;gap:18px}
 /* 카드 분류 서브헤더: 그룹 컨테이너 폭만큼 밑줄을 깔아 그룹을 구분 */
-.cards-group-head{margin:0 0 12px;padding-bottom:9px;border-bottom:1px solid var(--line);font-size:14.5px;font-weight:800;letter-spacing:.01em;color:var(--gold2)}
+.cards-group-head{margin:0 0 12px;padding-bottom:9px;border-bottom:1px solid var(--line);font-size:18px;font-weight:800;letter-spacing:.01em;color:var(--gold2)}
 /* 카드 폭 = (그룹 전체 폭 − 간격) ÷ 열 수. grow:0이라 채운 행은 꽉 차고, 마지막 부분 행은 같은 폭으로 가운데 정렬.
    모바일 등 좁은 폭에선 max()의 280px 하한이 적용돼 열 수가 자동으로 줄어듦(반응형). */
 .ucard{flex:0 1 max(280px, calc((100% - (var(--cap-cols,3) - 1) * 18px) / var(--cap-cols,3)));display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px 22px 24px}
