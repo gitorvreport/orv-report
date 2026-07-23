@@ -923,10 +923,14 @@ function fmtBlock(s) {
     var lb;
     try { lb = document.querySelector(location.hash + ".lightbox"); } catch (e) { lb = null; }
     if (!lb) return;
-    // 닫기 = 매칭되는 요소가 없는 fragment로 이동해 :target만 해제한다.
-    //   섹션 앵커(#art)로 보내면 §04 헤더로 점프해 모바일에서 보던 위치를 잃으므로, 배경 스크롤은 그대로 둔다.
+    // 닫기 = 매칭되는 요소가 없는 fragment로 이동해 :target만 해제한다(스크롤 점프 없음).
     //   (네이티브 location.hash 변경이라야 Firefox/Safari에서도 :target이 재평가됨)
     location.hash = "lb-closed";
+    // 닫힌 뒤 주소창의 #lb-closed 흔적은 지운다 — replaceState는 :target을 재평가하지 않으므로
+    //   이미 닫힌 라이트박스가 다시 열리지 않고, 스크롤 위치도 유지된다.
+    if (window.history && history.replaceState) {
+      try { history.replaceState(null, "", location.pathname + location.search); } catch (e) {}
+    }
   }
   document.addEventListener("keydown", function (e) {
     if (e.key === "Escape" || e.key === "Esc") closeLightbox();
