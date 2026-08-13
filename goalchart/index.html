@@ -59,6 +59,8 @@
   @media(max-width:720px){.stats{grid-template-columns:repeat(2,1fr);}}
 
   /* Legend */
+  .sync-note{min-height:16px; margin:8px 2px 0; font-size:12px; color:var(--muted);}
+  .sync-note.bad{color:var(--risk);}
   .legend{display:flex; flex-wrap:wrap; gap:14px 18px; align-items:center; margin:2px 2px 14px; font-size:12.5px; color:var(--ink-2);}
   .lg{display:inline-flex; align-items:center; gap:7px;}
   .sw{width:16px; height:12px; border-radius:3px; display:inline-block;}
@@ -219,6 +221,9 @@
   </div>
 
   <div class="stats" id="stats"></div>
+  
+  <div class="sync-note" id="syncNote"></div>
+  
 
   <div class="legend">
     <span class="lg"><span class="sw done"></span>완료</span>
@@ -280,6 +285,7 @@ let state = {
     "end": "2026-08-31"
   },
   "jiraBase": "https://offbeatplay.atlassian.net/browse/",
+  "syncEndpoint": "https://orv-goalchart-jira.offbeat-696.workers.dev",
   "tasks": [
     {
       "id": 1,
@@ -2462,6 +2468,60 @@ function stat(k,v,s,pct,kind){
          '<div class="more">목록 보기 →</div></div>';
 }
 
+/* ---------- Jira 최신값 받아오기 (뷰어 전용) ---------- */
+
+// 페이지를 열 때마다 중계 Worker 에서 최신값을 받아 덮어쓴다.
+// 실패하면 인라인 데이터 그대로 보여준다 — 차트가 안 뜨는 것보다 조금 낡은 게 낫다.
+// Jira 가 갖지 않는 것(의존관계·표시 순서·표시 창·마감)은 건드리지 않는다.
+function applyJiraIssues(tasks, issues, today){
+  const by={}; issues.forEach(function(x){ by[x.key]=x; });
+  let n=0;
+  tasks.forEach(function(t){
+    const j=by[t.jira]; if(!j) return;
+    n++;
+    if(j.name) t.name=j.name;
+    let start=j.start, end=j.end, miss="";
+    // 날짜가 비면 오늘에 붙이고 사유를 담당자 칸에 덧붙인다 (data 생성 규칙과 같다).
+    if(!start && !end){ start=end=today; miss="일정 미정"; }
+    else if(!start){ start=end; miss="시작일 미정"; }
+    else if(!end){ end=start; miss="마감 미정"; }
+    if(end<start){ const x=start; start=end; end=x; }
+    t.start=start; t.end=end;
+    t.owner=[(j.owner||""), miss].filter(Boolean).join(" · ");
+    // 기한 초과 판정은 '지금' 기준으로 다시 한다 — 인라인 값은 빌드 시점에 굳은 것이다.
+    t.status=(j.status!=="done" && t.end<today) ? "risk" : j.status;
+    if(j.epicKey)  t.epic.key=j.epicKey;
+    if(j.epicName) t.epic.name=j.epicName;
+  });
+  return n;
+}
+
+function showSyncNote(text, bad){
+  const el=document.getElementById("syncNote");
+  if(!el) return;
+  el.textContent=text;
+  el.className="sync-note"+(bad?" bad":"");
+}
+
+async function syncFromJira(){
+  const url=state.syncEndpoint;
+  if(!url){ showSyncNote(""); return; }
+  showSyncNote("Jira 최신값 확인 중…");
+  try{
+    const res=await fetch(url, {cache:"no-store"});
+    if(!res.ok) throw new Error("HTTP "+res.status);
+    const body=await res.json();
+    if(!body || !Array.isArray(body.issues)) throw new Error("응답 형식이 다릅니다");
+    const n=applyJiraIssues(state.tasks, body.issues, iso(todayMid()));
+    render();
+    const t=new Date();
+    showSyncNote("Jira 최신 · "+t.getHours()+":"+String(t.getMinutes()).padStart(2,"0")+" 기준 "+n+"건 반영");
+  }catch(e){
+    showSyncNote("Jira 갱신 실패 — 저장된 데이터를 표시합니다 ("+(e.message||e)+")", true);
+  }
+}
+
+
 /* ---------- 상태 드릴다운 ---------- */
 // 통계 카드 → 해당 상태의 작업 목록. 각 뷰는 그룹 두 개로 나뉘고,
 // 그룹 안의 순서는 state.tasks 배열 순서 그대로다(차트와 같은 순서로 읽히도록).
@@ -2731,6 +2791,9 @@ buildTop();
 applyLabelWidth();
 initResizer();
 render();
+
+syncFromJira();
+
 </script>
 </body>
 </html>
