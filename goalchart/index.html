@@ -120,12 +120,20 @@
   .bar{position:absolute; height:26px; border-radius:7px; z-index:5; display:flex; align-items:center; gap:5px; padding:0 8px; font-size:11.5px; font-weight:600; color:#fff; white-space:nowrap; overflow:hidden; cursor:pointer; box-shadow:0 1px 2px rgba(0,0,0,.12);}
   .bar:hover{filter:brightness(1.05); box-shadow:0 2px 7px rgba(0,0,0,.2);}
   .bar.done{background:var(--done);} .bar.inprog{background:var(--inprog);} .bar.risk{background:var(--risk);}
-  .bar.todo{background:transparent; border:1.5px dashed var(--todo); color:var(--ink-2); box-shadow:none;}
+  /* 투명이면 뒤의 의존 화살표가 막대를 뚫고 비친다. 카드 배경으로 채워 가린다. */
+  .bar.todo{background:var(--surface-1); border:1.5px dashed var(--todo); color:var(--ink-2); box-shadow:none;}
   .bar .ic{font-size:11px; flex:0 0 auto;}
   .bar .pg{margin-left:auto; opacity:.85; font-variant-numeric:tabular-nums; font-weight:700;}
   .bar.blocked{outline:2px solid var(--risk); outline-offset:1px;}
   .bar.clipL{border-top-left-radius:0; border-bottom-left-radius:0;}
   .bar.clipR{border-top-right-radius:0; border-bottom-right-radius:0;}
+  .bnm{overflow:hidden; text-overflow:ellipsis;}
+  /* 전체 표시 모드: 이름을 막대 밖 오른쪽에 둔다. 막대 안에 흘려보내면
+     색 막대의 흰 글자가 밝은 배경으로 삐져나와 안 읽힌다. */
+  .barlbl{position:absolute; height:26px; display:flex; align-items:center; z-index:5;
+    white-space:nowrap; font-size:11.5px; font-weight:600; color:var(--ink); cursor:pointer;
+    padding-left:2px; pointer-events:auto;}
+  .barlbl .lockmark{margin-left:5px;}
   .bar .clip{opacity:.9; font-weight:700; flex:0 0 auto;}
   .edgechip{position:absolute; z-index:5; width:14px; height:26px; border-radius:5px; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:12px; color:#fff; cursor:pointer; opacity:.8; box-shadow:0 1px 2px rgba(0,0,0,.12);}
   .edgechip.done{background:var(--done);} .edgechip.inprog{background:var(--inprog);} .edgechip.risk{background:var(--risk);}
@@ -204,26 +212,7 @@
     <div class="tblview" id="tblview" style="display:none"></div>
   </div>
 
-  <details class="tips">
-    <summary>📋 Weekly Goal 작성 요령 (열기)</summary>
-    <ol>
-      <li><b>목표는 '결과(상태)'로.</b> "작업하기"가 아니라 "~가 완료된 상태"로 씁니다. 예: "보고서 작업" → "본문 3개 섹션 초안 완료".</li>
-      <li><b>마감에서 거꾸로 배치.</b> 최종 마감에 필요한 전체를 먼저 적고, Week 2에는 검수·버퍼, Week 1에는 만들기를 둡니다. 마지막 1~2일은 버퍼로 비워두세요.</li>
-      <li><b>주간 핵심 목표는 3개 이하.</b> 정말 중요한 것만 P1으로. 나머지는 예정으로 두고 시간 남으면.</li>
-      <li><b>측정 가능하게.</b> "많이/대부분" 대신 "3개, 80%, 리뷰 1회 완료"처럼 체크 가능한 기준으로.</li>
-      <li><b>의존관계를 먼저 그린다.</b> 선행 작업이 안 끝나면 후행은 자동으로 '막힘(빨간 점선 화살표)'으로 표시됩니다. 병목부터 처리하세요.</li>
-      <li><b>매일 아침 2분·금요일 회고 10분.</b> 아침엔 오늘 진행중 작업 확인, 금요일엔 달성/미달/다음 주 이월만 빠르게 정리합니다.</li>
-    </ol>
-    <div class="h">이 차트 사용법</div>
-    
-    
-    <ol>
-      <li>작업 막대나 왼쪽 이름을 <b>클릭</b>하면 담당·기간·상태·선행작업 상세를 볼 수 있습니다.</li>
-      <li>빨간 점선 화살표는 선행 작업이 아직 끝나지 않아 <b>막힌</b> 의존관계입니다. 병목부터 확인하세요.</li>
-      <li>Jira 키를 클릭하면 해당 이슈로 바로 이동합니다.</li>
-    </ol>
-    
-  </details>
+  
 
   
   
@@ -502,11 +491,16 @@ function loadUI(){
     const raw = localStorage.getItem(UI_KEY);
     const o = raw ? JSON.parse(raw) : {};
     return { labelW: clampLabelW(o.labelW || LABEL_W_DEFAULT),
-             collapsed: Array.isArray(o.collapsed) ? o.collapsed.slice() : [] };
-  }catch(e){ return { labelW: LABEL_W_DEFAULT, collapsed: [] }; }
+             collapsed: Array.isArray(o.collapsed) ? o.collapsed.slice() : [],
+             barText: o.barText === "full" ? "full" : "clip" };
+  }catch(e){ return { labelW: LABEL_W_DEFAULT, collapsed: [], barText: "clip" }; }
 }
 let ui = loadUI();
 function saveUI(){ try{ localStorage.setItem(UI_KEY, JSON.stringify(ui)); }catch(e){} }
+
+// 막대 글자: "clip" = 막대 안에서 말줄임, "full" = 막대 밖 오른쪽에 전체 표시
+function barTextIsFull(){ return ui.barText === "full"; }
+function toggleBarText(){ ui.barText = barTextIsFull() ? "clip" : "full"; saveUI(); render(); }
 
 function isCollapsed(gkey){ return ui.collapsed.indexOf(gkey) !== -1; }
 function toggleEpicAt(i){
@@ -683,9 +677,20 @@ function render(){
     }
     const left=cs*DAY_W+4, width=Math.max((ce-cs+1)*DAY_W-8,22);
     const pg=(t.status==="inprog"&&t.progress>0)?'<span class="pg">'+t.progress+'%</span>':'';
-    grid+='<div class="bar '+t.status+(blk?' blocked':'')+(clipL?' clipL':'')+(clipR?' clipR':'')+'" style="left:'+left+'px; top:'+top+'px; width:'+width+'px" '+
-          'onclick="openEdit('+t.id+')" title="'+esc(t.name)+' ('+STLABEL[t.status]+') '+mmdd(t.start)+'~'+mmdd(t.end)+'">'+
-          (clipL?'<span class="clip">‹</span>':'')+'<span class="ic">'+STICON[t.status]+'</span><span style="overflow:hidden;text-overflow:ellipsis">'+esc(t.name)+'</span>'+pg+(clipR?'<span class="clip">›</span>':'')+'</div>';
+    const tip='title="'+esc(t.name)+' ('+STLABEL[t.status]+') '+mmdd(t.start)+'~'+mmdd(t.end)+'"';
+    const cls='bar '+t.status+(blk?' blocked':'')+(clipL?' clipL':'')+(clipR?' clipR':'');
+    const inner=(clipL?'<span class="clip">‹</span>':'')+'<span class="ic">'+STICON[t.status]+'</span>';
+    const tail=pg+(clipR?'<span class="clip">›</span>':'');
+    if(barTextIsFull()){
+      // 이름은 막대 밖 오른쪽. 막대 안 흰 글자가 밝은 배경으로 흘러나오면 안 읽힌다.
+      grid+='<div class="'+cls+'" style="left:'+left+'px; top:'+top+'px; width:'+width+'px" onclick="openEdit('+t.id+')" '+tip+'>'+
+            inner+tail+'</div>'+
+            '<div class="barlbl" style="left:'+(left+width+6)+'px; top:'+top+'px" onclick="openEdit('+t.id+')" '+tip+'>'+
+            esc(t.name)+(blk?'<span class="lockmark">🔒</span>':'')+'</div>';
+    }else{
+      grid+='<div class="'+cls+'" style="left:'+left+'px; top:'+top+'px; width:'+width+'px" onclick="openEdit('+t.id+')" '+tip+'>'+
+            inner+'<span class="bnm">'+esc(t.name)+'</span>'+tail+'</div>';
+    }
   });
   grid+='</div>';
   tl.innerHTML=head+grid;
@@ -817,6 +822,7 @@ const TOP_LEFT_VIEW =
   '<div class="dl-field" style="margin-top:6px;"><span id="winTxt"></span></div>';
 const TOP_BTNS_VIEW =
   '<button class="ghost" id="viewBtn" onclick="toggleView()">표로 보기</button>' +
+  '<button class="ghost" id="txtBtn" onclick="toggleBarText()">글자 전체</button>' +
   '<button class="ghost" onclick="exportJSON()">JSON 내보내기</button>' +
   '<button class="ghost" onclick="toggleTheme()" id="thBtn">🌙 다크</button>';
 
@@ -834,6 +840,9 @@ function buildTop(){
 
 // render() 가 매번 부른다.
 function syncTop(){
+  // 모드와 무관한 공통 토글 라벨부터. (아래 편집 분기는 return 하므로 여기가 먼저다)
+  const tb = document.getElementById("txtBtn");
+  if(tb) tb.textContent = barTextIsFull() ? "글자 줄임" : "글자 전체";
   
   document.getElementById("titleTxt").textContent = state.title;
   document.getElementById("deadlineTxt").textContent = state.deadline;
