@@ -61,6 +61,13 @@
   /* Legend */
   .sync-note{min-height:16px; margin:8px 2px 0; font-size:12px; color:var(--muted);}
   .sync-note.bad{color:var(--risk);}
+  
+  /* 값이 확정되기 전의 차트. 레이아웃은 잡아두되 읽히지는 않게 한다 —
+     인라인 값(배포 시점에 굳은 것)을 잠깐이라도 진짜 값으로 읽으면 안 된다. */
+  .card.syncing{opacity:.4; pointer-events:none;}
+  .card{transition:opacity .18s ease;}
+  @media (prefers-reduced-motion: reduce){ .card{transition:none;} }
+  
   .legend{display:flex; flex-wrap:wrap; gap:14px 18px; align-items:center; margin:2px 2px 14px; font-size:12.5px; color:var(--ink-2);}
   .lg{display:inline-flex; align-items:center; gap:7px;}
   .sw{width:16px; height:12px; border-radius:3px; display:inline-block;}
@@ -2503,12 +2510,25 @@ function showSyncNote(text, bad){
   el.className="sync-note"+(bad?" bad":"");
 }
 
+// 값이 확정될 때까지 차트를 흐리게 둔다. 인라인 값은 배포 시점에 굳은 것이라
+// 잠깐이라도 진짜 값으로 읽히면 안 된다 — 레이아웃만 미리 잡아두는 셈이다.
+function setSyncing(on){
+  const card=document.querySelector(".card");
+  if(card) card.classList.toggle("syncing", !!on);
+}
+
+const SYNC_TIMEOUT = 8000;   // Worker 가 느려도 화면이 계속 흐린 채로 남지 않게 한다
+
 async function syncFromJira(){
   const url=state.syncEndpoint;
   if(!url){ showSyncNote(""); return; }
+  setSyncing(true);
   showSyncNote("Jira 최신값 확인 중…");
+  // AbortSignal.timeout 이 없는 브라우저도 있어 컨트롤러를 직접 쓴다.
+  const ac=(typeof AbortController!=="undefined") ? new AbortController() : null;
+  const timer=ac ? setTimeout(function(){ ac.abort(); }, SYNC_TIMEOUT) : null;
   try{
-    const res=await fetch(url, {cache:"no-store"});
+    const res=await fetch(url, ac ? {cache:"no-store", signal:ac.signal} : {cache:"no-store"});
     if(!res.ok) throw new Error("HTTP "+res.status);
     const body=await res.json();
     if(!body || !Array.isArray(body.issues)) throw new Error("응답 형식이 다릅니다");
@@ -2517,7 +2537,11 @@ async function syncFromJira(){
     const t=new Date();
     showSyncNote("Jira 최신 · "+t.getHours()+":"+String(t.getMinutes()).padStart(2,"0")+" 기준 "+n+"건 반영");
   }catch(e){
-    showSyncNote("Jira 갱신 실패 — 저장된 데이터를 표시합니다 ("+(e.message||e)+")", true);
+    const why=(e && e.name==="AbortError") ? "응답이 너무 늦습니다" : (e.message||e);
+    showSyncNote("Jira 갱신 실패 — 저장된 데이터를 표시합니다 ("+why+")", true);
+  }finally{
+    if(timer) clearTimeout(timer);
+    setSyncing(false);   // 실패해도 반드시 걷는다. 흐린 채로 남으면 차트를 볼 수 없다.
   }
 }
 
