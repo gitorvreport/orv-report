@@ -146,11 +146,33 @@
   .milestone{position:absolute; z-index:5; width:20px; height:20px; transform:rotate(45deg); background:var(--risk); border:2px solid var(--surface-1); border-radius:4px; cursor:pointer;}
 
   /* Table view */
-  .tblview{padding:6px 4px;}
+  .tblview{padding:6px 4px; overflow-x:auto;}
   table{width:100%; border-collapse:collapse; font-size:13px;}
   th,td{text-align:left; padding:9px 12px; border-bottom:1px solid var(--grid);}
   th{color:var(--muted); font-weight:600; font-size:12px;}
   td .sdot{display:inline-block; margin-right:6px; vertical-align:middle;}
+
+  /* Drill-down: 통계 카드를 눌러 들어가는 상태별 목록 */
+  .stat.tap{cursor:pointer; user-select:none; transition:border-color .12s, transform .12s;}
+  .stat.tap:hover{border-color:var(--inprog); transform:translateY(-1px);}
+  .stat.tap:focus-visible{outline:2px solid var(--inprog); outline-offset:2px;}
+  .stat .more{margin-top:6px; font-size:11px; color:var(--inprog); font-weight:600;}
+  .drill-head{display:flex; align-items:center; gap:12px; flex-wrap:wrap; padding:4px 8px 14px;}
+  .drill-head h2{margin:0; font-size:16px;}
+  .drill-head .cnt{color:var(--muted); font-size:13px;}
+  .drill-grp{margin:18px 0 6px; padding:0 8px; font-size:13px; font-weight:700;}
+  .drill-grp:first-child{margin-top:0;}
+  .drill-grp .n{color:var(--muted); font-weight:500; margin-left:6px;}
+  td.why{color:var(--ink-2); line-height:1.5; overflow-wrap:anywhere; min-width:340px; max-width:560px;}
+  /* 미완료 선행 한 줄 = 키 · 요약 · 그 선행의 상태. 그리드라 여러 줄에서도 세로로 맞는다. */
+  .why .pv{display:grid; grid-template-columns:auto 1fr auto; gap:3px 12px; align-items:baseline; padding:2px 0;}
+  .why .pk{color:var(--muted); font-size:11.5px; font-weight:600; text-decoration:none; white-space:nowrap;}
+  .why .pk:hover{text-decoration:underline;}
+  .why .pn{color:var(--ink); overflow-wrap:anywhere;}
+  .why .pb{font-size:11.5px; font-weight:700; white-space:nowrap; text-align:right;}
+  .why .pb.done{color:var(--done);} .why .pb.inprog{color:var(--inprog);}
+  .why .pb.risk{color:var(--risk);} .why .pb.todo{color:var(--muted);}
+  .drill-empty{padding:26px 10px; color:var(--muted);}
 
   /* Modal */
   .ov{position:fixed; inset:0; background:rgba(0,0,0,.4); display:none; align-items:center; justify-content:center; z-index:50; padding:16px;}
@@ -205,7 +227,7 @@
     <span class="lg"><span class="sw todo"></span>예정</span>
     <span class="lg"><span class="sw risk"></span>지연위험</span>
     <span class="lg"><svg width="34" height="10"><line x1="0" y1="5" x2="26" y2="5" stroke="var(--dep)" stroke-width="2"/><path d="M26 5 l-6 -3 v6 z" fill="var(--dep)"/></svg>의존</span>
-    <span class="lg"><svg width="34" height="10"><line x1="0" y1="5" x2="26" y2="5" stroke="var(--dep-block)" stroke-width="2" stroke-dasharray="4 3"/><path d="M26 5 l-6 -3 v6 z" fill="var(--dep-block)"/></svg>막힌 의존(blocked)</span>
+    <span class="lg"><svg width="34" height="10"><line x1="0" y1="5" x2="26" y2="5" stroke="var(--dep-block)" stroke-width="2" stroke-dasharray="4 3"/><path d="M26 5 l-6 -3 v6 z" fill="var(--dep-block)"/></svg>선행 미완료 (대기)</span>
   </div>
 
   <div class="card">
@@ -215,6 +237,7 @@
       <div class="tl-scroll"><div class="timeline" id="timeline"></div></div>
     </div>
     <div class="tblview" id="tblview" style="display:none"></div>
+    <div class="tblview" id="drillview" style="display:none"></div>
   </div>
 
   
@@ -2310,7 +2333,7 @@ function epicSummary(g){
   const n=g.tasks.length;
   const d=g.tasks.filter(t=>t.status==="done").length;
   const b=g.tasks.filter(t=>isBlocked(t)).length;
-  return "작업 "+n+" · 완료 "+d+(b?" · 막힘 "+b:"");
+  return "작업 "+n+" · 완료 "+d+(b?" · 대기 "+b:"");
 }
 
 /* ---------- 화면 상태 (데이터가 아니라 보는 사람의 편의) ---------- */
@@ -2411,7 +2434,7 @@ function render(){
       let mv = "";
       
       lh += '<div class="lrow" onclick="openEdit('+t.id+')">'+
-        '<div class="nm"><span class="sdot" style="background:'+STVAR[t.status]+'"></span>'+esc(t.name)+(blk?' <span class="lock">🔒</span>':'')+'</div>'+
+        '<div class="nm"><span class="sdot" style="background:'+STVAR[t.status]+'"></span>'+esc(t.name)+(blk?' <span class="lock" title="선행 작업이 완료되지 않아 대기 중">⏳</span>':'')+'</div>'+
         '<div class="meta">'+jk+esc(t.owner||'')+' · '+mmdd(t.start)+'~'+mmdd(t.end)+oo+'</div>'+mv+'</div>';
     }
   });
@@ -2544,18 +2567,137 @@ function renderStats(f){
   const done=T.filter(t=>t.status==="done").length;
   const prog=Math.round(T.reduce((a,t)=>a+(t.status==="done"?100:(t.progress||0)),0)/Math.max(n,1));
   const dday=diffD(todayMid(),pd(state.deadline));
-  const blocked=T.filter(isBlocked).length;
+  // 카드 숫자는 목록과 같은 기준이어야 한다 — 눌러서 들어갔을 때 건수가 달라지면 안 된다.
+  const blocked=T.filter(isWaiting).length;
   const risk=T.filter(t=>t.status==="risk").length;
   const ddText = dday>0?("D-"+dday):(dday===0?"D-Day":("D+"+(-dday)));
   document.getElementById("stats").innerHTML =
     stat("마감까지", ddText, "마감 "+mmdd(state.deadline)) +
     stat("전체 진척률", prog+"%", done+" / "+n+" 완료", prog) +
-    stat("진행중", T.filter(t=>t.status==="inprog").length+"건", "예정 "+T.filter(t=>t.status==="todo").length+"건") +
-    stat("대기·위험", (blocked+risk)+"건", "🔒 막힘 "+blocked+" · ⚠ 위험 "+risk);
+    stat("진행중", T.filter(t=>t.status==="inprog").length+"건", "예정 "+T.filter(t=>t.status==="todo").length+"건", undefined, "active") +
+    stat("대기·지연위험", (blocked+risk)+"건", "⏳ 대기 "+blocked+" · ⚠ 지연위험 "+risk, undefined, "attention");
 }
-function stat(k,v,s,pct){
+// kind 를 주면 눌러서 목록으로 들어가는 카드가 된다. onclick 은 인자 조립 없이
+// 리터럴 하나만 넣는다 — 문자열을 이어 붙이다 문법이 깨지면 핸들러가 통째로 죽는다.
+function stat(k,v,s,pct,kind){
   const mini = (pct!==undefined) ? '<div class="bar-mini"><i style="width:'+pct+'%"></i></div>' : '';
-  return '<div class="stat"><div class="k">'+k+'</div><div class="v">'+v+'</div><div class="s">'+s+'</div>'+mini+'</div>';
+  if(!kind) return '<div class="stat"><div class="k">'+k+'</div><div class="v">'+v+'</div><div class="s">'+s+'</div>'+mini+'</div>';
+  return '<div class="stat tap" role="button" tabindex="0" onclick="openDrill(\''+kind+'\')"'+
+         ' onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();openDrill(\''+kind+'\');}">'+
+         '<div class="k">'+k+'</div><div class="v">'+v+'</div><div class="s">'+s+'</div>'+mini+
+         '<div class="more">목록 보기 →</div></div>';
+}
+
+/* ---------- 상태 드릴다운 ---------- */
+// 통계 카드 → 해당 상태의 작업 목록. 각 뷰는 그룹 두 개로 나뉘고,
+// 그룹 안의 순서는 state.tasks 배열 순서 그대로다(차트와 같은 순서로 읽히도록).
+const DRILL = {
+  active: {
+    title: "진행중 · 예정",
+    groups: [
+      {label:"진행중", pick:t=>t.status==="inprog"},
+      {label:"예정",   pick:t=>t.status==="todo"},
+    ],
+  },
+  attention: {
+    title: "대기 · 지연위험",
+    groups: [
+      {label:"대기",     pick:t=>isWaiting(t),     col:"선행 작업", cell:prevListHtml},
+      {label:"지연위험", pick:t=>t.status==="risk", col:"사유",      cell:t=>esc(riskReason(t))},
+    ],
+  },
+};
+let drillKind=null;
+
+// 착수 준비 기간. 시작일이 아직 이만큼 남았으면 선행이 안 끝난 게 정상이라 목록에 넣지 않는다.
+const LEAD_DAYS = 3;
+
+// 대기: 선행이 미완료이고, 착수 준비 시점(시작일 -3일)을 이미 지난 것만.
+// 차트의 ⏳ 와 점선 화살표는 isBlocked 를 그대로 쓴다 — 그쪽은 의존관계라는 사실 자체를
+// 그리는 것이고, 이 목록은 '지금 주목할 것'만 걸러내는 자리다.
+function isWaiting(t){
+  if(!isBlocked(t)) return false;
+  return diffD(addD(pd(t.start), -LEAD_DAYS), todayMid()) >= 0;
+}
+
+// 미완료 선행을 한 줄씩. 키·요약·그 선행 자신의 상태를 나란히 둔다.
+function prevListHtml(t){
+  const pend=(t.deps||[])
+    .map(id=>state.tasks.find(x=>x.id===id))
+    .filter(p=>p && p.status!=="done");
+  if(!pend.length) return '<span style="color:var(--muted)">—</span>';
+  return pend.map(function(p){
+    const key=p.jira
+      ? '<a class="pk" href="'+jiraUrl(p.jira)+'" target="_blank" rel="noopener" onclick="event.stopPropagation()">'+esc(p.jira)+'</a>'
+      : '<span class="pk">키 없음</span>';
+    return '<div class="pv">'+key+'<span class="pn">'+esc(p.name)+'</span>'+
+           '<span class="pb '+p.status+'">'+PREVLABEL[p.status]+'</span></div>';
+  }).join("");
+}
+// 선행 배지 문구. risk 는 '마감이 지났다'는 뜻이라 이 자리에서는 그렇게 읽히도록 쓴다.
+const PREVLABEL = {done:"완료", inprog:"진행 중", todo:"예정", risk:"기한 초과"};
+
+function riskReason(t){
+  const over=diffD(pd(t.end), todayMid());
+  return "마감 "+mmdd(t.end)+"이 지났으나 완료되지 않음"+(over>0?" ("+over+"일 경과)":"");
+}
+
+function openDrill(kind){
+  if(!DRILL[kind]) return;
+  drillKind=kind;
+  // 브라우저 뒤로가기로 차트에 돌아올 수 있게 히스토리에 한 칸 쌓는다.
+  try{ history.pushState({drill:kind}, ""); }catch(e){}
+  syncPanes(); renderDrill();
+}
+function closeDrill(){
+  // 화면의 '차트로 돌아가기'도 뒤로가기와 같은 경로를 타게 한다 — 상태가 두 벌로 갈리지 않는다.
+  if(history.state && history.state.drill){ history.back(); return; }
+  drillKind=null; syncPanes();
+}
+window.addEventListener("popstate", function(ev){
+  drillKind=(ev.state && ev.state.drill) || null;
+  syncPanes();
+  if(drillKind) renderDrill();
+});
+
+// 어느 화면을 보일지는 여기 한 곳에서만 정한다.
+function syncPanes(){
+  const d=!!drillKind;
+  document.getElementById("chartBody").style.display=(d||tableOn)?"none":"flex";
+  document.getElementById("tblview").style.display=(!d&&tableOn)?"block":"none";
+  document.getElementById("drillview").style.display=d?"block":"none";
+  const lg=document.querySelector(".legend");
+  if(lg) lg.style.display=d?"none":"";
+}
+
+function renderDrill(){
+  const conf=DRILL[drillKind]; if(!conf) return;
+  const all=ordered();
+  const picked=conf.groups.map(g=>({g:g, rows:all.filter(g.pick)}));
+  const total=picked.reduce((a,x)=>a+x.rows.length,0);
+  let h='<div class="drill-head">'+
+        '<button class="ghost" onclick="closeDrill()">← 차트로 돌아가기</button>'+
+        '<h2>'+esc(conf.title)+'</h2><span class="cnt">'+total+'건</span></div>';
+  if(!total) h+='<div class="drill-empty">해당하는 작업이 없습니다.</div>';
+  picked.forEach(function(x){
+    if(!x.rows.length) return;
+    h+='<div class="drill-grp">'+esc(x.g.label)+'<span class="n">'+x.rows.length+'건</span></div>';
+    h+='<table><thead><tr><th>에픽</th><th>Jira</th><th>작업</th><th>담당</th><th>기간</th>'+
+       (x.g.cell?'<th>'+esc(x.g.col)+'</th>':'<th>상태</th><th>진척</th>')+'</tr></thead><tbody>';
+    x.rows.forEach(function(t){
+      const ep=t.epic?esc(t.epic.name):'<span style="color:var(--muted)">미분류</span>';
+      const jk=t.jira?'<a class="jkey" href="'+jiraUrl(t.jira)+'" target="_blank" rel="noopener" onclick="event.stopPropagation()">'+esc(t.jira)+'</a>':'—';
+      const tail = x.g.cell
+        ? '<td class="why">'+x.g.cell(t)+'</td>'
+        : '<td>'+STLABEL[t.status]+'</td><td>'+(t.status==="done"?100:(t.progress||0))+'%</td>';
+      h+='<tr onclick="openEdit('+t.id+')" style="cursor:pointer">'+
+         '<td>'+ep+'</td><td>'+jk+'</td>'+
+         '<td><span class="sdot" style="background:'+STVAR[t.status]+'"></span>'+esc(t.name)+'</td>'+
+         '<td>'+esc(t.owner||'')+'</td><td>'+mmdd(t.start)+'~'+mmdd(t.end)+'</td>'+tail+'</tr>';
+    });
+    h+='</tbody></table>';
+  });
+  document.getElementById("drillview").innerHTML=h;
 }
 
 function renderTable(){
@@ -2563,7 +2705,7 @@ function renderTable(){
   let h='<table><thead><tr><th>에픽</th><th>Jira</th><th>작업</th><th>담당</th><th>기간</th><th>상태</th><th>진척</th><th>선행</th></tr></thead><tbody>';
   rows.forEach(t=>{
     const deps=(t.deps||[]).map(id=>{const p=state.tasks.find(x=>x.id===id);return p?(p.jira||p.name):"";}).filter(Boolean).join(", ");
-    const blk=isBlocked(t)?' 🔒':'';
+    const blk=isBlocked(t)?' ⏳':'';
     const ep=t.epic?esc(t.epic.name):'<span style="color:var(--muted)">미분류</span>';
     const jk=t.jira?'<a class="jkey" href="'+jiraUrl(t.jira)+'" target="_blank" rel="noopener" onclick="event.stopPropagation()">'+esc(t.jira)+'</a>':'—';
     h+='<tr onclick="openEdit('+t.id+')" style="cursor:pointer">'+
@@ -2630,7 +2772,7 @@ function depItemHtml(x, metaTail){
 function depDetailHtml(t){
   const deps=(t.deps||[]).map(d=>state.tasks.find(x=>x.id===d)).filter(Boolean);
   if(!deps.length) return '<span style="color:var(--muted)">없음</span>';
-  const head=isBlocked(t)?'<div class="dep-warn">선행 작업이 끝나지 않아 막혀 있습니다</div>':"";
+  const head=isBlocked(t)?'<div class="dep-warn">선행 작업이 완료되지 않아 대기 상태입니다</div>':"";
   return head+deps.map(function(p){
     return depItemHtml(p, STLABEL[p.status]);
   }).join("");
@@ -2696,8 +2838,7 @@ function syncTop(){
 let tableOn=false;
 function toggleView(){
   tableOn=!tableOn;
-  document.getElementById("chartBody").style.display=tableOn?"none":"flex";
-  document.getElementById("tblview").style.display=tableOn?"block":"none";
+  syncPanes();
   document.getElementById("viewBtn").textContent=tableOn?"간트로 보기":"표로 보기";
 }
 function toggleTheme(){
