@@ -62,11 +62,14 @@
   .sync-note{min-height:16px; margin:8px 2px 0; font-size:12px; color:var(--muted);}
   .sync-note.bad{color:var(--risk);}
   
-  /* 값이 확정되기 전의 차트. 레이아웃은 잡아두되 읽히지는 않게 한다 —
-     인라인 값(배포 시점에 굳은 것)을 잠깐이라도 진짜 값으로 읽으면 안 된다. */
-  .card.syncing{opacity:.4; pointer-events:none;}
-  .card{transition:opacity .18s ease;}
-  @media (prefers-reduced-motion: reduce){ .card{transition:none;} }
+  /* 값이 확정되기 전에는 아예 그리지 않는다. 인라인 값(배포 시점에 굳은 것)을
+     잠깐 보여줬다 바꾸면, 흐리게 하더라도 값이 튀는 게 보인다. */
+  .loading{padding:64px 20px; text-align:center; color:var(--muted); font-size:14px;}
+  .loading .spin{display:inline-block; width:14px; height:14px; margin-right:8px;
+    border:2px solid var(--grid); border-top-color:var(--inprog); border-radius:50%;
+    vertical-align:-2px; animation:spin .7s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  @media (prefers-reduced-motion: reduce){ .loading .spin{animation:none;} }
   
   .legend{display:flex; flex-wrap:wrap; gap:14px 18px; align-items:center; margin:2px 2px 14px; font-size:12.5px; color:var(--ink-2);}
   .lg{display:inline-flex; align-items:center; gap:7px;}
@@ -231,6 +234,7 @@
   
   <div class="sync-note" id="syncNote"></div>
   
+  
 
   <div class="legend">
     <span class="lg"><span class="sw done"></span>완료</span>
@@ -242,6 +246,9 @@
   </div>
 
   <div class="card">
+    
+    <div class="loading" id="loading"><span class="spin"></span>Jira에서 최신 일정을 불러오는 중…</div>
+    
     <div class="chart-body" id="chartBody">
       <div class="labels" id="labels"></div>
       <div class="resizer" id="resizer" title="드래그해서 좌측 폭 조절"></div>
@@ -488,11 +495,11 @@ let state = {
     },
     {
       "id": 18,
-      "name": "[캐릭터원화] 도깨비방 스타스트림 패널용 원화 제작_화신 2종",
+      "name": "[캐릭터원화] 도깨비방 스타스트림 패널용 원화 제작_화신 2종(1)",
       "owner": "구민구",
       "start": "2026-08-12",
       "end": "2026-08-24",
-      "status": "todo",
+      "status": "inprog",
       "deps": [],
       "jira": "ORVV-9111",
       "epic": {
@@ -545,8 +552,8 @@ let state = {
     {
       "id": 21,
       "name": "[UI] 스타스트림 패널 UI (도꺠비방)",
-      "owner": "강지한 · 시작일 미정",
-      "start": "2026-08-18",
+      "owner": "강지한",
+      "start": "2026-08-12",
       "end": "2026-08-18",
       "status": "inprog",
       "deps": [],
@@ -2144,7 +2151,8 @@ let state = {
         "name": "B1 환경 사운드 제작"
       }
     }
-  ]
+  ],
+  "syncedAt": "2026-08-13T12:58:39.101Z"
 };
 let nextId = 153;
 function jiraUrl(key){return key ? (state.jiraBase + encodeURIComponent(key)) : null;}
@@ -2235,8 +2243,10 @@ function loadUI(){
     const o = raw ? JSON.parse(raw) : {};
     return { labelW: clampLabelW(o.labelW || LABEL_W_DEFAULT),
              expanded: Array.isArray(o.expanded) ? o.expanded.slice() : [],
-             barText: o.barText === "full" ? "full" : "clip" };
-  }catch(e){ return { labelW: LABEL_W_DEFAULT, expanded: [], barText: "clip" }; }
+             // 기본은 "full". 이름이 잘려 보이면 차트를 읽을 수 없어서다 —
+             // 명시적으로 "clip" 을 저장한 사람만 잘라 보여준다.
+             barText: o.barText === "clip" ? "clip" : "full" };
+  }catch(e){ return { labelW: LABEL_W_DEFAULT, expanded: [], barText: "full" }; }
 }
 let ui = loadUI();
 function saveUI(){ try{ localStorage.setItem(UI_KEY, JSON.stringify(ui)); }catch(e){} }
@@ -2475,10 +2485,12 @@ function stat(k,v,s,pct,kind){
          '<div class="more">목록 보기 →</div></div>';
 }
 
-/* ---------- Jira 최신값 받아오기 (뷰어 전용) ---------- */
+/* ---------- 데이터가 얼마나 낡았나 (편집본 전용) ---------- */
 
-// 페이지를 열 때마다 중계 Worker 에서 최신값을 받아 덮어쓴다.
-// 실패하면 인라인 데이터 그대로 보여준다 — 차트가 안 뜨는 것보다 조금 낡은 게 낫다.
+
+/* ---------- Jira 최신값 적용 (양쪽 공통) ---------- */
+// 뷰어는 열 때 자동으로, 편집본은 버튼으로 부른다. **마커 밖에 둬야 한다** —
+// 한쪽 마커 안에 넣으면 다른 쪽에서 ReferenceError 가 나고, 인라인 핸들러라 예외도 안 보인다.
 // Jira 가 갖지 않는 것(의존관계·표시 순서·표시 창·마감)은 건드리지 않는다.
 function applyJiraIssues(tasks, issues, today){
   const by={}; issues.forEach(function(x){ by[x.key]=x; });
@@ -2503,6 +2515,10 @@ function applyJiraIssues(tasks, issues, today){
   return n;
 }
 
+/* ---------- 열 때마다 자동 갱신 (뷰어 전용) ---------- */
+
+// 페이지를 열 때마다 중계 Worker 에서 최신값을 받아 덮어쓴다.
+// 실패하면 인라인 데이터 그대로 보여준다 — 차트가 안 뜨는 것보다 조금 낡은 게 낫다.
 function showSyncNote(text, bad){
   const el=document.getElementById("syncNote");
   if(!el) return;
@@ -2510,19 +2526,22 @@ function showSyncNote(text, bad){
   el.className="sync-note"+(bad?" bad":"");
 }
 
-// 값이 확정될 때까지 차트를 흐리게 둔다. 인라인 값은 배포 시점에 굳은 것이라
-// 잠깐이라도 진짜 값으로 읽히면 안 된다 — 레이아웃만 미리 잡아두는 셈이다.
-function setSyncing(on){
-  const card=document.querySelector(".card");
-  if(card) card.classList.toggle("syncing", !!on);
+// 값이 확정되기 전에는 차트를 그리지 않고 로딩 자리만 보여준다.
+function setLoading(on){
+  const ld=document.getElementById("loading");
+  if(ld) ld.style.display = on ? "block" : "none";
+  const body=document.getElementById("chartBody");
+  if(body && on) body.style.display="none";   // 끌 때는 syncPanes 가 제 상태로 되돌린다
 }
 
-const SYNC_TIMEOUT = 8000;   // Worker 가 느려도 화면이 계속 흐린 채로 남지 않게 한다
+const SYNC_TIMEOUT = 8000;   // Worker 가 느려도 로딩 화면에 갇히지 않게 한다
 
+// 뷰어의 첫 그리기는 여기서만 일어난다. 성공이든 실패든 **한 번만** 그리므로
+// 인라인 값이 잠깐 보였다 바뀌는 일이 없다.
 async function syncFromJira(){
   const url=state.syncEndpoint;
-  if(!url){ showSyncNote(""); return; }
-  setSyncing(true);
+  if(!url){ setLoading(false); render(); syncPanes(); showSyncNote(""); return; }
+  setLoading(true);
   showSyncNote("Jira 최신값 확인 중…");
   // AbortSignal.timeout 이 없는 브라우저도 있어 컨트롤러를 직접 쓴다.
   const ac=(typeof AbortController!=="undefined") ? new AbortController() : null;
@@ -2533,7 +2552,6 @@ async function syncFromJira(){
     const body=await res.json();
     if(!body || !Array.isArray(body.issues)) throw new Error("응답 형식이 다릅니다");
     const n=applyJiraIssues(state.tasks, body.issues, iso(todayMid()));
-    render();
     const t=new Date();
     showSyncNote("Jira 최신 · "+t.getHours()+":"+String(t.getMinutes()).padStart(2,"0")+" 기준 "+n+"건 반영");
   }catch(e){
@@ -2541,7 +2559,10 @@ async function syncFromJira(){
     showSyncNote("Jira 갱신 실패 — 저장된 데이터를 표시합니다 ("+why+")", true);
   }finally{
     if(timer) clearTimeout(timer);
-    setSyncing(false);   // 실패해도 반드시 걷는다. 흐린 채로 남으면 차트를 볼 수 없다.
+    // 실패해도 반드시 그린다. 안 그리면 로딩 화면에 갇힌다.
+    setLoading(false);
+    render();
+    syncPanes();
   }
 }
 
@@ -2814,9 +2835,10 @@ function toggleTheme(){
 buildTop();
 applyLabelWidth();
 initResizer();
-render();
 
+// 뷰어는 render() 를 여기서 부르지 않는다 — syncFromJira 가 값이 확정된 뒤 한 번만 그린다.
 syncFromJira();
+
 
 </script>
 </body>
