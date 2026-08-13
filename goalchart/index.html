@@ -65,7 +65,10 @@
   /* Chart */
   .card{background:var(--surface-1); border:1px solid var(--border); border-radius:16px; overflow:hidden;}
   .chart-body{display:flex;}
-  .labels{flex:0 0 auto; width:226px; border-right:1px solid var(--grid);}
+  .labels{flex:0 0 auto; width:320px; border-right:1px solid var(--grid); min-width:0;}
+  .resizer{flex:0 0 7px; cursor:col-resize; position:relative; touch-action:none;}
+  .resizer::after{content:""; position:absolute; left:2px; top:0; bottom:0; width:3px; border-radius:2px; background:transparent;}
+  .resizer:hover::after,.resizer.drag::after{background:var(--inprog);}
   .lhead{height:54px; display:flex; align-items:flex-end; padding:0 14px 8px; font-size:12px; color:var(--muted); border-bottom:1px solid var(--grid);}
   .lrow{height:46px; display:flex; flex-direction:column; justify-content:center; padding:0 14px; border-bottom:1px solid var(--grid); cursor:pointer;}
   .lrow:hover{background:var(--chip);}
@@ -78,9 +81,27 @@
   .erow .enm{white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
   .erow .ekey{margin-left:auto; font-size:10.5px; font-weight:600; color:var(--muted); text-decoration:none; white-space:nowrap;}
   .erow .ekey:hover{color:var(--inprog);}
+  .erow{cursor:pointer;}
+  .erow .ecar{flex:0 0 auto; width:17px; height:17px; display:inline-flex; align-items:center; justify-content:center;
+    font-size:13px; font-weight:700; line-height:1; color:var(--ink-2);
+    border:1px solid var(--border); border-radius:4px; background:var(--page);}
+  .erow:hover .ecar{color:var(--inprog); border-color:var(--inprog);}
+  .erow .esum{flex:0 0 auto; font-size:10.5px; font-weight:500; color:var(--muted); white-space:nowrap;}
+  .mv{display:none; flex:0 0 auto; gap:2px; margin-left:6px;}
+  .lrow:hover .mv,.erow:hover .mv{display:flex;}
+  .mvb{font:inherit; font-size:9px; line-height:1; padding:2px 4px; cursor:pointer;
+       color:var(--ink-2); background:var(--surface-1); border:1px solid var(--border); border-radius:4px;}
+  .mvb:hover{color:var(--inprog); border-color:var(--inprog);}
+  .lrow{position:relative;}
+  .lrow .mv{position:absolute; right:8px; top:50%; transform:translateY(-50%);}
   .jkey{color:var(--inprog); text-decoration:none; font-weight:600;}
   .jkey:hover{text-decoration:underline;}
   .eband{position:absolute; left:0; z-index:1; pointer-events:none;}
+  /* 에픽 롤업 막대 — 하위 작업의 min(시작)~max(종료) */
+  .ebar{position:absolute; height:11px; border-radius:3px; z-index:2; opacity:.92;
+    box-shadow:inset 0 0 0 1px rgba(0,0,0,.12);}
+  .ebar.clipL{border-top-left-radius:0; border-bottom-left-radius:0;}
+  .ebar.clipR{border-top-right-radius:0; border-bottom-right-radius:0;}
 
   .tl-scroll{overflow-x:auto; flex:1 1 auto;}
   .timeline{position:relative;}
@@ -121,7 +142,7 @@
   /* Modal */
   .ov{position:fixed; inset:0; background:rgba(0,0,0,.4); display:none; align-items:center; justify-content:center; z-index:50; padding:16px;}
   .ov.on{display:flex;}
-  .modal{background:var(--surface-1); border:1px solid var(--border); border-radius:16px; width:min(460px,100%); max-height:90vh; overflow:auto; padding:20px;}
+  .modal{background:var(--surface-1); border:1px solid var(--border); border-radius:16px; width:min(560px,100%); max-height:90vh; overflow:auto; padding:20px;}
   .modal h3{margin:0 0 14px; font-size:16px;}
   .fld{margin-bottom:12px;}
   .fld label{display:block; font-size:12px; color:var(--muted); margin-bottom:4px;}
@@ -131,13 +152,15 @@
   .drow:last-child{border-bottom:none;}
   .dk{flex:0 0 84px; color:var(--muted);}
   .dv{flex:1; min-width:0; color:var(--ink); word-break:break-word;}
-  .dep-item{display:flex; align-items:center; gap:7px; padding:3px 0; font-size:12.5px;}
-  .dep-st{display:inline-flex; width:18px; height:18px; align-items:center; justify-content:center; border-radius:5px; font-size:11px; color:#fff; flex:0 0 auto;}
+  /* 이름은 절대 자르지 않는다 — 이름 줄과 메타 줄을 분리해 이름이 폭을 다 쓰게 한다. */
+  .dep-item{display:flex; align-items:flex-start; gap:7px; padding:5px 0; font-size:12.5px;}
+  .dep-st{display:inline-flex; width:18px; height:18px; align-items:center; justify-content:center; border-radius:5px; font-size:11px; color:#fff; flex:0 0 auto; margin-top:1px;}
   .dep-st.done{background:var(--done);} .dep-st.inprog{background:var(--inprog);}
   .dep-st.todo{background:var(--todo);} .dep-st.risk{background:var(--risk);}
-  .dep-jk{color:var(--inprog); text-decoration:none; flex:0 0 auto;}
-  .dep-nm{overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
-  .dep-stl{margin-left:auto; color:var(--muted); flex:0 0 auto;}
+  .dep-body{flex:1 1 auto; min-width:0;}
+  .dep-nm{color:var(--ink); line-height:1.4; overflow-wrap:anywhere;}
+  .dep-meta{color:var(--muted); font-size:11.5px; margin-top:1px; overflow-wrap:anywhere;}
+  .dep-jk{color:var(--inprog); text-decoration:none;}
   .dep-warn{color:var(--dep-block); font-size:12px; margin-bottom:4px;}
   .deps{max-height:220px; overflow:auto; border:1px solid var(--border); border-radius:9px; padding:6px 8px;}
   .deps label{display:flex; align-items:center; gap:7px; font-size:12.5px; color:var(--ink); margin:3px 0; cursor:pointer;}
@@ -175,6 +198,7 @@
   <div class="card">
     <div class="chart-body" id="chartBody">
       <div class="labels" id="labels"></div>
+      <div class="resizer" id="resizer" title="드래그해서 좌측 폭 조절"></div>
       <div class="tl-scroll"><div class="timeline" id="timeline"></div></div>
     </div>
     <div class="tblview" id="tblview" style="display:none"></div>
@@ -236,8 +260,8 @@ let state = {
   "deadline": "2026-08-27",
   "window": {
     "on": true,
-    "start": "2026-08-13",
-    "end": "2026-08-27"
+    "start": "2026-08-10",
+    "end": "2026-08-31"
   },
   "jiraBase": "https://offbeatplay.atlassian.net/browse/",
   "tasks": [
@@ -262,8 +286,8 @@ let state = {
       "owner": "이승민 · 검수요청",
       "start": "2026-08-02",
       "end": "2026-08-05",
-      "status": "risk",
-      "progress": 0,
+      "status": "done",
+      "progress": 100,
       "deps": [],
       "jira": "ORVV-9017",
       "epic": {
@@ -287,29 +311,16 @@ let state = {
       }
     },
     {
-      "id": 4,
-      "name": "[기획] 슈퍼스프린트 - 스크립팅",
-      "owner": "심충환",
-      "start": "2026-08-15",
-      "end": "2026-08-18",
-      "status": "todo",
-      "progress": 0,
-      "deps": [],
-      "jira": "ORVV-9019",
-      "epic": {
-        "key": "ORVV-8765",
-        "name": "슈퍼 스프린트 시스템"
-      }
-    },
-    {
       "id": 5,
       "name": "[클라] 슈퍼 스프린트 시스템 구현",
       "owner": "이주식",
-      "start": "2026-08-16",
+      "start": "2026-08-14",
       "end": "2026-08-19",
       "status": "inprog",
-      "progress": 40,
-      "deps": [],
+      "progress": 0,
+      "deps": [
+        3
+      ],
       "jira": "ORVV-8954",
       "epic": {
         "key": "ORVV-8765",
@@ -332,15 +343,35 @@ let state = {
       }
     },
     {
-      "id": 7,
-      "name": "[기획] 슈퍼스프린트 검수",
+      "id": 4,
+      "name": "[기획] 슈퍼스프린트 - 스크립팅",
       "owner": "심충환",
-      "start": "2026-08-18",
-      "end": "2026-08-21",
+      "start": "2026-08-24",
+      "end": "2026-08-26",
       "status": "todo",
       "progress": 0,
+      "deps": [
+        3,
+        5,
+        6,
+        9
+      ],
+      "jira": "ORVV-9019",
+      "epic": {
+        "key": "ORVV-8765",
+        "name": "슈퍼 스프린트 시스템"
+      }
+    },
+    {
+      "id": 9,
+      "name": "[카메라] 슈퍼스프린트 카메라 연출",
+      "owner": "김웅빈 · Due date 없음",
+      "start": "2026-08-13",
+      "end": "2026-08-14",
+      "status": "inprog",
+      "progress": 0,
       "deps": [],
-      "jira": "ORVV-9018",
+      "jira": "ORVV-9016",
       "epic": {
         "key": "ORVV-8765",
         "name": "슈퍼 스프린트 시스템"
@@ -354,7 +385,9 @@ let state = {
       "end": "2026-08-27",
       "status": "todo",
       "progress": 0,
-      "deps": [],
+      "deps": [
+        4
+      ],
       "jira": "ORVV-9015",
       "epic": {
         "key": "ORVV-8765",
@@ -362,15 +395,18 @@ let state = {
       }
     },
     {
-      "id": 9,
-      "name": "[카메라] 슈퍼스프린트 카메라 연출 ⚠Due미정",
-      "owner": "김웅빈 · Due date 없음",
-      "start": "2026-08-13",
-      "end": "2026-08-13",
-      "status": "inprog",
+      "id": 7,
+      "name": "[기획] 슈퍼스프린트 검수",
+      "owner": "심충환",
+      "start": "2026-08-27",
+      "end": "2026-08-28",
+      "status": "todo",
       "progress": 0,
-      "deps": [],
-      "jira": "ORVV-9016",
+      "deps": [
+        4,
+        8
+      ],
+      "jira": "ORVV-9018",
       "epic": {
         "key": "ORVV-8765",
         "name": "슈퍼 스프린트 시스템"
@@ -409,7 +445,9 @@ function outOfWindow(f,t){
 }
 
 /* ---------- rendering ---------- */
-function ordered(){return [...state.tasks].sort((a,b)=> pd(a.start)-pd(b.start) || a.id-b.id);}
+// 표시 순서는 state.tasks 의 배열 위치 그 자체다. 별도 order 필드를 두지 않는다 —
+// 새 작업은 push 로 맨 뒤에 붙고, 내보내기/불러오기가 순서를 그대로 왕복시킨다.
+function ordered(){return [...state.tasks];}
 
 function isBlocked(t){
   if(t.status==="done") return false;
@@ -421,17 +459,81 @@ function epicKeyOf(t){
 }
 
 /* group selected issues by their parent epic; only chosen issues appear */
+// 에픽 순서 = 배열에서 처음 등장한 순서(Map 의 삽입 순서). 별도 정렬하지 않는다.
 function groups(){
   const rows=ordered(), map=new Map();
   rows.forEach(t=>{
     const key = epicKeyOf(t);
-    if(!map.has(key)) map.set(key,{key:(t.epic&&t.epic.key)||null, name:(t.epic&&t.epic.name)||"미분류", tasks:[]});
+    if(!map.has(key)) map.set(key,{gkey:key, key:(t.epic&&t.epic.key)||null, name:(t.epic&&t.epic.name)||"미분류", tasks:[]});
     map.get(key).tasks.push(t);
   });
   const arr=[...map.values()];
-  arr.sort((a,b)=> pd(a.tasks[0].start)-pd(b.tasks[0].start));
   arr.forEach((g,i)=>g.color=EPIC_COLORS[i%EPIC_COLORS.length]);
   return arr;
+}
+
+// 에픽의 기간 = 하위 작업의 min(시작) ~ max(종료). 날짜 문자열이 ISO(YYYY-MM-DD)라
+// 사전순 비교가 곧 시간순 비교다 — Date 로 바꿀 필요가 없다.
+function epicSpan(tasks){
+  let s=null, e=null;
+  tasks.forEach(function(t){
+    if(!t || !t.start || !t.end) return;
+    if(s===null || t.start < s) s = t.start;
+    if(e===null || t.end   > e) e = t.end;
+  });
+  return (s===null || e===null) ? null : { start:s, end:e };
+}
+
+function epicSummary(g){
+  const n=g.tasks.length;
+  const d=g.tasks.filter(t=>t.status==="done").length;
+  const b=g.tasks.filter(t=>isBlocked(t)).length;
+  return "작업 "+n+" · 완료 "+d+(b?" · 막힘 "+b:"");
+}
+
+/* ---------- 화면 상태 (데이터가 아니라 보는 사람의 편의) ---------- */
+// file:// 에서는 localStorage 가 막힐 수 있다(Safari 는 차단, Chrome 도 설정에 따라 던짐).
+// 실패해도 앱이 죽지 않게 전부 삼키고 메모리 상태로만 동작시킨다.
+const UI_KEY = "goalchart.ui";
+const LABEL_W_MIN = 160, LABEL_W_MAX = 560, LABEL_W_DEFAULT = 320;
+function clampLabelW(w){ return Math.max(LABEL_W_MIN, Math.min(LABEL_W_MAX, Math.round(w)||LABEL_W_DEFAULT)); }
+function loadUI(){
+  try{
+    const raw = localStorage.getItem(UI_KEY);
+    const o = raw ? JSON.parse(raw) : {};
+    return { labelW: clampLabelW(o.labelW || LABEL_W_DEFAULT),
+             collapsed: Array.isArray(o.collapsed) ? o.collapsed.slice() : [] };
+  }catch(e){ return { labelW: LABEL_W_DEFAULT, collapsed: [] }; }
+}
+let ui = loadUI();
+function saveUI(){ try{ localStorage.setItem(UI_KEY, JSON.stringify(ui)); }catch(e){} }
+
+function isCollapsed(gkey){ return ui.collapsed.indexOf(gkey) !== -1; }
+function toggleEpicAt(i){
+  const g = groups()[i]; if(!g) return;
+  const at = ui.collapsed.indexOf(g.gkey);
+  if(at === -1) ui.collapsed.push(g.gkey); else ui.collapsed.splice(at,1);
+  saveUI(); render();
+}
+
+
+
+function applyLabelWidth(){ document.getElementById("labels").style.width = ui.labelW + "px"; }
+function initResizer(){
+  const rz = document.getElementById("resizer"), lb = document.getElementById("labels");
+  let startX = 0, startW = 0, dragging = false;
+  rz.addEventListener("pointerdown", e=>{
+    dragging = true; startX = e.clientX; startW = lb.offsetWidth;
+    rz.classList.add("drag"); rz.setPointerCapture(e.pointerId); e.preventDefault();
+  });
+  rz.addEventListener("pointermove", e=>{
+    if(!dragging) return;
+    ui.labelW = clampLabelW(startW + (e.clientX - startX));
+    applyLabelWidth();
+  });
+  const end = ()=>{ if(!dragging) return; dragging = false; rz.classList.remove("drag"); saveUI(); };
+  rz.addEventListener("pointerup", end);
+  rz.addEventListener("pointercancel", end);
 }
 
 function render(){
@@ -441,9 +543,12 @@ function render(){
   /* build epic-grouped layout: epic header rows + task rows */
   const gs=groups();
   let y=0; const lay=[]; const taskY={};
-  gs.forEach(g=>{
-    lay.push({type:"epic", g:g, y:y}); y+=EPIC_H;
-    g.tasks.forEach(t=>{ lay.push({type:"task", t:t, y:y}); taskY[t.id]=y; y+=ROW_H; });
+  gs.forEach((g,gi)=>{
+    const col=isCollapsed(g.gkey);
+    lay.push({type:"epic", g:g, gi:gi, y:y, collapsed:col}); y+=EPIC_H;
+    // 접힌 에픽의 작업은 taskY 에 들어가지 않는다 → 막대·화살표 루프의 기존 가드가
+    // 알아서 걸러낸다(양 끝점이 있어야 그린다).
+    if(!col) g.tasks.forEach(t=>{ lay.push({type:"task", t:t, y:y}); taskY[t.id]=y; y+=ROW_H; });
   });
   const H=y;
 
@@ -454,14 +559,21 @@ function render(){
     if(it.type==="epic"){
       const g=it.g;
       const chip = g.key ? '<a class="ekey" href="'+jiraUrl(g.key)+'" target="_blank" rel="noopener" onclick="event.stopPropagation()">'+esc(g.key)+' ↗</a>' : '';
-      lh += '<div class="erow" style="border-left:3px solid '+g.color+'"><span class="edot" style="background:'+g.color+'"></span><span class="enm">'+esc(g.name)+'</span>'+chip+'</div>';
+      const sum = it.collapsed ? '<span class="esum">'+esc(epicSummary(g))+'</span>' : '';
+      let mv = "";
+      
+      lh += '<div class="erow" style="border-left:3px solid '+g.color+'" onclick="toggleEpicAt('+it.gi+')" title="클릭해서 접기/펼치기">'+
+        '<span class="ecar">'+(it.collapsed?'+':'−')+'</span>'+
+        '<span class="edot" style="background:'+g.color+'"></span><span class="enm">'+esc(g.name)+'</span>'+sum+chip+mv+'</div>';
     }else{
       const t=it.t, blk=isBlocked(t);
       const jk = t.jira ? '<a class="jkey" href="'+jiraUrl(t.jira)+'" target="_blank" rel="noopener" onclick="event.stopPropagation()">'+esc(t.jira)+'</a> · ' : '';
       const oo = outOfWindow(f,t) ? ' · <span style="color:var(--muted)">기간 밖</span>' : '';
+      let mv = "";
+      
       lh += '<div class="lrow" onclick="openEdit('+t.id+')">'+
         '<div class="nm"><span class="sdot" style="background:'+STVAR[t.status]+'"></span>'+esc(t.name)+(blk?' <span class="lock">🔒</span>':'')+'</div>'+
-        '<div class="meta">'+jk+esc(t.owner||'')+' · '+mmdd(t.start)+'~'+mmdd(t.end)+oo+'</div></div>';
+        '<div class="meta">'+jk+esc(t.owner||'')+' · '+mmdd(t.start)+'~'+mmdd(t.end)+oo+'</div>'+mv+'</div>';
     }
   });
   lb.innerHTML=lh;
@@ -496,6 +608,19 @@ function render(){
   // epic swimlane bands
   lay.forEach(it=>{ if(it.type==="epic"){
     grid+='<div class="eband" style="top:'+it.y+'px; height:'+EPIC_H+'px; width:'+W+'px; background:'+hexA(it.g.color,0.12)+'; border-left:3px solid '+it.g.color+'"></div>';
+    // 롤업 막대: 하위 작업 전체 기간. 접힘 여부와 무관하게 항상 그린다.
+    const sp=epicSpan(it.g.tasks);
+    if(sp){
+      const sIdx=diffD(f.start,pd(sp.start)), eIdx=diffD(f.start,pd(sp.end));
+      if(!(eIdx<0 || sIdx>f.days-1)){
+        const cs=Math.max(sIdx,0), ce=Math.min(eIdx,f.days-1);
+        const clipL=sIdx<0, clipR=eIdx>f.days-1;
+        const left=cs*DAY_W+4, width=Math.max((ce-cs+1)*DAY_W-8,10);
+        grid+='<div class="ebar'+(clipL?' clipL':'')+(clipR?' clipR':'')+'" style="left:'+left+'px; top:'+
+              (it.y+(EPIC_H-11)/2)+'px; width:'+width+'px; background:'+it.g.color+'" title="'+
+              esc(it.g.name)+' · '+mmdd(sp.start)+'~'+mmdd(sp.end)+' · '+esc(epicSummary(it.g))+'"></div>';
+      }
+    }
   }});
   // today
   const ti=diffD(f.start,todayMid());
@@ -634,6 +759,7 @@ function openDetail(id){
     ["기간", mmdd(t.start)+" ~ "+mmdd(t.end)],
     ["진척률", (t.status==="done"?100:(t.progress||0))+"%"],
     ["선행 작업", depDetailHtml(t)],
+    ["후행 작업", succDetailHtml(t)],
   ];
   document.getElementById("dTitle").textContent=t.name;
   document.getElementById("dBody").innerHTML=rows.map(r=>
@@ -642,17 +768,38 @@ function openDetail(id){
 }
 
 // 뷰어의 '선행 작업'은 지정된 선행만 보여주되, 각각의 현재 상태를 함께 읽게 한다.
+// 선행·후행 한 항목의 공통 렌더. 이름은 자기 줄을 통째로 쓰고(자르지 않는다),
+// Jira 키와 부가정보는 아래 메타 줄로 내린다 — 좌측 라벨 행과 같은 패턴이다.
+function depItemHtml(x, metaTail){
+  const jk = x.jira
+    ? '<a class="dep-jk" href="'+jiraUrl(x.jira)+'" target="_blank" rel="noopener">'+esc(x.jira)+'</a> · '
+    : "";
+  return '<div class="dep-item">'+
+    '<span class="dep-st '+x.status+'">'+STICON[x.status]+'</span>'+
+    '<div class="dep-body">'+
+      '<div class="dep-nm">'+esc(x.name)+'</div>'+
+      '<div class="dep-meta">'+jk+metaTail+'</div>'+
+    '</div>'+
+  '</div>';
+}
 function depDetailHtml(t){
   const deps=(t.deps||[]).map(d=>state.tasks.find(x=>x.id===d)).filter(Boolean);
   if(!deps.length) return '<span style="color:var(--muted)">없음</span>';
   const head=isBlocked(t)?'<div class="dep-warn">선행 작업이 끝나지 않아 막혀 있습니다</div>':"";
   return head+deps.map(function(p){
-    return '<div class="dep-item">'+
-      '<span class="dep-st '+p.status+'">'+STICON[p.status]+'</span>'+
-      (p.jira?'<a class="dep-jk" href="'+jiraUrl(p.jira)+'" target="_blank" rel="noopener">'+esc(p.jira)+'</a>':"")+
-      '<span class="dep-nm">'+esc(p.name)+'</span>'+
-      '<span class="dep-stl">'+STLABEL[p.status]+'</span>'+
-    '</div>';
+    return depItemHtml(p, STLABEL[p.status]);
+  }).join("");
+}
+// 후행 작업 = 이 작업을 선행으로 지정한 작업들. deps 는 후행 쪽에만 기록되므로
+// 역방향은 전체를 훑어야 알 수 있다.
+function successorsOf(tasks, id){
+  return tasks.filter(x => (x.deps||[]).indexOf(id) !== -1);
+}
+function succDetailHtml(t){
+  const succ=successorsOf(state.tasks, t.id);
+  if(!succ.length) return '<span style="color:var(--muted)">없음</span>';
+  return succ.map(function(s){
+    return depItemHtml(s, mmdd(s.start)+" 시작"+(s.owner?" · "+esc(s.owner):""));
   }).join("");
 }
 function closeDetail(){document.getElementById("ovD").classList.remove("on");}
@@ -719,6 +866,8 @@ function exportJSON(){
 
 
 buildTop();
+applyLabelWidth();
+initResizer();
 render();
 </script>
 </body>
