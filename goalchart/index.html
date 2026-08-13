@@ -225,7 +225,7 @@
     <span class="lg"><span class="sw done"></span>완료</span>
     <span class="lg"><span class="sw inprog"></span>진행중</span>
     <span class="lg"><span class="sw todo"></span>예정</span>
-    <span class="lg"><span class="sw risk"></span>지연위험</span>
+    <span class="lg"><span class="sw risk"></span>기한 초과</span>
     <span class="lg"><svg width="34" height="10"><line x1="0" y1="5" x2="26" y2="5" stroke="var(--dep)" stroke-width="2"/><path d="M26 5 l-6 -3 v6 z" fill="var(--dep)"/></svg>의존</span>
     <span class="lg"><svg width="34" height="10"><line x1="0" y1="5" x2="26" y2="5" stroke="var(--dep-block)" stroke-width="2" stroke-dasharray="4 3"/><path d="M26 5 l-6 -3 v6 z" fill="var(--dep-block)"/></svg>선행 미완료 (대기)</span>
   </div>
@@ -266,7 +266,7 @@
 const DAY_W = 46, ROW_H = 46, HEAD_H = 54, BAR_H = 26, EPIC_H = 34;
 const EPIC_COLORS = ["#2a78d6","#eb6834","#1baf7a","#eda100","#e87ba4","#008300","#4a3aa7","#e34948"];
 function hexA(h,a){const n=parseInt(h.slice(1),16); return "rgba("+((n>>16)&255)+","+((n>>8)&255)+","+(n&255)+","+a+")";}
-const STLABEL = {done:"완료", inprog:"진행중", todo:"예정", risk:"지연위험"};
+const STLABEL = {done:"완료", inprog:"진행중", todo:"예정", risk:"기한 초과"};
 const STICON  = {done:"✓", inprog:"◐", todo:"○", risk:"▲"};
 const STVAR   = {done:"var(--done)", inprog:"var(--inprog)", todo:"var(--todo)", risk:"var(--risk)"};
 
@@ -2575,7 +2575,7 @@ function renderStats(f){
     stat("마감까지", ddText, "마감 "+mmdd(state.deadline)) +
     stat("전체 진척률", prog+"%", done+" / "+n+" 완료", prog) +
     stat("진행중", T.filter(t=>t.status==="inprog").length+"건", "예정 "+T.filter(t=>t.status==="todo").length+"건", undefined, "active") +
-    stat("대기·지연위험", (blocked+risk)+"건", "⏳ 대기 "+blocked+" · ⚠ 지연위험 "+risk, undefined, "attention");
+    stat("대기·기한 초과", (blocked+risk)+"건", "⏳ 대기 "+blocked+" · ⚠ 기한 초과 "+risk, undefined, "attention");
 }
 // kind 를 주면 눌러서 목록으로 들어가는 카드가 된다. onclick 은 인자 조립 없이
 // 리터럴 하나만 넣는다 — 문자열을 이어 붙이다 문법이 깨지면 핸들러가 통째로 죽는다.
@@ -2600,10 +2600,10 @@ const DRILL = {
     ],
   },
   attention: {
-    title: "대기 · 지연위험",
+    title: "대기 · 기한 초과",
     groups: [
       {label:"대기",     pick:t=>isWaiting(t),     col:"선행 작업", cell:prevListHtml},
-      {label:"지연위험", pick:t=>t.status==="risk", col:"사유",      cell:t=>esc(riskReason(t))},
+      {label:"기한 초과", pick:t=>t.status==="risk", col:"사유",      cell:t=>esc(riskReason(t))},
     ],
   },
 };
@@ -2631,12 +2631,9 @@ function prevListHtml(t){
       ? '<a class="pk" href="'+jiraUrl(p.jira)+'" target="_blank" rel="noopener" onclick="event.stopPropagation()">'+esc(p.jira)+'</a>'
       : '<span class="pk">키 없음</span>';
     return '<div class="pv">'+key+'<span class="pn">'+esc(p.name)+'</span>'+
-           '<span class="pb '+p.status+'">'+PREVLABEL[p.status]+'</span></div>';
+           '<span class="pb '+p.status+'">'+STLABEL[p.status]+'</span></div>';
   }).join("");
 }
-// 선행 배지 문구. risk 는 '마감이 지났다'는 뜻이라 이 자리에서는 그렇게 읽히도록 쓴다.
-const PREVLABEL = {done:"완료", inprog:"진행 중", todo:"예정", risk:"기한 초과"};
-
 function riskReason(t){
   const over=diffD(pd(t.end), todayMid());
   return "마감 "+mmdd(t.end)+"이 지났으나 완료되지 않음"+(over>0?" ("+over+"일 경과)":"");
@@ -2644,13 +2641,19 @@ function riskReason(t){
 
 function openDrill(kind){
   if(!DRILL[kind]) return;
+  const wasOpen = !!drillKind;
   drillKind=kind;
-  // 브라우저 뒤로가기로 차트에 돌아올 수 있게 히스토리에 한 칸 쌓는다.
-  try{ history.pushState({drill:kind}, ""); }catch(e){}
+  // 차트 → 목록은 히스토리에 한 칸 쌓고, 목록 → 다른 목록은 그 칸을 갈아끼운다.
+  // 목록 사이를 오간 흔적이 쌓이지 않으므로 뒤로가기도 '차트로 돌아가기'도 언제나 차트로 간다.
+  try{
+    if(wasOpen) history.replaceState({drill:kind}, "");
+    else history.pushState({drill:kind}, "");
+  }catch(e){}
   syncPanes(); renderDrill();
 }
 function closeDrill(){
   // 화면의 '차트로 돌아가기'도 뒤로가기와 같은 경로를 타게 한다 — 상태가 두 벌로 갈리지 않는다.
+  // 쌓인 칸이 언제나 하나뿐이라 back() 한 번이면 차트다.
   if(history.state && history.state.drill){ history.back(); return; }
   drillKind=null; syncPanes();
 }
