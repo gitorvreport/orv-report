@@ -2664,7 +2664,6 @@ const TOP_BTNS_VIEW =
   '<button class="ghost" id="viewBtn" onclick="toggleView()">표로 보기</button>' +
   '<button class="ghost" id="allBtn" onclick="toggleAllEpics()">전체 펼치기</button>' +
   '<button class="ghost" id="txtBtn" onclick="toggleBarText()">글자 전체</button>' +
-  '<button class="ghost" onclick="exportJSON()">JSON 내보내기</button>' +
   '<button class="ghost" onclick="toggleTheme()" id="thBtn">🌙 다크</button>';
 
 // 부팅 때 한 번만. 편집본은 입력에 포커스가 살아 있어야 하므로 재빌드하지 않는다.
@@ -2706,12 +2705,6 @@ function toggleTheme(){
   const dark=h.getAttribute("data-theme")==="dark";
   h.setAttribute("data-theme",dark?"light":"dark");
   document.getElementById("thBtn").textContent=dark?"🌙 다크":"☀️ 라이트";
-}
-function exportJSON(){
-  const blob=new Blob([JSON.stringify(state,null,2)],{type:"application/json"});
-  const a=document.createElement("a");
-  a.href=URL.createObjectURL(blob); a.download="weekly-goal.json"; a.click();
-  URL.revokeObjectURL(a.href);
 }
 
 
