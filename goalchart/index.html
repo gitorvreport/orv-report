@@ -128,12 +128,13 @@
   .bar.clipL{border-top-left-radius:0; border-bottom-left-radius:0;}
   .bar.clipR{border-top-right-radius:0; border-bottom-right-radius:0;}
   .bnm{overflow:hidden; text-overflow:ellipsis;}
-  /* 전체 표시 모드: 이름을 막대 밖 오른쪽에 둔다. 막대 안에 흘려보내면
-     색 막대의 흰 글자가 밝은 배경으로 삐져나와 안 읽힌다. */
-  .barlbl{position:absolute; height:26px; display:flex; align-items:center; z-index:5;
-    white-space:nowrap; font-size:11.5px; font-weight:600; color:var(--ink); cursor:pointer;
-    padding-left:2px; pointer-events:auto;}
-  .barlbl .lockmark{margin-left:5px;}
+  /* 전체 표시 모드: 이름은 막대 안 제자리에서 시작해 오른쪽으로 넘친다.
+     시작 위치가 곧 작업 시작일이라, 줄임 모드와 글자 위치가 어긋나지 않는다.
+     막대를 벗어나면 배경이 밝아지므로 흰 글자로는 안 읽힌다 → 본문 색 + 밝은 후광.
+     후광이 막대 위에서도 글자를 배경색에서 떼어내 준다. */
+  .tl-full .bar{overflow:visible;}
+  .tl-full .bnm{overflow:visible; text-overflow:clip; color:var(--ink);
+    text-shadow:0 0 3px var(--surface-1), 0 0 3px var(--surface-1), 0 0 2px var(--surface-1);}
   .bar .clip{opacity:.9; font-weight:700; flex:0 0 auto;}
   .edgechip{position:absolute; z-index:5; width:14px; height:26px; border-radius:5px; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:12px; color:#fff; cursor:pointer; opacity:.8; box-shadow:0 1px 2px rgba(0,0,0,.12);}
   .edgechip.done{background:var(--done);} .edgechip.inprog{background:var(--inprog);} .edgechip.risk{background:var(--risk);}
@@ -246,7 +247,7 @@ const MODE = "view";
 const IS_EDIT = MODE === "edit";
 let state = {
   "title": "슈퍼 스프린트 시스템 — Weekly Goal (ORVV-8765)",
-  "deadline": "2026-08-27",
+  "deadline": "2026-08-28",
   "window": {
     "on": true,
     "start": "2026-08-10",
@@ -576,6 +577,7 @@ function render(){
   const tl=document.getElementById("timeline");
   const W=f.days*DAY_W;
   tl.style.width=W+"px";
+  tl.className = "timeline" + (barTextIsFull() ? " tl-full" : "");
 
   // header
   let head='<div class="thead" style="width:'+W+'px">';
@@ -681,16 +683,10 @@ function render(){
     const cls='bar '+t.status+(blk?' blocked':'')+(clipL?' clipL':'')+(clipR?' clipR':'');
     const inner=(clipL?'<span class="clip">‹</span>':'')+'<span class="ic">'+STICON[t.status]+'</span>';
     const tail=pg+(clipR?'<span class="clip">›</span>':'');
-    if(barTextIsFull()){
-      // 이름은 막대 밖 오른쪽. 막대 안 흰 글자가 밝은 배경으로 흘러나오면 안 읽힌다.
-      grid+='<div class="'+cls+'" style="left:'+left+'px; top:'+top+'px; width:'+width+'px" onclick="openEdit('+t.id+')" '+tip+'>'+
-            inner+tail+'</div>'+
-            '<div class="barlbl" style="left:'+(left+width+6)+'px; top:'+top+'px" onclick="openEdit('+t.id+')" '+tip+'>'+
-            esc(t.name)+(blk?'<span class="lockmark">🔒</span>':'')+'</div>';
-    }else{
-      grid+='<div class="'+cls+'" style="left:'+left+'px; top:'+top+'px; width:'+width+'px" onclick="openEdit('+t.id+')" '+tip+'>'+
-            inner+'<span class="bnm">'+esc(t.name)+'</span>'+tail+'</div>';
-    }
+    // 마크업은 두 모드가 같다. 넘칠지 자를지는 .tl-full 이 CSS 로 정한다 —
+    // 그래야 글자 시작 위치가 모드와 무관하게 막대 안 제자리로 고정된다.
+    grid+='<div class="'+cls+'" style="left:'+left+'px; top:'+top+'px; width:'+width+'px" onclick="openEdit('+t.id+')" '+tip+'>'+
+          inner+'<span class="bnm">'+esc(t.name)+'</span>'+tail+'</div>';
   });
   grid+='</div>';
   tl.innerHTML=head+grid;
