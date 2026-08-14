@@ -89,7 +89,13 @@
   .resizer::after{content:""; position:absolute; left:2px; top:0; bottom:0; width:3px; border-radius:2px; background:transparent;}
   .resizer:hover::after,.resizer.drag::after{background:var(--inprog);}
   .lhead{height:54px; display:flex; align-items:flex-end; padding:0 14px 8px; font-size:12px; color:var(--muted); border-bottom:1px solid var(--grid);}
-  .lrow{height:46px; display:flex; flex-direction:column; justify-content:center; padding:0 14px; border-bottom:1px solid var(--grid); cursor:pointer;}
+  /* 하위 행은 에픽에서 한 칸 들여쓰고 그 경계에 세로 라인을 세운다 — 훑을 때 어느
+     에픽에 물린 작업인지 바로 잡힌다. **높이(46px)는 건드리지 말 것**: ROW_H 가
+     타임라인 막대 좌표의 근거라 여기서 어긋나면 좌우가 세로로 밀린다.
+     box-sizing:border-box 라 좌측 테두리는 높이에 영향을 주지 않는다. */
+  .lrow{height:46px; display:flex; flex-direction:column; justify-content:center;
+    margin-left:22px; border-left:1px solid var(--axis); padding:0 14px 0 12px;
+    border-bottom:1px solid var(--grid); cursor:pointer;}
   .lrow:hover{background:var(--chip);}
   .lrow .nm{font-weight:600; font-size:13px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:flex; align-items:center; gap:6px;}
   .lrow .meta{font-size:11.5px; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
