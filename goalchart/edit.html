@@ -83,7 +83,14 @@
 
   /* Chart */
   .card{background:var(--surface-1); border:1px solid var(--border); border-radius:16px; overflow:hidden;}
-  .chart-body{display:flex;}
+  /* 넓은 화면에서 차트가 왼쪽에 몰려 보이지 않게 가운데로 모은다. 타임라인은 표시 창
+     길이만큼(일수 × DAY_W)만 그려지므로, 스크롤러가 남는 폭을 다 먹으면 그만큼이
+     오른쪽 빈 공간이 된다 — 아래 .tl-scroll 의 flex 와 한 쌍이다.
+     **safe 를 떼지 말 것**: 좁은 화면에서 좌측 라벨(최대 560px)만으로도 폭을 넘길 수 있는데,
+     그냥 center 면 넘친 만큼이 왼쪽으로 잘려 나가고 카드가 overflow:hidden 이라
+     스크롤로 되돌릴 수도 없다. safe 를 모르는 브라우저는 이 줄을 통째로 버려
+     예전처럼 왼쪽 정렬이 된다 — 잘리는 쪽으로는 물러나지 않는다. */
+  .chart-body{display:flex; justify-content:safe center;}
   .labels{flex:0 0 auto; width:320px; border-right:1px solid var(--grid); min-width:0;}
   .resizer{flex:0 0 7px; cursor:col-resize; position:relative; touch-action:none;}
   .resizer::after{content:""; position:absolute; left:2px; top:0; bottom:0; width:3px; border-radius:2px; background:transparent;}
@@ -136,7 +143,10 @@
   .ebar.clipL{border-top-left-radius:0; border-bottom-left-radius:0;}
   .ebar.clipR{border-top-right-radius:0; border-bottom-right-radius:0;}
 
-  .tl-scroll{overflow-x:auto; flex:1 1 auto;}
+  /* 늘어나지 않고(0) 줄어들기만 한다(1) — 내용보다 화면이 넓으면 타임라인 폭 그대로
+     남아 .chart-body 의 가운데 정렬이 먹고, 좁으면 줄어들며 안에서 가로 스크롤한다.
+     overflow 가 visible 이 아니라 min-width:auto 가 0 으로 풀려서 줄어들 수 있다. */
+  .tl-scroll{overflow-x:auto; flex:0 1 auto;}
   .timeline{position:relative;}
   .thead{position:relative; height:54px; border-bottom:1px solid var(--grid);}
   .wk{position:absolute; top:0; height:26px; display:flex; align-items:center; padding-left:10px; font-size:11.5px; font-weight:700; color:var(--ink-2); border-left:1px solid var(--grid); background:var(--chip);}
