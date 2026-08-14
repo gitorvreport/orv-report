@@ -61,6 +61,9 @@
   /* Legend */
   .sync-note{min-height:16px; margin:8px 2px 0; font-size:12px; color:var(--muted);}
   .sync-note.bad{color:var(--risk);}
+  .lookup-note{min-height:15px; font-size:12px; color:var(--muted); line-height:1.5;}
+  .lookup-note.bad{color:var(--risk);}
+  .lookup-note.ok{color:var(--done);}
   /* 값이 확정되기 전에는 아예 그리지 않는다. 저장된 값(배포 시점에 굳은 것)을
      잠깐 보여줬다 바꾸면, 흐리게 하더라도 값이 튀는 게 보인다. */
   .loading{padding:64px 20px; text-align:center; color:var(--muted); font-size:14px;}
@@ -283,8 +286,16 @@
   <div class="modal">
     <h3 id="mTitle">작업 편집</h3>
     <div class="row2">
-      <div class="fld"><label>Jira 이슈 키</label><input id="fJira" placeholder="예: OFF-123"></div>
+      <div class="fld"><label>Jira 이슈 키</label>
+        <div style="display:flex; gap:6px;">
+          <input id="fJira" placeholder="9045 또는 ORVV-9045" style="flex:1 1 auto; min-width:0;">
+          <button type="button" class="ghost" id="fPullBtn" onclick="lookupIssue()" style="flex:0 0 auto;">불러오기</button>
+        </div>
+      </div>
       <div class="fld"><label>&nbsp;</label><a id="fJiraOpen" href="#" target="_blank" rel="noopener" style="display:inline-block; padding:8px 10px; font-size:12.5px; color:var(--inprog); text-decoration:none;">Jira에서 열기 ↗</a></div>
+    </div>
+    <div class="row2" style="grid-template-columns:1fr;">
+      <div class="lookup-note" id="lookupNote"></div>
     </div>
     <div class="row2">
       <div class="fld"><label>에픽/카테고리 이름</label><input id="fEpicName" placeholder="예: 결제 리뉴얼"></div>
@@ -2879,6 +2890,88 @@ function renderTable(){
 function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
 function mmdd(s){const d=pd(s); return (d.getMonth()+1)+"/"+d.getDate();}
 
+// 편집 중인 작업 id. **마커 밖에 둔다** — 뷰어의 closeEdit 도 이 변수를 건드리므로
+// EDIT-ONLY 안에 넣으면 뷰어에서 선언만 사라지고 참조가 남아 ReferenceError 가 난다.
+// 그리고 lookupIssue 보다 앞이어야 한다(뒤면 TDZ).
+let editingId=null;
+
+/* ---------- Jira 이슈 불러오기 (편집본 전용) ---------- */
+
+// '작업 추가'는 Jira 에 새 이슈를 만드는 게 아니다 — **이미 발행된 이슈를 이 차트에 넣을지**
+// 고르는 자리다. 그래서 키만 받아 나머지를 Jira 에서 채운다. 손으로 옮겨 적으면 오타가 나고,
+// 그 오타는 화이트리스트가 어긋나 그 이슈만 갱신에서 빠지는 것으로 이어진다.
+function lookupBase(){
+  const u=refreshUrl();
+  if(!u) return null;
+  // 로컬 편집 서버는 /lookup 을 그대로 중계한다. 배포본은 Worker 를 직접 부른다.
+  return u==="/refresh" ? "/lookup" : (state.syncEndpoint||"").replace(/\/+$/,"")+"/lookup";
+}
+
+function setLookupNote(text, kind){
+  const el=document.getElementById("lookupNote"); if(!el) return;
+  el.textContent=text||"";
+  el.className="lookup-note"+(kind?" "+kind:"");
+}
+
+// 차트에 이미 있는 이슈를 선행으로 걸어 준다. Jira 의 blockedBy 중 차트에 있는 것만 —
+// 없는 이슈는 id 가 없어 참조할 수 없다.
+function depIdsFromKeys(keys){
+  const byKey={}; state.tasks.forEach(function(t){ if(t.jira) byKey[t.jira]=t.id; });
+  const ids=[], miss=[];
+  (keys||[]).forEach(function(k){ if(byKey[k]!==undefined) ids.push(byKey[k]); else miss.push(k); });
+  return {ids:ids, miss:miss};
+}
+
+async function lookupIssue(){
+  const base=lookupBase();
+  const raw=document.getElementById("fJira").value.trim();
+  if(!raw){ setLookupNote("이슈 키를 입력하세요. 숫자만 넣어도 됩니다 (예: 9045).", "bad"); return; }
+  if(!base){
+    setLookupNote("이렇게 연 편집본에서는 불러올 수 없습니다. 배포된 편집본을 쓰거나 `npm run edit` 으로 여세요.", "bad");
+    return;
+  }
+  const btn=document.getElementById("fPullBtn");
+  if(btn){ btn.disabled=true; btn.textContent="…"; }
+  setLookupNote("Jira 에서 불러오는 중…");
+  try{
+    const res=await fetch(base+"?key="+encodeURIComponent(raw), {cache:"no-store"});
+    const body=await res.json();
+    if(!res.ok) throw new Error(body && body.error ? body.error : "HTTP "+res.status);
+    const j=body.issue;
+    if(!j) throw new Error("응답에 이슈가 없습니다");
+
+    // 이미 차트에 있는 이슈면 알려 준다 — 같은 이슈가 두 줄로 들어가면 화이트리스트도 중복된다.
+    const dup=state.tasks.find(function(t){ return t.jira===j.key && t.id!==editingId; });
+
+    document.getElementById("fJira").value=j.key;
+    document.getElementById("fName").value=j.name||"";
+    document.getElementById("fOwner").value=j.owner||"";
+    document.getElementById("fStatus").value=j.status||"todo";
+    if(j.start) document.getElementById("fStart").value=j.start;
+    if(j.end)   document.getElementById("fEnd").value=j.end;
+    document.getElementById("fEpicKey").value=j.epicKey||"";
+    document.getElementById("fEpicName").value=j.epicName||"";
+    const jo=document.getElementById("fJiraOpen");
+    jo.href=jiraUrl(j.key); jo.style.display="inline-block";
+
+    // 선행 작업은 Jira 의 Blocks 링크에서. 체크 상태를 다시 그린다.
+    const d=depIdsFromKeys(j.blockedBy);
+    renderDepList(editingId, j.epicKey||"__none__", d.ids);
+
+    let note=j.key+" 를 불러왔습니다.";
+    if(!j.start || !j.end) note+=" 날짜가 비어 있어 오늘 기준으로 두었습니다 — 확인하세요.";
+    if(d.ids.length) note+=" 선행 "+d.ids.length+"건을 체크했습니다.";
+    if(d.miss.length) note+=" 차트에 없는 선행("+d.miss.join(", ")+")은 건너뛰었습니다.";
+    if(dup) note+=" ⚠ 이 이슈는 이미 차트에 있습니다.";
+    setLookupNote(note, dup?"bad":"ok");
+  }catch(e){
+    setLookupNote("불러오지 못했습니다 — "+(e.message||e), "bad");
+  }finally{
+    if(btn){ btn.disabled=false; btn.textContent="불러오기"; }
+  }
+}
+
+
 /* ---------- edit modal ---------- */
 
 // 선행 작업 후보: 같은 에픽 안의 작업. 단 이미 선행으로 걸린 작업은 에픽이 달라도 남긴다
@@ -2909,7 +3002,6 @@ function renderDepList(currentId, epicKey, checkedIds){
   }).join("");
 }
 
-let editingId=null;
 function openEdit(id){
   if(!IS_EDIT) return openDetail(id);
   
@@ -2928,6 +3020,7 @@ function openEdit(id){
   document.getElementById("fStart").value = t?t.start:iso(todayMid());
   document.getElementById("fEnd").value = t?t.end:iso(addD(todayMid(),1));
   renderDepList(id, epicKeyOf(t), (t&&t.deps)||[]);
+  setLookupNote(t ? "" : "이미 Jira 에 있는 이슈를 차트에 넣는 자리입니다. 키를 넣고 '불러오기'를 누르세요.");
   document.getElementById("ov").classList.add("on");
   
 }
