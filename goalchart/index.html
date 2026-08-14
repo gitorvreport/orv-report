@@ -12,6 +12,7 @@
     --done:#0ca30c; --inprog:#2a78d6; --todo:#898781; --risk:#d03b3b; --review:#7c4dbe;
     --weekend:rgba(137,135,129,.10); --today:#eb6834; --dep:#a9a8a2; --dep-block:#d03b3b;
     --chip:rgba(11,11,11,.05);
+    --wait:#c2410c; --flag-risk-bg:rgba(208,59,59,.13); --flag-wait-bg:rgba(194,65,12,.13);
     color-scheme:light;
   }
   html[data-theme="dark"]{
@@ -21,6 +22,7 @@
     --done:#0ca30c; --inprog:#3987e5; --todo:#6b6a66; --risk:#d03b3b; --review:#a06fe0;
     --weekend:rgba(137,135,129,.14); --today:#eb6834; --dep:#6b6a66; --dep-block:#e66767;
     --chip:rgba(255,255,255,.07);
+    --wait:#fb923c; --flag-risk-bg:rgba(208,59,59,.20); --flag-wait-bg:rgba(251,146,60,.18);
     color-scheme:dark;
   }
   *{box-sizing:border-box;}
@@ -93,6 +95,14 @@
   .lrow .meta{font-size:11.5px; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
   .sdot{width:8px; height:8px; border-radius:50%; flex:0 0 auto;}
   .lock{color:var(--risk); font-size:11px;}
+  /* 주의 칩. 담당자 뒤에 '· 시작일 미정'처럼 텍스트로 붙어 있으면 이름의 일부로 읽힌다.
+     종류별로 색을 나눠, 눈으로 훑을 때 무엇이 문제인지 바로 잡히게 한다. */
+  .flag{display:inline-block; margin-left:5px; padding:0 5px; border-radius:4px;
+    font-size:10.5px; font-weight:700; line-height:15px; vertical-align:1px;}
+  .flag.risk{background:var(--flag-risk-bg); color:var(--risk);}
+  .flag.wait{background:var(--flag-wait-bg); color:var(--wait);}
+  .flag.miss{background:var(--chip); color:var(--muted);}
+  .flag.oow{background:var(--chip); color:var(--muted);}
   .erow{height:34px; display:flex; align-items:center; gap:8px; padding:0 12px; background:var(--chip); border-bottom:1px solid var(--grid); font-weight:700; font-size:12.5px; color:var(--ink);}
   .erow .edot{width:9px; height:9px; border-radius:50%; flex:0 0 auto;}
   .erow .enm{white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
@@ -2348,6 +2358,29 @@ function layoutRows(gs){
   return {lay:lay, taskY:taskY, H:y};
 }
 
+// 담당자 칸에는 '홍길동 · 시작일 미정'처럼 사유가 섞여 들어온다(날짜가 빈 이슈를 오늘에
+// 붙이면서 붙인 꼬리표다). 이름과 사유를 갈라 놓아야 칩으로 따로 보여줄 수 있다.
+function ownerParts(owner){
+  const p=String(owner||"").split(" · ");
+  return {name:p[0]||"", miss:p.slice(1).join(" · ")};
+}
+
+// 작업 줄에 붙는 주의 칩. 지금 무엇이 문제인지만 담는다 — 기한 초과와 대기는 함께 뜨지
+// 않는다(기한 초과가 더 급한 신호라 그쪽만 남긴다).
+// f(표시 창)는 없어도 된다 — 표·상세 패널처럼 창 개념이 없는 자리에서는 '기간 밖'만 빠진다.
+function flagsOf(t, f){
+  const out=[];
+  if(t.status==="risk") out.push({k:"risk", s:"기한 초과"});
+  else if(isWaiting(t)) out.push({k:"wait", s:"대기"});
+  const miss=ownerParts(t.owner).miss;
+  if(miss) out.push({k:"miss", s:miss});
+  if(f && outOfWindow(f,t)) out.push({k:"oow", s:"기간 밖"});
+  return out;
+}
+function flagsHtml(t, f){
+  return flagsOf(t,f).map(function(x){ return '<span class="flag '+x.k+'">'+esc(x.s)+'</span>'; }).join("");
+}
+
 function labelsHtml(lay, gs, f){
   let lh='<div class="lhead">작업 '+state.tasks.length+'개 · 에픽 '+gs.length+'개</div>';
   lay.forEach(it=>{
@@ -2368,12 +2401,11 @@ function labelsHtml(lay, gs, f){
     }else{
       const t=it.t, blk=isBlocked(t);
       const jk = t.jira ? '<a class="jkey" href="'+jiraUrl(t.jira)+'" target="_blank" rel="noopener" onclick="event.stopPropagation()">'+esc(t.jira)+'</a> · ' : '';
-      const oo = outOfWindow(f,t) ? ' · <span style="color:var(--muted)">기간 밖</span>' : '';
       let mv = "";
       
       lh += '<div class="lrow" onclick="openEdit('+t.id+')">'+
         '<div class="nm"><span class="sdot" style="background:'+STVAR[t.status]+'"></span>'+esc(t.name)+(blk?' <span class="lock" title="선행 작업이 완료되지 않아 대기 중">⏳</span>':'')+'</div>'+
-        '<div class="meta">'+jk+esc(t.owner||'')+' · '+mmdd(t.start)+'~'+mmdd(t.end)+oo+'</div>'+mv+'</div>';
+        '<div class="meta">'+jk+esc(ownerParts(t.owner).name)+' · '+mmdd(t.start)+'~'+mmdd(t.end)+flagsHtml(t,f)+'</div>'+mv+'</div>';
     }
   });
   return lh;
@@ -2748,8 +2780,8 @@ function renderDrill(){
         : '<td>'+STLABEL[t.status]+'</td>';
       h+='<tr onclick="openEdit('+t.id+')" style="cursor:pointer">'+
          '<td>'+ep+'</td><td>'+jk+'</td>'+
-         '<td><span class="sdot" style="background:'+STVAR[t.status]+'"></span>'+esc(t.name)+'</td>'+
-         '<td>'+esc(t.owner||'')+'</td><td>'+mmdd(t.start)+'~'+mmdd(t.end)+'</td>'+tail+'</tr>';
+         '<td><span class="sdot" style="background:'+STVAR[t.status]+'"></span>'+esc(t.name)+flagsHtml(t)+'</td>'+
+         '<td>'+esc(ownerParts(t.owner).name)+'</td><td>'+mmdd(t.start)+'~'+mmdd(t.end)+'</td>'+tail+'</tr>';
     });
     h+='</tbody></table>';
   });
@@ -2766,8 +2798,8 @@ function renderTable(){
     const jk=t.jira?'<a class="jkey" href="'+jiraUrl(t.jira)+'" target="_blank" rel="noopener" onclick="event.stopPropagation()">'+esc(t.jira)+'</a>':'—';
     h+='<tr onclick="openEdit('+t.id+')" style="cursor:pointer">'+
        '<td>'+ep+'</td><td>'+jk+'</td>'+
-       '<td><span class="sdot" style="background:'+STVAR[t.status]+'"></span>'+esc(t.name)+blk+'</td>'+
-       '<td>'+esc(t.owner||'')+'</td><td>'+mmdd(t.start)+'~'+mmdd(t.end)+'</td>'+
+       '<td><span class="sdot" style="background:'+STVAR[t.status]+'"></span>'+esc(t.name)+flagsHtml(t)+'</td>'+
+       '<td>'+esc(ownerParts(t.owner).name)+'</td><td>'+mmdd(t.start)+'~'+mmdd(t.end)+'</td>'+
        '<td>'+STLABEL[t.status]+'</td>'+
        '<td style="color:var(--muted)">'+esc(deps||'—')+'</td></tr>';
   });
@@ -2804,8 +2836,9 @@ function openDetail(id){
   const rows=[
     ["Jira 이슈", jk],
     ["에픽", ep],
-    ["담당", esc(t.owner||"—")],
-    ["상태", '<span class="dep-st '+t.status+'">'+STICON[t.status]+'</span> '+STLABEL[t.status]],
+    ["담당", esc(ownerParts(t.owner).name||"—")],
+    // 담당 칸에서 '시작일 미정' 같은 사유를 뗐으므로 여기서 칩으로 받아 준다.
+    ["상태", '<span class="dep-st '+t.status+'">'+STICON[t.status]+'</span> '+STLABEL[t.status]+flagsHtml(t)],
     ["기간", mmdd(t.start)+" ~ "+mmdd(t.end)],
     ["선행 작업", depDetailHtml(t)],
     ["후행 작업", succDetailHtml(t)],
