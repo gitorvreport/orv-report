@@ -230,8 +230,8 @@
 
   <div class="stats" id="stats"></div>
   
-  <div class="sync-note" id="syncNote"></div>
   
+  <div class="sync-note" id="ageNote"></div>
   
 
   <div class="legend">
@@ -255,13 +255,67 @@
   </div>
 
   
+  <details class="tips">
+    <summary>📋 편집본 사용법 (열기)</summary>
+    <ol>
+      <li>작업 막대나 왼쪽 이름을 <b>클릭</b>하면 이름·담당·기간·상태·선행작업을 편집합니다.
+          선행 작업 목록에는 <b>같은 에픽</b>의 작업만 나옵니다.</li>
+      <li>왼쪽 행이나 에픽 헤더에 마우스를 올리면 <b>▲▼</b>로 순서를 바꿉니다.
+          작업은 같은 에픽 안에서만 움직이고, 에픽 헤더의 ▲▼는 에픽을 통째로 옮깁니다.</li>
+      <li>에픽 헤더의 <b>+/−</b>로 접고 펼치며, 왼쪽 목록과 타임라인 경계를 <b>끌어서</b> 폭을 조절합니다.
+          막대 이름이 잘리면 <b>「글자 전체」</b>로 전부 표시합니다. 이 설정은 브라우저에 기억됩니다.</li>
+      <li>상태를 '완료'로 바꾸면 그 작업을 기다리던 후행 작업의 '대기' 표시가 풀립니다.</li>
+      <li>편집을 마치면 <b>JSON 내보내기</b> → 그 파일로 <code>data/chart.json</code> 교체 →
+          <code>npm run deploy</code> 순으로 배포판에 반영합니다.</li>
+    </ol>
+  </details>
+  
 
   
+  <div class="foot">편집본입니다. 변경사항은 브라우저 메모리에만 있으니 ‘JSON 내보내기’로 저장한 뒤 <code>data/chart.json</code>을 교체하세요.</div>
   
-  <div class="foot">읽기 전용 보기입니다. 내용 수정은 관리자에게 요청하세요.</div>
   
 </div>
 
+
+<!-- Edit modal -->
+<div class="ov" id="ov">
+  <div class="modal">
+    <h3 id="mTitle">작업 편집</h3>
+    <div class="row2">
+      <div class="fld"><label>Jira 이슈 키</label><input id="fJira" placeholder="예: OFF-123"></div>
+      <div class="fld"><label>&nbsp;</label><a id="fJiraOpen" href="#" target="_blank" rel="noopener" style="display:inline-block; padding:8px 10px; font-size:12.5px; color:var(--inprog); text-decoration:none;">Jira에서 열기 ↗</a></div>
+    </div>
+    <div class="row2">
+      <div class="fld"><label>에픽/카테고리 이름</label><input id="fEpicName" placeholder="예: 결제 리뉴얼"></div>
+      <div class="fld"><label>에픽 키(Jira)</label><input id="fEpicKey" placeholder="예: OFF-100"></div>
+    </div>
+    <div class="fld"><label>작업명</label><input id="fName" placeholder="예: 본문 초안 작성"></div>
+    <div class="row2">
+      <div class="fld"><label>담당</label><input id="fOwner" placeholder="예: 홍길동"></div>
+      <div class="fld"><label>상태</label>
+        <select id="fStatus">
+          <option value="todo">예정</option>
+          <option value="inprog">진행중</option>
+          <option value="done">완료</option>
+          <option value="risk">기한 초과</option>
+        </select>
+      </div>
+    </div>
+    <div class="row2">
+      <div class="fld"><label>시작일</label><input type="date" id="fStart"></div>
+      <div class="fld"><label>종료일</label><input type="date" id="fEnd"></div>
+    </div>
+    <div class="fld"><label>선행 작업 (이게 끝나야 시작)</label><div class="deps" id="fDeps"></div></div>
+    <div class="modal-actions">
+      <button class="ghost" id="delBtn" style="color:var(--risk)" onclick="delTask()">삭제</button>
+      <div style="display:flex; gap:8px;">
+        <button class="ghost" onclick="closeEdit()">취소</button>
+        <button class="primary" onclick="saveTask()">저장</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 <!-- Detail panel (읽기 전용) -->
@@ -284,7 +338,7 @@ const STLABEL = {done:"완료", inprog:"진행중", todo:"예정", risk:"기한 
 const STICON  = {done:"✓", inprog:"◐", todo:"○", risk:"▲"};
 const STVAR   = {done:"var(--done)", inprog:"var(--inprog)", todo:"var(--todo)", risk:"var(--risk)"};
 
-const MODE = "view";
+const MODE = "edit";
 const IS_EDIT = MODE === "edit";
 let state = {
   "title": "B1 마감 — Weekly Goal (ORVV-7762)",
@@ -2272,6 +2326,54 @@ function toggleAllEpics(){
 }
 
 
+/* ---------- 순서 조작 (편집본 전용) ---------- */
+// 같은 에픽 안의 인접 작업과 배열 위치를 맞바꾼다. 에픽 경계에서는 그대로 둔다 —
+// 경계를 넘는 이동은 작업의 소속 에픽을 바꾸는 것이지 순서 변경이 아니다.
+// 같은 에픽 작업이 배열에서 떨어져 있어도 맞다: 다른 에픽의 최초 등장 위치는 건드리지 않는다.
+function moveTaskInArray(tasks, id, dir){
+  const out = tasks.slice();
+  const i = out.findIndex(t => t.id === id);
+  if(i === -1) return out;
+  const k = epicKeyOf(out[i]);
+  let j = -1;
+  if(dir < 0){ for(let x = i-1; x >= 0; x--)          if(epicKeyOf(out[x]) === k){ j = x; break; } }
+  else       { for(let x = i+1; x < out.length; x++)  if(epicKeyOf(out[x]) === k){ j = x; break; } }
+  if(j === -1) return out;
+  const tmp = out[i]; out[i] = out[j]; out[j] = tmp;
+  return out;
+}
+
+// 에픽 블록을 통째로 옮기고 배열을 에픽별 연속 블록으로 재구성한다.
+// 그룹 내부 순서는 그대로 유지된다.
+function moveEpicInArray(tasks, epicKey, dir){
+  const keys = [], byKey = new Map();
+  tasks.forEach(t => {
+    const k = epicKeyOf(t);
+    if(!byKey.has(k)){ byKey.set(k, []); keys.push(k); }
+    byKey.get(k).push(t);
+  });
+  const i = keys.indexOf(epicKey);
+  if(i === -1) return tasks.slice();
+  const j = i + (dir < 0 ? -1 : 1);
+  if(j < 0 || j >= keys.length) return tasks.slice();
+  const tmp = keys[i]; keys[i] = keys[j]; keys[j] = tmp;
+  return keys.reduce((acc, k) => acc.concat(byKey.get(k)), []);
+}
+
+function moveTask(id, dir){ state.tasks = moveTaskInArray(state.tasks, id, dir); render(); }
+function moveEpicAt(i, dir){
+  const g = groups()[i]; if(!g) return;
+  state.tasks = moveEpicInArray(state.tasks, g.gkey, dir); render();
+}
+// 호출식을 문자열로 조립하므로 괄호가 어긋나기 쉽다. 함수명과 인자를 따로 받아
+// 여기서 한 곳에서만 조립한다 — onclick 이 문법 오류면 핸들러가 통째로 죽고
+// 클릭이 행으로 전파돼 편집 모달이 대신 열린다(조용한 실패라 눈치채기 어렵다).
+function mvBtns(fn, arg){
+  return '<span class="mv">'+
+    '<button class="mvb" title="위로" onclick="event.stopPropagation();'+fn+'('+arg+',-1)">▲</button>'+
+    '<button class="mvb" title="아래로" onclick="event.stopPropagation();'+fn+'('+arg+',1)">▼</button></span>';
+}
+
 
 function applyLabelWidth(){ document.getElementById("labels").style.width = ui.labelW + "px"; }
 function initResizer(){
@@ -2314,6 +2416,8 @@ function labelsHtml(lay, gs, f){
       const sum = it.collapsed ? '<span class="esum">'+esc(epicSummary(g))+'</span>' : '';
       let mv = "";
       
+      mv = mvBtns("moveEpicAt", it.gi);
+      
       lh += '<div class="erow" style="border-left:3px solid '+g.color+'" onclick="toggleEpicAt('+it.gi+')" title="클릭해서 접기/펼치기">'+
         '<span class="ecar">'+(it.collapsed?'+':'−')+'</span>'+
         '<span class="edot" style="background:'+g.color+'"></span><span class="enm">'+esc(g.name)+'</span>'+sum+chip+mv+'</div>';
@@ -2322,6 +2426,8 @@ function labelsHtml(lay, gs, f){
       const jk = t.jira ? '<a class="jkey" href="'+jiraUrl(t.jira)+'" target="_blank" rel="noopener" onclick="event.stopPropagation()">'+esc(t.jira)+'</a> · ' : '';
       const oo = outOfWindow(f,t) ? ' · <span style="color:var(--muted)">기간 밖</span>' : '';
       let mv = "";
+      
+      mv = mvBtns("moveTask", t.id);
       
       lh += '<div class="lrow" onclick="openEdit('+t.id+')">'+
         '<div class="nm"><span class="sdot" style="background:'+STVAR[t.status]+'"></span>'+esc(t.name)+(blk?' <span class="lock" title="선행 작업이 완료되지 않아 대기 중">⏳</span>':'')+'</div>'+
@@ -2508,6 +2614,93 @@ function stat(k,v,s,pct,kind){
 
 /* ---------- 데이터가 얼마나 낡았나 (편집본 전용) ---------- */
 
+// 편집본은 로컬 파일이라 Worker 를 부를 수 없다(출처가 null 이라 거부된다). 그래서 낡은 채로
+// 열릴 수 있고, 거기서 내보낸 JSON 을 Jira 에 되쓰면 Jira 가 과거로 돌아간다 —
+// 되쓰기 대상이 하필 시작일·종료일이라 정확히 이 값들이다. 그 위험을 눈에 보이게 만든다.
+const STALE_HOURS = 6;
+
+function ageText(syncedAt, now){
+  if(!syncedAt) return {text:"⚠ 이 데이터가 언제 Jira 와 맞춘 것인지 알 수 없습니다. `npm run edit` 으로 다시 여세요.", bad:true};
+  const t=new Date(syncedAt);
+  if(isNaN(t)) return {text:"⚠ 마지막 동기화 시각을 읽을 수 없습니다.", bad:true};
+  const mins=Math.max(0, Math.round((now-t)/60000));
+  const when = mins<1 ? "방금" : mins<60 ? (mins+"분 전") :
+               mins<60*24 ? (Math.round(mins/60)+"시간 전") : (Math.round(mins/1440)+"일 전");
+  const bad = mins >= STALE_HOURS*60;
+  return {
+    text: (bad?"⚠ ":"") + "Jira 와 맞춘 시각: " + when +
+          (bad ? " — 오래됐습니다. `npm run edit` 으로 다시 열어 최신에서 시작하세요." : ""),
+    bad: bad,
+  };
+}
+
+function showAgeNote(){
+  const el=document.getElementById("ageNote"); if(!el) return;
+  const a=ageText(state.syncedAt, new Date());
+  el.textContent=a.text;
+  el.className="sync-note"+(a.bad?" bad":"");
+}
+
+// 어디서 최신값을 받을지는 **어떻게 열렸는지**로 갈린다.
+//   file://            → 받을 곳이 없다. 되는 척하지 않고 안내만 한다.
+//   localhost          → 로컬 편집 서버의 /refresh. 그 서버가 Worker 를 부른다(Node 라 CORS 무관).
+//   그 밖의 http(s)    → 배포된 편집본이다. 출처가 Worker 의 허용 목록과 같으므로 직접 부른다.
+// 배포된 편집본이 로컬 서버를 거치지 않는 것이 핵심이다 — 팀원이 링크만 열면 되고,
+// 누구의 PC 도 켜져 있을 필요가 없다.
+function refreshUrl(){
+  if(location.protocol!=="http:" && location.protocol!=="https:") return null;
+  const h=location.hostname;
+  if(h==="127.0.0.1" || h==="localhost" || h==="[::1]") return "/refresh";
+  return (state.syncEndpoint||"").trim() || null;
+}
+function canPull(){ return !!refreshUrl(); }
+
+function setAgeNote(text, bad){
+  const el=document.getElementById("ageNote"); if(!el) return;
+  el.textContent=text;
+  el.className="sync-note"+(bad?" bad":"");
+}
+
+// boot=true 는 페이지를 처음 열 때. 값이 확정되기 전에는 그리지 않는다(뷰어와 같은 이유 —
+// 저장된 값이 잠깐 보였다 바뀌면 그게 진짜 값인 줄 안다). 버튼으로 부를 때는 이미 화면이
+// 있으므로 그대로 두고 갱신만 한다.
+async function pullLatest(boot){
+  const url=refreshUrl();
+  if(!url){
+    setAgeNote("⚠ 이렇게 연 편집본에서는 갱신할 수 없습니다. 터미널에서 `npm run edit` 으로 열거나 배포된 편집본을 쓰세요.", true);
+    if(boot){ render(); showAgeNote(); }
+    return;
+  }
+  const btn=document.getElementById("pullBtn");
+  if(btn){ btn.disabled=true; btn.textContent="가져오는 중…"; }
+  if(boot) setLoading(true);
+  setAgeNote("Jira 최신값을 가져오는 중…");
+  let n=0, failed=null;
+  try{
+    const res=await fetch(url, {cache:"no-store"});
+    const body=await res.json();
+    if(!res.ok) throw new Error(body && body.error ? body.error : "HTTP "+res.status);
+    if(!Array.isArray(body.issues)) throw new Error("응답 형식이 다릅니다");
+    // 편집 중인 의존관계·표시 순서는 그대로 두고 Jira 가 가진 값만 덮는다.
+    n=applyJiraIssues(state.tasks, body.issues, iso(todayMid()));
+    state.syncedAt=new Date().toISOString();
+  }catch(e){
+    failed=e.message||e;
+  }finally{
+    if(btn){ btn.disabled=false; btn.textContent="Jira 최신값 가져오기"; }
+    if(boot) setLoading(false);
+    render();          // 성공이든 실패든 반드시 그린다. 안 그리면 로딩 화면에 갇힌다.
+    if(boot) syncPanes();
+    if(failed){
+      setAgeNote("⚠ 갱신 실패 — 저장된 데이터를 표시합니다 ("+failed+")", true);
+    }else{
+      showAgeNote();
+      const el=document.getElementById("ageNote");
+      if(el) el.textContent += "  ·  방금 "+n+"건 반영";
+    }
+  }
+}
+
 
 /* ---------- Jira 최신값 적용 (양쪽 공통) ---------- */
 // 뷰어는 열 때 자동으로, 편집본은 버튼으로 부른다. **마커 밖에 둬야 한다** —
@@ -2546,47 +2739,6 @@ function setLoading(on){
 }
 
 /* ---------- 열 때마다 자동 갱신 (뷰어 전용) ---------- */
-
-// 페이지를 열 때마다 중계 Worker 에서 최신값을 받아 덮어쓴다.
-// 실패하면 저장된 데이터 그대로 보여준다 — 차트가 안 뜨는 것보다 조금 낡은 게 낫다.
-function showSyncNote(text, bad){
-  const el=document.getElementById("syncNote");
-  if(!el) return;
-  el.textContent=text;
-  el.className="sync-note"+(bad?" bad":"");
-}
-
-const SYNC_TIMEOUT = 8000;   // Worker 가 느려도 로딩 화면에 갇히지 않게 한다
-
-// 뷰어의 첫 그리기는 여기서만 일어난다. 성공이든 실패든 **한 번만** 그리므로
-// 인라인 값이 잠깐 보였다 바뀌는 일이 없다.
-async function syncFromJira(){
-  const url=state.syncEndpoint;
-  if(!url){ setLoading(false); render(); syncPanes(); showSyncNote(""); return; }
-  setLoading(true);
-  showSyncNote("Jira 최신값 확인 중…");
-  // AbortSignal.timeout 이 없는 브라우저도 있어 컨트롤러를 직접 쓴다.
-  const ac=(typeof AbortController!=="undefined") ? new AbortController() : null;
-  const timer=ac ? setTimeout(function(){ ac.abort(); }, SYNC_TIMEOUT) : null;
-  try{
-    const res=await fetch(url, ac ? {cache:"no-store", signal:ac.signal} : {cache:"no-store"});
-    if(!res.ok) throw new Error("HTTP "+res.status);
-    const body=await res.json();
-    if(!body || !Array.isArray(body.issues)) throw new Error("응답 형식이 다릅니다");
-    const n=applyJiraIssues(state.tasks, body.issues, iso(todayMid()));
-    const t=new Date();
-    showSyncNote("Jira 최신 · "+t.getHours()+":"+String(t.getMinutes()).padStart(2,"0")+" 기준 "+n+"건 반영");
-  }catch(e){
-    const why=(e && e.name==="AbortError") ? "응답이 너무 늦습니다" : (e.message||e);
-    showSyncNote("Jira 갱신 실패 — 저장된 데이터를 표시합니다 ("+why+")", true);
-  }finally{
-    if(timer) clearTimeout(timer);
-    // 실패해도 반드시 그린다. 안 그리면 로딩 화면에 갇힌다.
-    setLoading(false);
-    render();
-    syncPanes();
-  }
-}
 
 
 /* ---------- 상태 드릴다운 ---------- */
@@ -2729,10 +2881,54 @@ function mmdd(s){const d=pd(s); return (d.getMonth()+1)+"/"+d.getDate();}
 
 /* ---------- edit modal ---------- */
 
+// 선행 작업 후보: 같은 에픽 안의 작업. 단 이미 선행으로 걸린 작업은 에픽이 달라도 남긴다
+// (saveTask 가 체크박스에서 deps 를 다시 만들기 때문에, 목록에서 빠지면 저장 시 관계가 사라진다).
+function depCandidates(tasks, currentId, epicKey, checkedIds){
+  return tasks.filter(function(x){
+    if(currentId && x.id===currentId) return false;
+    return epicKeyOf(x)===epicKey || checkedIds.indexOf(x.id)!==-1;
+  });
+}
+
+
+function currentDepChecks(){
+  return [...document.querySelectorAll("#fDeps input:checked")].map(c=>parseInt(c.value));
+}
+function renderDepList(currentId, epicKey, checkedIds){
+  const rows=depCandidates(state.tasks, currentId, epicKey, checkedIds);
+  const dep=document.getElementById("fDeps");
+  if(!rows.length){
+    dep.innerHTML='<div style="color:var(--muted); font-size:12.5px; padding:4px 0;">같은 에픽에 고를 다른 작업이 없습니다.</div>';
+    return;
+  }
+  dep.innerHTML=rows.map(function(x){
+    const checked=checkedIds.indexOf(x.id)!==-1?" checked":"";
+    const jk=x.jira?'<span style="color:var(--muted)">'+esc(x.jira)+'</span> ':"";
+    const out=epicKeyOf(x)!==epicKey?' <span style="color:var(--muted)">· 다른 에픽</span>':"";
+    return '<label><input type="checkbox" value="'+x.id+'"'+checked+'>'+jk+esc(x.name)+out+'</label>';
+  }).join("");
+}
 
 let editingId=null;
 function openEdit(id){
   if(!IS_EDIT) return openDetail(id);
+  
+  editingId=id;
+  const t = id?state.tasks.find(x=>x.id===id):null;
+  document.getElementById("mTitle").textContent = t?"작업 편집":"새 작업 추가";
+  document.getElementById("delBtn").style.display = t?"block":"none";
+  document.getElementById("fJira").value = t?(t.jira||""):"";
+  document.getElementById("fEpicName").value = t?(t.epic&&t.epic.name||""):"";
+  document.getElementById("fEpicKey").value = t?(t.epic&&t.epic.key||""):"";
+  const jo=document.getElementById("fJiraOpen"), ju=t&&t.jira?jiraUrl(t.jira):null;
+  jo.href=ju||"#"; jo.style.display=ju?"inline-block":"none";
+  document.getElementById("fName").value = t?t.name:"";
+  document.getElementById("fOwner").value = t?(t.owner||""):"";
+  document.getElementById("fStatus").value = t?t.status:"todo";
+  document.getElementById("fStart").value = t?t.start:iso(todayMid());
+  document.getElementById("fEnd").value = t?t.end:iso(addD(todayMid(),1));
+  renderDepList(id, epicKeyOf(t), (t&&t.deps)||[]);
+  document.getElementById("ov").classList.add("on");
   
 }
 function closeEdit(){const o=document.getElementById("ov"); if(o) o.classList.remove("on"); editingId=null;}
@@ -2796,9 +2992,57 @@ function closeDetail(){document.getElementById("ovD").classList.remove("on");}
 document.getElementById("ovD").addEventListener("click",e=>{if(e.target.id==="ovD")closeDetail();});
 
 
+function saveTask(){
+  const name=document.getElementById("fName").value.trim();
+  if(!name){alert("작업명을 입력하세요."); return;}
+  let start=document.getElementById("fStart").value, end=document.getElementById("fEnd").value;
+  if(!start||!end){alert("시작일과 종료일을 입력하세요."); return;}
+  if(pd(end)<pd(start)) end=start;
+  const status=document.getElementById("fStatus").value;
+  const deps=currentDepChecks();
+  const jira=document.getElementById("fJira").value.trim();
+  const epicName=document.getElementById("fEpicName").value.trim();
+  const epicKey=document.getElementById("fEpicKey").value.trim();
+  const epic=(epicName||epicKey)?{key:epicKey||null, name:epicName||epicKey}:null;
+  const owner=document.getElementById("fOwner").value.trim();
+  if(editingId){
+    const t=state.tasks.find(x=>x.id===editingId);
+    Object.assign(t,{name,owner,start,end,status,deps,jira,epic});
+  }else{
+    state.tasks.push({id:nextId++, name, owner, start,end,status,deps,jira,epic});
+  }
+  closeEdit(); render();
+}
+
+
+function delTask(){
+  if(!editingId) return;
+  if(!confirm("이 작업을 삭제할까요?")) return;
+  state.tasks=state.tasks.filter(x=>x.id!==editingId);
+  state.tasks.forEach(t=>{t.deps=(t.deps||[]).filter(d=>d!==editingId);});
+  closeEdit(); render();
+}
 
 
 /* ---------- toolbar actions ---------- */
+
+const TOP_LEFT_EDIT =
+  '<input id="title" class="title-in">' +
+  '<div class="dl-field" style="margin-top:6px;"><span>🎯 마감일</span><input type="date" id="deadline"></div>' +
+  '<div class="dl-field" style="margin-top:6px;">' +
+    '<label style="display:flex; align-items:center; gap:6px; cursor:pointer;"><input type="checkbox" id="winOn"> 2주 창 고정</label>' +
+    '<input type="date" id="winStart"> <span>~</span> <input type="date" id="winEnd">' +
+  '</div>';
+const TOP_BTNS_EDIT =
+  '<button class="primary" onclick="openEdit(null)">＋ 작업 추가</button>' +
+  '<button class="ghost" id="pullBtn" onclick="pullLatest()">Jira 최신값 가져오기</button>' +
+  '<button class="ghost" id="viewBtn" onclick="toggleView()">표로 보기</button>' +
+  '<button class="ghost" id="allBtn" onclick="toggleAllEpics()">전체 펼치기</button>' +
+  '<button class="ghost" id="txtBtn" onclick="toggleBarText()">글자 전체</button>' +
+  '<button class="ghost" onclick="exportJSON()">JSON 내보내기</button>' +
+  '<button class="ghost" onclick="document.getElementById(\'imp\').click()">불러오기</button>' +
+  '<input type="file" id="imp" accept="application/json" style="display:none" onchange="importJSON(event)">' +
+  '<button class="ghost" onclick="toggleTheme()" id="thBtn">🌙 다크</button>';
 
 
 const TOP_LEFT_VIEW =
@@ -2818,8 +3062,18 @@ function buildTop(){
   // 조건 한 줄만 바뀌어도 ReferenceError 로 백지가 된다. 참조 자체를 마커 안에 둔다.
   let left = TOP_LEFT_VIEW, btns = TOP_BTNS_VIEW;
   
+  if(IS_EDIT){ left = TOP_LEFT_EDIT; btns = TOP_BTNS_EDIT; }
+  
   document.getElementById("topLeft").innerHTML = left;
   document.getElementById("topBtns").innerHTML = btns;
+  
+  if(IS_EDIT){
+    document.getElementById("title").addEventListener("input",e=>state.title=e.target.value);
+    document.getElementById("deadline").addEventListener("change",e=>{state.deadline=e.target.value; render();});
+    document.getElementById("winOn").addEventListener("change",e=>{state.window=state.window||{start:state.deadline,end:state.deadline}; state.window.on=e.target.checked; render();});
+    document.getElementById("winStart").addEventListener("change",e=>{state.window=state.window||{on:true}; state.window.start=e.target.value; render();});
+    document.getElementById("winEnd").addEventListener("change",e=>{state.window=state.window||{on:true}; state.window.end=e.target.value; render();});
+  }
   
 }
 
@@ -2830,6 +3084,15 @@ function syncTop(){
   if(tb) tb.textContent = barTextIsFull() ? "글자 줄임" : "글자 전체";
   const ab = document.getElementById("allBtn");
   if(ab) ab.textContent = allEpicsExpanded() ? "전체 접기" : "전체 펼치기";
+  
+  if(IS_EDIT){
+    document.getElementById("title").value = state.title;
+    document.getElementById("deadline").value = state.deadline;
+    document.getElementById("winOn").checked = !!(state.window&&state.window.on);
+    document.getElementById("winStart").value = (state.window&&state.window.start)||"";
+    document.getElementById("winEnd").value = (state.window&&state.window.end)||"";
+    return;
+  }
   
   document.getElementById("titleTxt").textContent = state.title;
   document.getElementById("deadlineTxt").textContent = state.deadline;
@@ -2851,16 +3114,44 @@ function toggleTheme(){
   document.getElementById("thBtn").textContent=dark?"🌙 다크":"☀️ 라이트";
 }
 
+function exportJSON(){
+  const blob=new Blob([JSON.stringify(state,null,2)],{type:"application/json"});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob); a.download="weekly-goal.json"; a.click();
+  URL.revokeObjectURL(a.href);
+}
+function importJSON(ev){
+  const file=ev.target.files[0]; if(!file) return;
+  const r=new FileReader();
+  r.onload=()=>{
+    try{
+      const d=JSON.parse(r.result);
+      if(!d.tasks) throw 0;
+      state=d; nextId=Math.max(0,...state.tasks.map(t=>t.id))+1;
+      render();
+    }catch(e){alert("불러올 수 없는 파일입니다.");}
+  };
+  r.readAsText(file);
+  ev.target.value="";
+}
 
+
+document.getElementById("ov").addEventListener("click",e=>{if(e.target.id==="ov")closeEdit();});
+
+
+document.getElementById("fEpicKey").addEventListener("input",function(e){
+  renderDepList(editingId, e.target.value.trim()||"__none__", currentDepChecks());
+});
 
 
 buildTop();
 applyLabelWidth();
 initResizer();
 
-// 뷰어는 render() 를 여기서 부르지 않는다 — syncFromJira 가 값이 확정된 뒤 한 번만 그린다.
-syncFromJira();
 
+// 배포된 편집본은 열 때 Jira 최신값을 받는다(그때 pullLatest 가 그린다).
+// file:// 로 연 경우에는 받을 곳이 없으므로 저장된 데이터로 바로 그린다.
+pullLatest(true);
 
 </script>
 </body>
