@@ -2330,7 +2330,9 @@ function epicSummary(g){
 // file:// 에서는 localStorage 가 막힐 수 있다(Safari 는 차단, Chrome 도 설정에 따라 던짐).
 // 실패해도 앱이 죽지 않게 전부 삼키고 메모리 상태로만 동작시킨다.
 const UI_KEY = "goalchart.ui";
-const LABEL_W_MIN = 160, LABEL_W_MAX = 560, LABEL_W_DEFAULT = 320;
+// 기본 460px. 에픽 줄에 이름·현황·키가 함께 들어가는데 320 에서는 24개 중 23개가
+// 잘렸다(460 이면 4개). 2주 창(19일 × 46px ≒ 874px)은 그러고도 남는다.
+const LABEL_W_MIN = 160, LABEL_W_MAX = 560, LABEL_W_DEFAULT = 460;
 function clampLabelW(w){ return Math.max(LABEL_W_MIN, Math.min(LABEL_W_MAX, Math.round(w)||LABEL_W_DEFAULT)); }
 function loadUI(){
   try{
