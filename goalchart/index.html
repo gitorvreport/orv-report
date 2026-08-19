@@ -408,14 +408,14 @@ let state = {
       "owner": "소원태",
       "start": "2026-08-13",
       "end": "2026-08-14",
-      "status": "risk",
+      "status": "done",
       "deps": [],
       "jira": "ORVV-7912",
       "epic": {
         "key": "ORVV-7708",
         "name": "[시스템] 세이브·로드 시스템 구현"
       },
-      "doneAt": null
+      "doneAt": "2026-08-19"
     },
     {
       "id": 9,
@@ -1694,6 +1694,21 @@ let state = {
       "doneAt": null
     },
     {
+      "id": 172,
+      "name": "[라이팅] 장충단 공원 라이팅",
+      "owner": "정재윤",
+      "start": "2026-08-19",
+      "end": "2026-08-28",
+      "status": "todo",
+      "deps": [],
+      "jira": "ORVV-9373",
+      "epic": {
+        "key": "ORVV-7822",
+        "name": "[플레이] 동대입구역 장충단 공원 플레이 구현"
+      },
+      "doneAt": null
+    },
+    {
       "id": 97,
       "name": "[이펙트] 동대 입구역 장충단 공원 플레이 블록아웃 컨셉 이펙트 제작",
       "owner": "이용곤",
@@ -1717,21 +1732,6 @@ let state = {
       "status": "inprog",
       "deps": [],
       "jira": "ORVV-8956",
-      "epic": {
-        "key": "ORVV-7822",
-        "name": "[플레이] 동대입구역 장충단 공원 플레이 구현"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 101,
-      "name": "[애니] 김독자가 석등을 향해 손을 내뻗는 모션",
-      "owner": "임광수 · 일정 미정",
-      "start": "2026-08-19",
-      "end": "2026-08-19",
-      "status": "inprog",
-      "deps": [],
-      "jira": "ORVV-8957",
       "epic": {
         "key": "ORVV-7822",
         "name": "[플레이] 동대입구역 장충단 공원 플레이 구현"
@@ -2528,7 +2528,7 @@ let state = {
       "owner": "이주식",
       "start": "2026-08-24",
       "end": "2026-08-28",
-      "status": "todo",
+      "status": "inprog",
       "deps": [],
       "jira": "ORVV-9365",
       "epic": {
@@ -2566,11 +2566,26 @@ let state = {
         "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
       },
       "doneAt": null
+    },
+    {
+      "id": 101,
+      "name": "[애니] 김독자가 석등을 향해 손을 내뻗는 모션",
+      "owner": "임광수 · 일정 미정",
+      "start": "2026-08-19",
+      "end": "2026-08-19",
+      "status": "inprog",
+      "deps": [],
+      "jira": "ORVV-8957",
+      "epic": {
+        "key": "ORVV-7822",
+        "name": "[플레이] 동대입구역 장충단 공원 플레이 구현"
+      },
+      "doneAt": null
     }
   ],
-  "syncedAt": "2026-08-19T07:02:20.615Z"
+  "syncedAt": "2026-08-19T08:14:22.154Z"
 };
-let nextId = 172;
+let nextId = 173;
 function jiraUrl(key){return key ? (state.jiraBase + encodeURIComponent(key)) : null;}
 
 /* ---------- date helpers ---------- */
