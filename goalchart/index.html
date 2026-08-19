@@ -354,13 +354,30 @@ let state = {
       "doneAt": null
     },
     {
+      "id": 173,
+      "name": "[애니] 김독자 Y 콤보 1타 신규 제작",
+      "owner": "최지현",
+      "start": "2026-08-19",
+      "end": "2026-08-20",
+      "status": "inprog",
+      "deps": [],
+      "jira": "ORVV-9355",
+      "epic": {
+        "key": "ORVV-7686",
+        "name": "[캐릭터] 김독자"
+      },
+      "doneAt": null
+    },
+    {
       "id": 2,
       "name": "[애니] 김독자 Y파생 콤보 (YYBB)",
       "owner": "최지현 · 시작일 미정",
       "start": "2026-08-25",
       "end": "2026-08-25",
       "status": "inprog",
-      "deps": [],
+      "deps": [
+        173
+      ],
       "jira": "ORVV-9034",
       "epic": {
         "key": "ORVV-7686",
@@ -377,25 +394,6 @@ let state = {
       "status": "review",
       "deps": [],
       "jira": "ORVV-9035",
-      "epic": {
-        "key": "ORVV-7686",
-        "name": "[캐릭터] 김독자"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 4,
-      "name": "[이펙트] 김독자 Y·B 콤보 이펙트 제작",
-      "owner": "유세훈",
-      "start": "2026-08-10",
-      "end": "2026-08-28",
-      "status": "todo",
-      "deps": [
-        1,
-        2,
-        3
-      ],
-      "jira": "ORVV-9045",
       "epic": {
         "key": "ORVV-7686",
         "name": "[캐릭터] 김독자"
@@ -1050,7 +1048,7 @@ let state = {
     {
       "id": 52,
       "name": "[애니] 회차 공명 시작/종료 시그니처 연출 시퀀스 (김독자/유중혁)",
-      "owner": "이동겸 · 일정 미정",
+      "owner": "이동겸 · 시작일 미정",
       "start": "2026-08-19",
       "end": "2026-08-19",
       "status": "inprog",
@@ -1251,8 +1249,8 @@ let state = {
       "id": 68,
       "name": "[애니] 격내구도 - 땅강아쥐 피격 리액션 2종",
       "owner": "이동겸",
-      "start": "2026-08-27",
-      "end": "2026-08-27",
+      "start": "2026-08-28",
+      "end": "2026-08-28",
       "status": "todo",
       "deps": [],
       "jira": "ORVV-9117",
@@ -1267,7 +1265,7 @@ let state = {
       "name": "[애니] 격내구도 - 스펙터 피격 리액션 2종",
       "owner": "이동겸",
       "start": "2026-08-14",
-      "end": "2026-08-26",
+      "end": "2026-08-27",
       "status": "todo",
       "deps": [],
       "jira": "ORVV-9354",
@@ -1699,7 +1697,7 @@ let state = {
       "owner": "정재윤",
       "start": "2026-08-19",
       "end": "2026-08-28",
-      "status": "todo",
+      "status": "inprog",
       "deps": [],
       "jira": "ORVV-9373",
       "epic": {
@@ -1888,7 +1886,7 @@ let state = {
       "name": "[애니] 스펙터 공용 모션 (선회·경계걷기·피격·그로기·죽음)",
       "owner": "이동겸",
       "start": "2026-08-14",
-      "end": "2026-08-26",
+      "end": "2026-08-27",
       "status": "inprog",
       "deps": [],
       "jira": "ORVV-8467",
@@ -1983,9 +1981,9 @@ let state = {
       "id": 125,
       "name": "[기획] 스펙터 스크립트 작업 (몽타주·콤보그래프) 작업",
       "owner": "장영환",
-      "start": "2026-08-11",
-      "end": "2026-08-14",
-      "status": "risk",
+      "start": "2026-08-17",
+      "end": "2026-08-20",
+      "status": "inprog",
       "deps": [
         113,
         122
@@ -2253,7 +2251,7 @@ let state = {
     {
       "id": 151,
       "name": "[이펙트] 환영의 망령 이펙트",
-      "owner": "유세훈",
+      "owner": "손석민",
       "start": "2026-08-27",
       "end": "2026-08-31",
       "status": "todo",
@@ -2581,11 +2579,30 @@ let state = {
         "name": "[플레이] 동대입구역 장충단 공원 플레이 구현"
       },
       "doneAt": null
+    },
+    {
+      "id": 4,
+      "name": "[이펙트] 김독자 Y·B 콤보 이펙트 제작",
+      "owner": "유세훈",
+      "start": "2026-08-10",
+      "end": "2026-08-28",
+      "status": "todo",
+      "deps": [
+        1,
+        2,
+        3
+      ],
+      "jira": "ORVV-9045",
+      "epic": {
+        "key": "ORVV-7686",
+        "name": "[캐릭터] 김독자"
+      },
+      "doneAt": null
     }
   ],
-  "syncedAt": "2026-08-19T08:14:22.154Z"
+  "syncedAt": "2026-08-19T08:43:30.413Z"
 };
-let nextId = 173;
+let nextId = 174;
 function jiraUrl(key){return key ? (state.jiraBase + encodeURIComponent(key)) : null;}
 
 /* ---------- date helpers ---------- */
