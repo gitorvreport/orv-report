@@ -201,7 +201,15 @@
   .drill-grp{margin:18px 0 6px; padding:0 8px; font-size:13px; font-weight:700;}
   .drill-grp:first-child{margin-top:0;}
   .drill-grp .n{color:var(--muted); font-weight:500; margin-left:6px;}
-  td.why{color:var(--ink-2); line-height:1.5; overflow-wrap:anywhere; min-width:340px; max-width:560px;}
+  /* 드릴다운은 묶음마다 표가 따로다. 폭을 못 박지 않으면 표마다 제 내용에 맞춰 칸을
+     잡아서 묶음끼리 줄이 어긋난다. colgroup 이 준 폭을 강제하려면 fixed 여야 한다. */
+  #drillview table{table-layout:fixed;}
+  /* 긴 이름은 잘라내지 않고 접는다 — 행 높이는 달라져도 칸은 어긋나지 않는다.
+     짧고 형식이 정해진 값(키·담당·기간·마감 대비)은 접히면 오히려 읽기 나쁘다. */
+  #drillview td:nth-child(1),#drillview td:nth-child(3){overflow-wrap:anywhere;}
+  #drillview td:nth-child(2),#drillview td:nth-child(4),
+  #drillview td:nth-child(5){white-space:nowrap;}
+  td.why{color:var(--ink-2); line-height:1.5; overflow-wrap:anywhere;}
   /* 미완료 선행 한 줄 = 키 · 요약 · 그 선행의 상태. 그리드라 여러 줄에서도 세로로 맞는다. */
   .why .pv{display:grid; grid-template-columns:auto 1fr auto; gap:3px 12px; align-items:baseline; padding:2px 0;}
   .why .pk{color:var(--muted); font-size:11.5px; font-weight:600; text-decoration:none; white-space:nowrap;}
@@ -3216,6 +3224,16 @@ function setLoading(on){
 /* ---------- 상태 드릴다운 ---------- */
 // 통계 카드 → 해당 상태의 작업 목록. 각 뷰는 그룹 두 개로 나뉘고,
 // 그룹 안의 순서는 state.tasks 배열 순서 그대로다(차트와 같은 순서로 읽히도록).
+// 드릴다운 표의 칸 폭 (에픽·Jira·작업·담당·기간·마지막 여섯 칸).
+// 빈 문자열은 '나머지를 다 가져가라'는 뜻이고, 작업 이름이 그 자리를 받는다.
+// 종류 안의 모든 묶음이 같은 값을 쓰므로 묶음끼리 줄이 맞는다.
+const COLW = ["22%", "96px", "", "96px", "108px", "110px"];
+// 선행 작업 목록은 한 칸에 여러 줄이 들어가 훨씬 넓어야 한다.
+const COLW_WIDE = ["17%", "96px", "", "92px", "104px", "32%"];
+function colgroupHtml(w){
+  return "<colgroup>"+w.map(function(x){ return x ? '<col style="width:'+x+'">' : "<col>"; }).join("")+"</colgroup>";
+}
+
 // 완료 작업이 실제로 완료 처리된 날(Jira resolutiondate). doneAt 이 없으면 마감일로
 // 물러난다 — 목록에서 통째로 사라지는 것보다 낫고, '마감 대비' 칸이 그 사실을 밝힌다.
 function doneDate(t){ return t.doneAt || t.end; }
@@ -3258,6 +3276,7 @@ const DRILL = {
   },
   attention: {
     title: "대기 · 기한 초과",
+    colw: COLW_WIDE,   // 선행 작업 목록이 한 칸에 여러 줄로 들어간다
     groups: [
       {label:"대기",     pick:t=>isWaiting(t),     col:"선행 작업", cell:prevListHtml},
       {label:"기한 초과", pick:t=>t.status==="risk", col:"사유",      cell:t=>esc(riskReason(t))},
@@ -3353,7 +3372,8 @@ function renderDrill(){
   picked.forEach(function(x){
     if(!x.rows.length) return;
     h+='<div class="drill-grp">'+esc(x.g.label)+'<span class="n">'+x.rows.length+'건</span></div>';
-    h+='<table><thead><tr><th>에픽</th><th>Jira</th><th>작업</th><th>담당</th><th>기간</th>'+
+    h+='<table>'+colgroupHtml(conf.colw||COLW)+
+       '<thead><tr><th>에픽</th><th>Jira</th><th>작업</th><th>담당</th><th>기간</th>'+
        (x.g.cell?'<th>'+esc(x.g.col)+'</th>':'<th>상태</th>')+'</tr></thead><tbody>';
     x.rows.forEach(function(t){
       const ep=t.epic?esc(t.epic.name):'<span style="color:var(--muted)">미분류</span>';
