@@ -336,6 +336,13 @@
       <div class="fld"><label>에픽/카테고리 이름</label><input id="fEpicName" placeholder="예: 결제 리뉴얼"></div>
       <div class="fld"><label>에픽 키(Jira)</label><input id="fEpicKey" placeholder="예: OFF-100"></div>
     </div>
+    <div class="row2" style="grid-template-columns:1fr;">
+      <div class="fld">
+        <label>스윔레인 (상위 에픽은 그대로 둡니다)</label>
+        <select id="fLane"></select>
+        <div id="fLaneNote" class="lookup-note"></div>
+      </div>
+    </div>
     <div class="fld"><label>작업명</label><input id="fName" placeholder="예: 본문 초안 작성"></div>
     <div class="row2">
       <div class="fld"><label>담당</label><input id="fOwner" placeholder="예: 홍길동"></div>
@@ -4204,6 +4211,8 @@ async function lookupIssue(){
     if(j.end)   document.getElementById("fEnd").value=j.end;
     document.getElementById("fEpicKey").value=j.epicKey||"";
     document.getElementById("fEpicName").value=j.epicName||"";
+    // 이제 이슈 키를 알므로 레인 드롭다운이 잠겨 있을 이유가 없다.
+    fillLaneSelect(j.key);
     const jo=document.getElementById("fJiraOpen");
     jo.href=jiraUrl(j.key); jo.style.display="inline-block";
 
@@ -4265,6 +4274,7 @@ function openEdit(id){
   document.getElementById("fJira").value = t?(t.jira||""):"";
   document.getElementById("fEpicName").value = t?(t.epic&&t.epic.name||""):"";
   document.getElementById("fEpicKey").value = t?(t.epic&&t.epic.key||""):"";
+  fillLaneSelect(t?(t.jira||""):"");
   const jo=document.getElementById("fJiraOpen"), ju=t&&t.jira?jiraUrl(t.jira):null;
   jo.href=ju||"#"; jo.style.display=ju?"inline-block":"none";
   document.getElementById("fName").value = t?t.name:"";
@@ -4339,6 +4349,59 @@ function closeDetail(){document.getElementById("ovD").classList.remove("on");}
 document.getElementById("ovD").addEventListener("click",e=>{if(e.target.id==="ovD")closeDetail();});
 
 
+// 레인 배정은 배열을 새로 만들어 돌려주는 순수 함수다(moveTaskInArray 와 같은 방식) —
+// 테스트가 직접 돌릴 수 있고, 중간에 실패해도 state 가 반쯤 바뀐 채로 남지 않는다.
+//
+// 아무것도 안 남은 그룹은 지운다. '새 레인'을 만들었다가 무르면 이름만 남은 빈 레인이
+// JSON 에 쌓이는데, 화면에는 안 보여서 알아채지 못한다.
+function pruneEmptyGroups(groups){
+  return (groups||[]).filter(function(g){ return (g.members||[]).length || (g.issues||[]).length; });
+}
+
+// 한 이슈가 두 그룹에 들어가면 어느 레인에 설지가 배열 순서에 좌우된다. 그래서
+// 넣기 전에 모든 그룹에서 먼저 뺀다. groupKey 가 비면 빼기만 한다(= 상위 에픽으로 복귀).
+function assignIssueToGroup(groups, issueKey, groupKey){
+  if(!issueKey) return pruneEmptyGroups(groups);
+  const out=(groups||[]).map(function(g){
+    return Object.assign({}, g, {issues:(g.issues||[]).filter(function(k){ return k!==issueKey; })});
+  });
+  if(groupKey){
+    const g=out.find(function(x){ return x.key===groupKey; });
+    if(g) g.issues=g.issues.concat([issueKey]);
+  }
+  return pruneEmptyGroups(out);
+}
+
+// 그룹 key 는 **에픽 키와 겹치면 안 된다** — 겹치면 그 에픽이 조용히 그룹에 흡수된다.
+function newGroupKey(groups, epicKeys){
+  const used=new Set(((groups||[]).map(function(g){ return g.key; })).concat(epicKeys||[]));
+  let n=1;
+  while(used.has("LANE-"+n)) n++;
+  return "LANE-"+n;
+}
+
+// 이 작업이 지금 어느 그룹에 '이슈로' 배정돼 있나. 에픽째 묶인 것(members)은 여기 안 잡힌다 —
+// 그건 이 작업만의 배정이 아니라서 드롭다운으로 풀 수 있는 대상이 아니다.
+function currentLaneKey(jira){
+  if(!jira) return "";
+  const g=(state.epicGroups||[]).find(function(x){ return (x.issues||[]).indexOf(jira)!==-1; });
+  return g?g.key:"";
+}
+
+function fillLaneSelect(jira){
+  const sel=document.getElementById("fLane"), note=document.getElementById("fLaneNote");
+  const opts=['<option value="">상위 에픽 그대로</option>'];
+  (state.epicGroups||[]).forEach(function(g){
+    opts.push('<option value="'+esc(g.key)+'">'+esc(g.name)+'</option>');
+  });
+  opts.push('<option value="__new__">＋ 새 레인 만들기…</option>');
+  sel.innerHTML=opts.join("");
+  sel.value=currentLaneKey(jira);
+  // 배정은 이슈 키 기준이라 키가 없으면 옮길 방법이 없다. 되는 척하지 않는다.
+  sel.disabled=!jira;
+  note.textContent=jira?"":"Jira 키를 넣고 '불러오기' 하면 레인을 고를 수 있습니다.";
+}
+
 function saveTask(){
   const name=document.getElementById("fName").value.trim();
   if(!name){alert("작업명을 입력하세요."); return;}
@@ -4358,6 +4421,11 @@ function saveTask(){
   }else{
     state.tasks.push({id:nextId++, name, owner, start,end,status,deps,jira,epic});
   }
+  // 레인 배정. 잠겨 있으면(=이슈 키 없음) 고를 수 없었으므로 건드리지 않는다.
+  const sel=document.getElementById("fLane");
+  if(!sel.disabled){
+    state.epicGroups=assignIssueToGroup(state.epicGroups, jira, sel.value==="__new__"?"":sel.value);
+  }
   closeEdit(); render();
 }
 
@@ -4365,8 +4433,12 @@ function saveTask(){
 function delTask(){
   if(!editingId) return;
   if(!confirm("이 작업을 삭제할까요?")) return;
+  const gone=state.tasks.find(x=>x.id===editingId);
   state.tasks=state.tasks.filter(x=>x.id!==editingId);
   state.tasks.forEach(t=>{t.deps=(t.deps||[]).filter(d=>d!==editingId);});
+  // 레인 배정도 같이 걷는다. 안 그러면 없는 이슈를 가리키는 키가 JSON 에 남는데,
+  // 화면에는 아무 자국도 없어서 내보낸 뒤에야 드러난다.
+  if(gone&&gone.jira) state.epicGroups=assignIssueToGroup(state.epicGroups, gone.jira, "");
   closeEdit(); render();
 }
 
@@ -4488,6 +4560,21 @@ document.getElementById("ov").addEventListener("click",e=>{if(e.target.id==="ov"
 
 document.getElementById("fEpicKey").addEventListener("input",function(e){
   renderDepList(editingId, e.target.value.trim()||"__none__", currentDepChecks());
+});
+
+
+// 새 레인은 여기서 만든다. 저장 전까지는 비어 있는데, 무르고 나가면 pruneEmptyGroups 가
+// 저장·삭제 때 걷어낸다 — 이름만 남은 빈 레인이 JSON 에 쌓이지 않게.
+document.getElementById("fLane").addEventListener("change",function(e){
+  const jira=document.getElementById("fJira").value.trim();
+  if(e.target.value!=="__new__") return;
+  const name=(prompt("새 스윔레인 이름을 넣으세요.\n예: [컷씬] 천인호·정희원")||"").trim();
+  if(!name){ fillLaneSelect(jira); return; }              // 무르면 고르기 전으로 되돌린다
+  const epicKeys=state.tasks.map(function(t){ return t.epic&&t.epic.key; }).filter(Boolean);
+  const key=newGroupKey(state.epicGroups, epicKeys);
+  state.epicGroups=(state.epicGroups||[]).concat([{key:key, name:name, members:[], issues:[]}]);
+  fillLaneSelect(jira);                                    // 새 항목이 든 목록으로 다시 그리고
+  e.target.value=key;                                      // 방금 만든 레인을 고른 채로 둔다
 });
 
 
