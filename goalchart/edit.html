@@ -3609,7 +3609,10 @@ function moveEpicAt(i, dir){
 let dndFrom = null;      // {kind:"task"|"epic", id} — 끌고 있는 것
 
 function dndAttrs(kind, id){
-  const a=kind+","+(typeof id==="string"?"'"+id+"'":id);
+  // **인자는 전부 리터럴로 적어야 한다.** 따옴표를 빠뜨리면 dragStart(event,task,12) 가
+  // 되어 task 가 식별자로 읽히고, 핸들러가 ReferenceError 로 죽는다 — 문법은 멀쩡해서
+  // 파싱 검사로는 안 걸리고, 화면에서는 그냥 '안 끌린다'로만 보인다(실제로 겪었다).
+  const a="'"+kind+"',"+(typeof id==="string"?"'"+id+"'":id);
   return ' draggable="true"'+
     ' ondragstart="dragStart(event,'+a+')"'+
     ' ondragover="dragOver(event,'+a+')"'+
