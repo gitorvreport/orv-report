@@ -798,7 +798,7 @@ let state = {
       "name": "[배경모델링] 도깨비방_스타스트림 패널",
       "owner": "김봉석",
       "start": "2026-08-12",
-      "end": "2026-08-31",
+      "end": "2026-08-24",
       "status": "inprog",
       "deps": [],
       "jira": "ORVV-9131",
@@ -815,9 +815,7 @@ let state = {
       "start": "2026-08-12",
       "end": "2026-08-20",
       "status": "review",
-      "deps": [
-        26
-      ],
+      "deps": [],
       "jira": "ORVV-9032",
       "epic": {
         "key": "ORVV-8080",
@@ -833,7 +831,8 @@ let state = {
       "end": "2026-08-25",
       "status": "todo",
       "deps": [
-        21
+        21,
+        26
       ],
       "jira": "ORVV-9119",
       "epic": {
@@ -3338,6 +3337,96 @@ let state = {
       "doneAt": null
     },
     {
+      "id": 218,
+      "name": "[애니] 탐식의 망령 로코 및 스킬",
+      "owner": "김은정",
+      "start": "2026-08-20",
+      "end": "2026-08-31",
+      "status": "inprog",
+      "deps": [],
+      "jira": "ORVV-9058",
+      "epic": {
+        "key": "ORVV-9020",
+        "name": "[몬스터] 탐식의 망령"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 219,
+      "name": "[클라] 탐식의 망령 로코 모션 구현",
+      "owner": "이주식",
+      "start": "2026-08-25",
+      "end": "2026-08-28",
+      "status": "todo",
+      "deps": [],
+      "jira": "ORVV-9059",
+      "epic": {
+        "key": "ORVV-9020",
+        "name": "[몬스터] 탐식의 망령"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 220,
+      "name": "[클라] 탐식의 망령 스킬 구현",
+      "owner": "이미륵",
+      "start": "2026-08-25",
+      "end": "2026-08-28",
+      "status": "todo",
+      "deps": [],
+      "jira": "ORVV-9060",
+      "epic": {
+        "key": "ORVV-9020",
+        "name": "[몬스터] 탐식의 망령"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 221,
+      "name": "[기획] 탐식의 망령 전투 스크립트",
+      "owner": "장영환 · 시작일 미정",
+      "start": "2026-08-25",
+      "end": "2026-08-25",
+      "status": "todo",
+      "deps": [],
+      "jira": "ORVV-9064",
+      "epic": {
+        "key": "ORVV-9020",
+        "name": "[몬스터] 탐식의 망령"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 222,
+      "name": "[기획] 탐식의 망령 검수",
+      "owner": "장영환 · 시작일 미정",
+      "start": "2026-08-26",
+      "end": "2026-08-26",
+      "status": "todo",
+      "deps": [],
+      "jira": "ORVV-9065",
+      "epic": {
+        "key": "ORVV-9020",
+        "name": "[몬스터] 탐식의 망령"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 223,
+      "name": "[이펙트] 탐식의 망령 이펙트",
+      "owner": "유세훈 · 일정 미정",
+      "start": "2026-08-20",
+      "end": "2026-08-20",
+      "status": "inprog",
+      "deps": [],
+      "jira": "ORVV-9066",
+      "epic": {
+        "key": "ORVV-9020",
+        "name": "[몬스터] 탐식의 망령"
+      },
+      "doneAt": null
+    },
+    {
       "id": 152,
       "name": "[사운드] 땅강아쥐 보물창고 무드 조성 및 환경 사운드",
       "owner": "[사운드]이예얼",
@@ -3353,9 +3442,9 @@ let state = {
       "doneAt": null
     }
   ],
-  "syncedAt": "2026-08-20T07:45:47.293Z"
+  "syncedAt": "2026-08-20T07:52:09.502Z"
 };
-let nextId = 218;
+let nextId = 224;
 function jiraUrl(key){return key ? (state.jiraBase + encodeURIComponent(key)) : null;}
 
 /* ---------- date helpers ---------- */
