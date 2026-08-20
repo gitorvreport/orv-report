@@ -134,6 +134,16 @@
   .mvb:hover{color:var(--inprog); border-color:var(--inprog);}
   .lrow{position:relative;}
   .lrow .mv{position:absolute; right:8px; top:50%; transform:translateY(-50%);}
+  /* 드래그로 순서 바꾸기. **표시선은 반드시 inset box-shadow 로 긋는다** — border 나
+     padding 을 쓰면 행 높이가 변해 ROW_H/EPIC_H 로 계산한 타임라인 막대와 세로로
+     어긋난다(끌 때만 어긋나서 더 알아채기 어렵다). */
+  /* 속성 '값'이 아니라 '존재'로 고른다. 스타일은 양쪽 산출물에 남는데, 값까지 적으면
+     뷰어 파일에 그 문구가 들어가 '뷰어 행은 끌리지 않는다'는 검사가 무의미해진다
+     (실제로 이 주석에 값을 적었다가 검사에 걸렸다). */
+  .lrow[draggable],.erow[draggable]{cursor:grab;}
+  .lrow.dragging,.erow.dragging{opacity:.4; cursor:grabbing;}
+  .lrow.drop-top,.erow.drop-top{box-shadow:inset 0 2px 0 0 var(--inprog);}
+  .lrow.drop-bot,.erow.drop-bot{box-shadow:inset 0 -2px 0 0 var(--inprog);}
   .jkey{color:var(--inprog); text-decoration:none; font-weight:600;}
   .jkey:hover{text-decoration:underline;}
   .eband{position:absolute; left:0; z-index:1; pointer-events:none;}
@@ -3480,8 +3490,16 @@ function toggleBarText(){ ui.barText = barTextIsFull() ? "clip" : "full"; saveUI
 
 // 기본은 접힘. "접힌 목록"이 아니라 "펼친 목록"을 저장하는 이유는, 나중에 데이터에
 // 에픽이 추가돼도 목록에 없으니 자동으로 접힌 채로 나오기 때문이다.
+// 드래그를 마치면 브라우저가 click 을 안 보내는 게 보통이지만 항상 그렇지는 않다.
+// 한 번이라도 새면 끌어놓을 때마다 편집 모달이 열려 성가시다. **마커 밖에 둔다** —
+// 행의 onclick 문자열은 뷰어·편집본이 함께 쓰는데, 여기가 편집 전용이면 뷰어가
+// ReferenceError 로 죽고 인라인 핸들러라 예외도 안 보인다(TOP_*_EDIT 로 겪은 유형).
+let dragEndedAt = 0;
+function afterDrag(){ return Date.now() - dragEndedAt < 250; }
+
 function isCollapsed(gkey){ return ui.expanded.indexOf(gkey) === -1; }
 function toggleEpicAt(i){
+  if(afterDrag()) return;
   const g = groups()[i]; if(!g) return;
   const at = ui.expanded.indexOf(g.gkey);
   if(at === -1) ui.expanded.push(g.gkey); else ui.expanded.splice(at,1);
@@ -3533,6 +3551,49 @@ function moveEpicInArray(tasks, epicKey, dir){
   return keys.reduce((acc, k) => acc.concat(byKey.get(k)), []);
 }
 
+// 드래그로 놓기: id 를 targetId 자리에 넣는다. **에픽 안에서만** 움직인다 —
+// 경계를 넘는 이동은 소속을 바꾸는 것이라 순서 변경이 아니다(▲▼ 와 같은 규칙).
+//
+// 에픽에 속한 배열 자리(idx)만 뽑아 그 안에서 재배열하고 제자리에 도로 쓴다.
+// 그래야 다른 에픽의 최초 등장 위치가 흔들리지 않는다 — 에픽 순서가 거기서 파생된다.
+//
+// 넣는 위치는 뺀 뒤의 targetId 자리(pb)로 통일한다. 아래로 끌면 대상 뒤에, 위로 끌면
+// 대상 앞에 놓이는데, 둘 다 pb 한 값으로 맞아떨어진다(뺀 뒤 뒤쪽 인덱스가 하나 당겨진다).
+function moveTaskToInArray(tasks, id, targetId){
+  const out=tasks.slice();
+  if(id===targetId) return out;
+  const a=out.findIndex(function(t){ return t.id===id; });
+  const b=out.findIndex(function(t){ return t.id===targetId; });
+  if(a===-1||b===-1) return out;
+  const k=epicKeyOf(out[a]);
+  if(epicKeyOf(out[b])!==k) return out;          // 다른 레인으로는 옮기지 않는다
+  const idx=[];
+  out.forEach(function(t,i){ if(epicKeyOf(t)===k) idx.push(i); });
+  const seq=idx.map(function(i){ return out[i]; });
+  const pa=seq.findIndex(function(t){ return t.id===id; });
+  const pb=seq.findIndex(function(t){ return t.id===targetId; });
+  seq.splice(pa,1);
+  seq.splice(pb,0,out[a]);
+  idx.forEach(function(i,n){ out[i]=seq[n]; });
+  return out;
+}
+
+// 에픽 블록을 targetKey 자리로. 블록째 옮기고 내부 순서는 그대로 둔다.
+function moveEpicToInArray(tasks, epicKey, targetKey){
+  if(epicKey===targetKey) return tasks.slice();
+  const keys=[], byKey=new Map();
+  tasks.forEach(function(t){
+    const k=epicKeyOf(t);
+    if(!byKey.has(k)){ byKey.set(k,[]); keys.push(k); }
+    byKey.get(k).push(t);
+  });
+  const a=keys.indexOf(epicKey), b=keys.indexOf(targetKey);
+  if(a===-1||b===-1) return tasks.slice();
+  keys.splice(a,1);
+  keys.splice(b,0,epicKey);
+  return keys.reduce(function(acc,k){ return acc.concat(byKey.get(k)); },[]);
+}
+
 function moveTask(id, dir){ state.tasks = moveTaskInArray(state.tasks, id, dir); render(); }
 function moveEpicAt(i, dir){
   const g = groups()[i]; if(!g) return;
@@ -3541,6 +3602,71 @@ function moveEpicAt(i, dir){
 // 호출식을 문자열로 조립하므로 괄호가 어긋나기 쉽다. 함수명과 인자를 따로 받아
 // 여기서 한 곳에서만 조립한다 — onclick 이 문법 오류면 핸들러가 통째로 죽고
 // 클릭이 행으로 전파돼 편집 모달이 대신 열린다(조용한 실패라 눈치채기 어렵다).
+/* ---------- 드래그로 순서 바꾸기 (편집본 전용) ---------- */
+// render() 가 innerHTML 을 통째로 다시 쓰므로 addEventListener 로 붙인 핸들러는 매번
+// 날아간다. 그래서 인라인 속성으로 단다 — 조립한 문자열에 문법 오류가 나면 핸들러가
+// 통째로 죽으니, 호출식은 dndAttrs 한 곳에서만 만든다(mvBtns 와 같은 이유).
+let dndFrom = null;      // {kind:"task"|"epic", id} — 끌고 있는 것
+
+function dndAttrs(kind, id){
+  const a=kind+","+(typeof id==="string"?"'"+id+"'":id);
+  return ' draggable="true"'+
+    ' ondragstart="dragStart(event,'+a+')"'+
+    ' ondragover="dragOver(event,'+a+')"'+
+    ' ondragleave="dragLeave(event)"'+
+    ' ondrop="dragDrop(event,'+a+')"'+
+    ' ondragend="dragEnd(event)"';
+}
+
+function dragStart(e, kind, id){
+  dndFrom={kind:kind, id:id};
+  e.dataTransfer.effectAllowed="move";
+  // Firefox 는 데이터를 담지 않으면 드래그를 시작조차 하지 않는다.
+  try{ e.dataTransfer.setData("text/plain", String(id)); }catch(_){}
+  e.currentTarget.classList.add("dragging");
+}
+
+// 놓을 수 있는 자리에서만 preventDefault 한다 — 안 하면 브라우저가 '못 놓음'으로 표시한다.
+// 그게 다른 레인으로 못 옮긴다는 사실을 말해 주는 유일한 신호다.
+function canDrop(kind, id){
+  if(!dndFrom || dndFrom.kind!==kind || dndFrom.id===id) return false;
+  if(kind==="epic") return true;
+  const a=state.tasks.find(function(t){ return t.id===dndFrom.id; });
+  const b=state.tasks.find(function(t){ return t.id===id; });
+  return !!(a&&b&&epicKeyOf(a)===epicKeyOf(b));
+}
+
+// 표시선은 넣을 방향과 같은 쪽에 긋는다(아래로 끌면 대상 아래, 위로 끌면 위) —
+// moveTaskToInArray 가 실제로 넣는 자리와 같아야 보이는 대로 놓인다.
+function dragOver(e, kind, id){
+  if(!canDrop(kind, id)) return;
+  e.preventDefault();
+  e.dataTransfer.dropEffect="move";
+  const order=kind==="epic"?groups().map(function(g){ return g.gkey; })
+                           :state.tasks.map(function(t){ return t.id; });
+  const below=order.indexOf(dndFrom.id) < order.indexOf(id);
+  e.currentTarget.classList.remove("drop-top","drop-bot");
+  e.currentTarget.classList.add(below?"drop-bot":"drop-top");
+}
+function dragLeave(e){ e.currentTarget.classList.remove("drop-top","drop-bot"); }
+
+function dragDrop(e, kind, id){
+  if(!canDrop(kind, id)) return;
+  e.preventDefault();
+  e.currentTarget.classList.remove("drop-top","drop-bot");
+  state.tasks = kind==="epic" ? moveEpicToInArray(state.tasks, dndFrom.id, id)
+                              : moveTaskToInArray(state.tasks, dndFrom.id, id);
+  dragEndedAt=Date.now();
+  dndFrom=null;
+  render();
+}
+
+function dragEnd(e){
+  dragEndedAt=Date.now();
+  dndFrom=null;
+  if(e&&e.currentTarget&&e.currentTarget.classList) e.currentTarget.classList.remove("dragging");
+}
+
 function mvBtns(fn, arg){
   return '<span class="mv">'+
     '<button class="mvb" title="위로" onclick="event.stopPropagation();'+fn+'('+arg+',-1)">▲</button>'+
@@ -3612,24 +3738,26 @@ function labelsHtml(lay, gs, f){
       // 접든 펼치든 항상 보인다. 펼친 상태에서 '대기·기한 초과'가 사라지면
       // 정작 안을 들여다볼 때 그 에픽의 현황을 알 수 없다.
       const sum = '<span class="esum">'+esc(epicSummary(g))+'</span>';
-      let mv = "";
+      let mv = "", dnd = "";
       
       mv = mvBtns("moveEpicAt", it.gi);
+      dnd = dndAttrs("epic", g.gkey);
       
       // 좌측 폭이 좁으면 이름이 잘린다(요약·키가 자리를 먼저 가져간다). 잘린 채로 두면
       // 어느 에픽인지 알 수 없으므로 전체 이름과 현황을 툴팁에 담는다.
       const etip=esc(g.name+' — '+epicSummary(g)+(g.key?' ('+g.key+')':''))+'&#10;클릭해서 접기/펼치기';
-      lh += '<div class="erow" style="border-left:3px solid '+g.color+'" onclick="toggleEpicAt('+it.gi+')" title="'+etip+'">'+
+      lh += '<div class="erow"'+dnd+' style="border-left:3px solid '+g.color+'" onclick="toggleEpicAt('+it.gi+')" title="'+etip+'">'+
         '<span class="ecar">'+(it.collapsed?'+':'−')+'</span>'+
         '<span class="edot" style="background:'+g.color+'"></span><span class="enm">'+esc(g.name)+'</span>'+sum+chip+mv+'</div>';
     }else{
       const t=it.t, blk=isBlocked(t);
       const jk = t.jira ? '<a class="jkey" href="'+jiraUrl(t.jira)+'" target="_blank" rel="noopener" onclick="event.stopPropagation()">'+esc(t.jira)+'</a> · ' : '';
-      let mv = "";
+      let mv = "", dnd = "";
       
       mv = mvBtns("moveTask", t.id);
+      dnd = dndAttrs("task", t.id);
       
-      lh += '<div class="lrow" onclick="openEdit('+t.id+')">'+
+      lh += '<div class="lrow"'+dnd+' onclick="openEdit('+t.id+')">'+
         '<div class="nm"><span class="sdot" style="background:'+STVAR[t.status]+'"></span>'+esc(t.name)+(blk?' <span class="lock" title="선행 작업이 완료되지 않아 대기 중">⏳</span>':'')+'</div>'+
         '<div class="meta">'+jk+esc(ownerParts(t.owner).name)+' · '+mmdd(t.start)+'~'+mmdd(t.end)+flagsHtml(t,f)+'</div>'+mv+'</div>';
     }
@@ -4269,6 +4397,7 @@ function renderDepList(currentId, epicKey, checkedIds){
 function openEdit(id){
   if(!IS_EDIT) return openDetail(id);
   
+  if(afterDrag()) return;          // 끌어놓은 직후의 click 이 모달을 열지 않게
   editingId=id;
   const t = id?state.tasks.find(x=>x.id===id):null;
   document.getElementById("mTitle").textContent = t?"작업 편집":"새 작업 추가";
