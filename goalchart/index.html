@@ -348,7 +348,9 @@ let state = {
         "ORVV-8318"
       ],
       "issues": [
-        "ORVV-9400"
+        "ORVV-9400",
+        "ORVV-9371",
+        "ORVV-9360"
       ]
     }
   ],
@@ -622,7 +624,7 @@ let state = {
       "owner": "강지한",
       "start": "2026-08-12",
       "end": "2026-08-20",
-      "status": "inprog",
+      "status": "review",
       "deps": [],
       "jira": "ORVV-9032",
       "epic": {
@@ -667,8 +669,8 @@ let state = {
       "id": 30,
       "name": "[이펙트] 도깨비방 패널 관련 이펙트 제작",
       "owner": "손석민",
-      "start": "2026-07-27",
-      "end": "2026-08-28",
+      "start": "2026-09-01",
+      "end": "2026-09-04",
       "status": "inprog",
       "deps": [],
       "jira": "ORVV-8734",
@@ -1495,6 +1497,51 @@ let state = {
       "doneAt": null
     },
     {
+      "id": 93,
+      "name": "[기획] 불량배 스크립트 작업 (몽타주·콤보그래프)",
+      "owner": "최미희",
+      "start": "2026-08-11",
+      "end": "2026-08-21",
+      "status": "inprog",
+      "deps": [],
+      "jira": "ORVV-8315",
+      "epic": {
+        "key": "ORVV-7820",
+        "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 91,
+      "name": "[이펙트] 불량배 스킬 이펙트 제작",
+      "owner": "손석민 · 일정 미정",
+      "start": "2026-08-20",
+      "end": "2026-08-20",
+      "status": "inprog",
+      "deps": [],
+      "jira": "ORVV-8310",
+      "epic": {
+        "key": "ORVV-7820",
+        "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 200,
+      "name": "[사운드] 불량배 인게임 전투 사운드",
+      "owner": "[사운드]이예얼",
+      "start": "2026-08-20",
+      "end": "2026-08-24",
+      "status": "todo",
+      "deps": [],
+      "jira": "ORVV-9381",
+      "epic": {
+        "key": "ORVV-7820",
+        "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
+      },
+      "doneAt": null
+    },
+    {
       "id": 85,
       "name": "[애니] 팔 잘린 불량배가 잘린 팔을 움켜쥐고 쓰러져 괴로워 하는 모션 제작",
       "owner": "임광수 · 일정 미정",
@@ -1585,21 +1632,6 @@ let state = {
       "doneAt": null
     },
     {
-      "id": 91,
-      "name": "[이펙트] 불량배 스킬 이펙트 제작",
-      "owner": "손석민 · 일정 미정",
-      "start": "2026-08-20",
-      "end": "2026-08-20",
-      "status": "inprog",
-      "deps": [],
-      "jira": "ORVV-8310",
-      "epic": {
-        "key": "ORVV-7820",
-        "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
-      },
-      "doneAt": null
-    },
-    {
       "id": 92,
       "name": "[기획] 천인호 전투 - 정희원 각성 플레이 스크립트",
       "owner": "주완호",
@@ -1608,21 +1640,6 @@ let state = {
       "status": "todo",
       "deps": [],
       "jira": "ORVV-8316",
-      "epic": {
-        "key": "ORVV-7820",
-        "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 93,
-      "name": "[기획] 불량배 스크립트 작업 (몽타주·콤보그래프)",
-      "owner": "최미희",
-      "start": "2026-08-11",
-      "end": "2026-08-21",
-      "status": "inprog",
-      "deps": [],
-      "jira": "ORVV-8315",
       "epic": {
         "key": "ORVV-7820",
         "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
@@ -1653,23 +1670,6 @@ let state = {
       "status": "inprog",
       "deps": [],
       "jira": "ORVV-8729",
-      "epic": {
-        "key": "ORVV-7820",
-        "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 154,
-      "name": "[리깅] 정희원 기본 복장 수정 본 리깅",
-      "owner": "구본수",
-      "start": "2026-08-26",
-      "end": "2026-09-02",
-      "status": "inprog",
-      "deps": [
-        95
-      ],
-      "jira": "ORVV-9229",
       "epic": {
         "key": "ORVV-7820",
         "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
@@ -1980,7 +1980,7 @@ let state = {
       "name": "[이펙트] 스펙터 스킬 1차 (1번, 5번, 6번)",
       "owner": "손석민",
       "start": "2026-08-14",
-      "end": "2026-08-20",
+      "end": "2026-08-24",
       "status": "todo",
       "deps": [
         113
@@ -2266,9 +2266,9 @@ let state = {
     {
       "id": 151,
       "name": "[이펙트] 환영의 망령 이펙트",
-      "owner": "손석민",
-      "start": "2026-08-27",
-      "end": "2026-08-31",
+      "owner": "손석민 · 마감 미정",
+      "start": "2026-08-21",
+      "end": "2026-08-21",
       "status": "todo",
       "deps": [
         149
@@ -2311,14 +2311,16 @@ let state = {
       "doneAt": null
     },
     {
-      "id": 96,
-      "name": "[클라][정희원] 필요 기능 대응",
-      "owner": "정도훈",
-      "start": "2026-06-10",
-      "end": "2026-08-28",
+      "id": 154,
+      "name": "[리깅] 정희원 기본 복장 수정 본 리깅",
+      "owner": "구본수",
+      "start": "2026-08-26",
+      "end": "2026-09-02",
       "status": "inprog",
-      "deps": [],
-      "jira": "ORVV-7951",
+      "deps": [
+        95
+      ],
+      "jira": "ORVV-9229",
       "epic": {
         "key": "ORVV-7820",
         "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
@@ -2352,6 +2354,21 @@ let state = {
       "epic": {
         "key": "ORVV-7824",
         "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 96,
+      "name": "[클라][정희원] 필요 기능 대응",
+      "owner": "정도훈",
+      "start": "2026-06-10",
+      "end": "2026-08-28",
+      "status": "inprog",
+      "deps": [],
+      "jira": "ORVV-7951",
+      "epic": {
+        "key": "ORVV-7820",
+        "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
       },
       "doneAt": null
     },
@@ -2399,21 +2416,6 @@ let state = {
         "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
       },
       "doneAt": "2026-08-19"
-    },
-    {
-      "id": 160,
-      "name": "[배경] 전투 중 방해되는 프랍에셋 재배치 드레싱",
-      "owner": "양귀민",
-      "start": "2026-08-18",
-      "end": "2026-08-21",
-      "status": "inprog",
-      "deps": [],
-      "jira": "ORVV-9236",
-      "epic": {
-        "key": "ORVV-7820",
-        "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
-      },
-      "doneAt": null
     },
     {
       "id": 161,
@@ -2720,6 +2722,21 @@ let state = {
       "doneAt": null
     },
     {
+      "id": 160,
+      "name": "[배경] 전투 중 방해되는 프랍에셋 재배치 드레싱",
+      "owner": "양귀민",
+      "start": "2026-08-18",
+      "end": "2026-08-21",
+      "status": "inprog",
+      "deps": [],
+      "jira": "ORVV-9236",
+      "epic": {
+        "key": "ORVV-7820",
+        "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
+      },
+      "doneAt": null
+    },
+    {
       "id": 182,
       "name": "[애니] 천인호 ~ 정희원 전투 액션 피드백 수정 (지원)",
       "owner": "남지원",
@@ -2728,21 +2745,6 @@ let state = {
       "status": "inprog",
       "deps": [],
       "jira": "ORVV-9359",
-      "epic": {
-        "key": "ORVV-7820",
-        "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 183,
-      "name": "[애니] 천인호 ~ 정희원 전투 액션 피드백 수정 (현석)",
-      "owner": "김현석",
-      "start": "2026-08-14",
-      "end": "2026-08-25",
-      "status": "inprog",
-      "deps": [],
-      "jira": "ORVV-9358",
       "epic": {
         "key": "ORVV-7820",
         "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
@@ -2780,14 +2782,14 @@ let state = {
       "doneAt": null
     },
     {
-      "id": 186,
-      "name": "[배경] 금호동 편의점 창고_레벨 드레싱",
-      "owner": "양귀민",
-      "start": "2026-08-24",
+      "id": 183,
+      "name": "[애니] 천인호 ~ 정희원 전투 액션 피드백 수정 (현석)",
+      "owner": "김현석",
+      "start": "2026-08-14",
       "end": "2026-08-25",
-      "status": "todo",
+      "status": "inprog",
       "deps": [],
-      "jira": "ORVV-9352",
+      "jira": "ORVV-9358",
       "epic": {
         "key": "ORVV-7820",
         "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
@@ -2960,6 +2962,21 @@ let state = {
       "doneAt": null
     },
     {
+      "id": 186,
+      "name": "[배경] 금호동 편의점 창고_레벨 드레싱",
+      "owner": "양귀민",
+      "start": "2026-08-24",
+      "end": "2026-08-25",
+      "status": "todo",
+      "deps": [],
+      "jira": "ORVV-9352",
+      "epic": {
+        "key": "ORVV-7820",
+        "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
+      },
+      "doneAt": null
+    },
+    {
       "id": 198,
       "name": "[사운드] 금호역(천인호 전투) 플레이 사운드",
       "owner": "[사운드]이예얼",
@@ -2983,21 +3000,6 @@ let state = {
       "status": "todo",
       "deps": [],
       "jira": "ORVV-9382",
-      "epic": {
-        "key": "ORVV-7820",
-        "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 200,
-      "name": "[사운드] 불량배 인게임 전투 사운드",
-      "owner": "[사운드]이예얼",
-      "start": "2026-08-20",
-      "end": "2026-08-24",
-      "status": "todo",
-      "deps": [],
-      "jira": "ORVV-9381",
       "epic": {
         "key": "ORVV-7820",
         "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
@@ -3260,7 +3262,7 @@ let state = {
       "doneAt": null
     }
   ],
-  "syncedAt": "2026-08-20T06:09:03.371Z"
+  "syncedAt": "2026-08-20T06:34:22.134Z"
 };
 let nextId = 218;
 function jiraUrl(key){return key ? (state.jiraBase + encodeURIComponent(key)) : null;}
