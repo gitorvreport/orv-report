@@ -288,7 +288,7 @@
     <span class="lg"><span class="sw todo"></span>예정</span>
     <span class="lg"><span class="sw risk"></span>기한 초과</span>
     <span class="lg"><svg width="34" height="10"><line x1="0" y1="5" x2="26" y2="5" stroke="var(--dep)" stroke-width="2"/><path d="M26 5 l-6 -3 v6 z" fill="var(--dep)"/></svg>의존</span>
-    <span class="lg"><svg width="34" height="10"><line x1="0" y1="5" x2="26" y2="5" stroke="var(--dep-block)" stroke-width="2" stroke-dasharray="4 3"/><path d="M26 5 l-6 -3 v6 z" fill="var(--dep-block)"/></svg>선행 미완료 (대기)</span>
+    <span class="lg"><svg width="34" height="10"><line x1="0" y1="5" x2="26" y2="5" stroke="var(--dep-block)" stroke-width="2" stroke-dasharray="4 3"/><path d="M26 5 l-6 -3 v6 z" fill="var(--dep-block)"/></svg>선행 미완료 (선행 대기)</span>
   </div>
 
   <div class="card">
@@ -329,6 +329,22 @@ const DAY_W = 46, ROW_H = 46, HEAD_H = 54, BAR_H = 26, EPIC_H = 34;
 const EPIC_COLORS = ["#2a78d6","#eb6834","#1baf7a","#eda100","#e87ba4","#008300","#4a3aa7","#e34948"];
 function hexA(h,a){const n=parseInt(h.slice(1),16); return "rgba("+((n>>16)&255)+","+((n>>8)&255)+","+(n&255)+","+a+")";}
 const STLABEL = {done:"완료", inprog:"진행중", review:"검수 요청", todo:"예정", risk:"기한 초과"};
+// **화면에 적는 상태 이름은 Jira 것을 그대로 쓴다.** t.status 는 statusCategory 로 접은
+// 값이라 '대기 중'이 '진행중'으로, '할 일'이 '예정'으로 둔갑한다 — 담당자가 자기 이슈를
+// 못 알아보고, 착수도 안 한 일이 진행 중으로 보인다(실제로 17건이 그랬다).
+// 단 'risk'(기한 초과)는 Jira 에 없는, 마감을 지나 차트가 붙인 값이다. 그때는 Jira 이름으로
+// 덮지 않는다 — 덮으면 늦었다는 사실이 화면에서 사라진다.
+function stLabel(t){
+  if(!t) return "";
+  if(t.status==="risk") return STLABEL.risk;
+  return t.statusName || STLABEL[t.status] || t.status || "";
+}
+// Jira 상태가 '대기 중'인 작업. statusCategory 로는 '진행 중'과 구별되지 않아 통계가
+// 부풀었다. HOLD_STATUS 는 아래 applyJiraIssues 곁에 있다(날짜 배치 규칙과 같은 표를 쓴다).
+// **status==="inprog" 를 함께 본다.** 마감이 지난 '대기 중'은 차트가 risk 로 덮는데,
+// 그 조건이 없으면 진행중에서 빼는 수(hold)와 실제 inprog 건수가 어긋나 카드 숫자가
+// 음수 쪽으로 밀리고, 같은 작업이 '대기 중'과 '기한 초과'에 두 번 센다.
+function isHold(t){ return !!(t && t.status==="inprog" && t.statusName && HOLD_STATUS[t.statusName]); }
 // 마감이 지나도 '기한 초과'로 덮지 않는 상태들. 완료는 끝났고, 검수 요청은 작업이 끝나고
 // 확인만 남았다 — 둘 다 '늦었다'보다 '지금 무엇이 필요한지'를 보여주는 편이 낫다.
 const DONE_LIKE = {done:true, review:true};
@@ -380,7 +396,8 @@ let state = {
         "key": "ORVV-7686",
         "name": "[캐릭터] 김독자"
       },
-      "doneAt": "2026-08-20"
+      "doneAt": "2026-08-20",
+      "statusName": "완료"
     },
     {
       "id": 173,
@@ -395,7 +412,8 @@ let state = {
         "key": "ORVV-7686",
         "name": "[캐릭터] 김독자"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "검수 요청"
     },
     {
       "id": 2,
@@ -412,7 +430,8 @@ let state = {
         "key": "ORVV-7686",
         "name": "[캐릭터] 김독자"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "대기 중"
     },
     {
       "id": 3,
@@ -427,7 +446,8 @@ let state = {
         "key": "ORVV-7686",
         "name": "[캐릭터] 김독자"
       },
-      "doneAt": "2026-08-20"
+      "doneAt": "2026-08-20",
+      "statusName": "완료"
     },
     {
       "id": 4,
@@ -446,7 +466,8 @@ let state = {
         "key": "ORVV-7686",
         "name": "[캐릭터] 김독자"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 191,
@@ -461,7 +482,8 @@ let state = {
         "key": "ORVV-7686",
         "name": "[캐릭터] 김독자"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 7,
@@ -476,7 +498,8 @@ let state = {
         "key": "ORVV-7708",
         "name": "[시스템] 세이브·로드 시스템 구현"
       },
-      "doneAt": "2026-08-19"
+      "doneAt": "2026-08-19",
+      "statusName": "완료"
     },
     {
       "id": 214,
@@ -491,7 +514,8 @@ let state = {
         "key": "ORVV-7708",
         "name": "[시스템] 세이브·로드 시스템 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 215,
@@ -506,7 +530,8 @@ let state = {
         "key": "ORVV-7708",
         "name": "[시스템] 세이브·로드 시스템 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 216,
@@ -521,7 +546,8 @@ let state = {
         "key": "ORVV-7708",
         "name": "[시스템] 세이브·로드 시스템 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 9,
@@ -536,7 +562,8 @@ let state = {
         "key": "ORVV-7726",
         "name": "[시스템] 멸살법 시스템 개편"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 10,
@@ -553,7 +580,8 @@ let state = {
         "key": "ORVV-7726",
         "name": "[시스템] 멸살법 시스템 개편"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 13,
@@ -568,7 +596,8 @@ let state = {
         "key": "ORVV-9141",
         "name": "[시스템] 지도 시스템"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 11,
@@ -583,7 +612,8 @@ let state = {
         "key": "ORVV-9141",
         "name": "[시스템] 지도 시스템"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 12,
@@ -598,7 +628,8 @@ let state = {
         "key": "ORVV-9141",
         "name": "[시스템] 지도 시스템"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 14,
@@ -615,7 +646,8 @@ let state = {
         "key": "ORVV-9141",
         "name": "[시스템] 지도 시스템"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 15,
@@ -632,7 +664,8 @@ let state = {
         "key": "ORVV-9141",
         "name": "[시스템] 지도 시스템"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 17,
@@ -647,14 +680,15 @@ let state = {
         "key": "ORVV-8080",
         "name": "[시스템] 도깨비방 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 18,
       "name": "[캐릭터원화] 도깨비방 스타스트림 패널용 원화 제작_화신 2종(1)",
       "owner": "구민구",
-      "start": "2026-08-12",
-      "end": "2026-08-24",
+      "start": "2026-08-11",
+      "end": "2026-08-27",
       "status": "inprog",
       "deps": [],
       "jira": "ORVV-9111",
@@ -662,7 +696,8 @@ let state = {
         "key": "ORVV-8080",
         "name": "[시스템] 도깨비방 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 16,
@@ -677,7 +712,8 @@ let state = {
         "key": "ORVV-8080",
         "name": "[시스템] 도깨비방 구현"
       },
-      "doneAt": "2026-08-20"
+      "doneAt": "2026-08-20",
+      "statusName": "완료"
     },
     {
       "id": 19,
@@ -685,14 +721,15 @@ let state = {
       "owner": "천서주",
       "start": "2026-08-19",
       "end": "2026-08-21",
-      "status": "review",
+      "status": "done",
       "deps": [],
       "jira": "ORVV-9110",
       "epic": {
         "key": "ORVV-8080",
         "name": "[시스템] 도깨비방 구현"
       },
-      "doneAt": null
+      "doneAt": "2026-08-20",
+      "statusName": "완료"
     },
     {
       "id": 22,
@@ -707,7 +744,8 @@ let state = {
         "key": "ORVV-8080",
         "name": "[시스템] 도깨비방 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 26,
@@ -722,7 +760,8 @@ let state = {
         "key": "ORVV-8080",
         "name": "[시스템] 도깨비방 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 21,
@@ -730,14 +769,15 @@ let state = {
       "owner": "강지한",
       "start": "2026-08-12",
       "end": "2026-08-20",
-      "status": "review",
+      "status": "done",
       "deps": [],
       "jira": "ORVV-9032",
       "epic": {
         "key": "ORVV-8080",
         "name": "[시스템] 도깨비방 구현"
       },
-      "doneAt": null
+      "doneAt": "2026-08-20",
+      "statusName": "완료"
     },
     {
       "id": 23,
@@ -755,7 +795,8 @@ let state = {
         "key": "ORVV-8080",
         "name": "[시스템] 도깨비방 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 194,
@@ -770,7 +811,8 @@ let state = {
         "key": "ORVV-8080",
         "name": "[시스템] 도깨비방 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 30,
@@ -787,7 +829,8 @@ let state = {
         "key": "ORVV-8080",
         "name": "[시스템] 도깨비방 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 24,
@@ -802,7 +845,8 @@ let state = {
         "key": "ORVV-8080",
         "name": "[시스템] 도깨비방 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 25,
@@ -817,7 +861,8 @@ let state = {
         "key": "ORVV-8080",
         "name": "[시스템] 도깨비방 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 27,
@@ -834,7 +879,8 @@ let state = {
         "key": "ORVV-8080",
         "name": "[시스템] 도깨비방 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "대기 중"
     },
     {
       "id": 195,
@@ -849,7 +895,8 @@ let state = {
         "key": "ORVV-8080",
         "name": "[시스템] 도깨비방 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 31,
@@ -864,14 +911,15 @@ let state = {
         "key": "ORVV-8080",
         "name": "[시스템] 도깨비방 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 175,
       "name": "[캐릭터원화] 도깨비 감투 원화",
       "owner": "구민구",
       "start": "2026-08-20",
-      "end": "2026-08-20",
+      "end": "2026-08-21",
       "status": "inprog",
       "deps": [],
       "jira": "ORVV-9372",
@@ -879,7 +927,8 @@ let state = {
         "key": "ORVV-8080",
         "name": "[시스템] 도깨비방 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 174,
@@ -896,7 +945,8 @@ let state = {
         "key": "ORVV-8080",
         "name": "[시스템] 도깨비방 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 213,
@@ -913,7 +963,8 @@ let state = {
         "key": "ORVV-8080",
         "name": "[시스템] 도깨비방 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 208,
@@ -928,7 +979,8 @@ let state = {
         "key": "ORVV-8080",
         "name": "[시스템] 도깨비방 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 32,
@@ -936,14 +988,15 @@ let state = {
       "owner": "김효훈",
       "start": "2026-07-30",
       "end": "2026-08-14",
-      "status": "review",
+      "status": "done",
       "deps": [],
       "jira": "ORVV-8955",
       "epic": {
         "key": "ORVV-8681",
         "name": "[시스템] 스타스트림 시스템"
       },
-      "doneAt": null
+      "doneAt": "2026-08-20",
+      "statusName": "완료"
     },
     {
       "id": 33,
@@ -958,7 +1011,8 @@ let state = {
         "key": "ORVV-7814",
         "name": "[시스템] 요리 시스템 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 34,
@@ -973,7 +1027,8 @@ let state = {
         "key": "ORVV-7814",
         "name": "[시스템] 요리 시스템 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 35,
@@ -988,7 +1043,8 @@ let state = {
         "key": "ORVV-7814",
         "name": "[시스템] 요리 시스템 구현"
       },
-      "doneAt": "2026-08-14"
+      "doneAt": "2026-08-14",
+      "statusName": "완료"
     },
     {
       "id": 36,
@@ -1003,7 +1059,8 @@ let state = {
         "key": "ORVV-7817",
         "name": "[시스템] 랜덤 아이템 박스 구현"
       },
-      "doneAt": "2026-08-14"
+      "doneAt": "2026-08-14",
+      "statusName": "완료"
     },
     {
       "id": 39,
@@ -1018,7 +1075,8 @@ let state = {
         "key": "ORVV-9038",
         "name": "[시스템] 콤보 시스템"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "검수 요청"
     },
     {
       "id": 37,
@@ -1033,7 +1091,8 @@ let state = {
         "key": "ORVV-9038",
         "name": "[시스템] 콤보 시스템"
       },
-      "doneAt": "2026-08-20"
+      "doneAt": "2026-08-20",
+      "statusName": "완료"
     },
     {
       "id": 38,
@@ -1051,7 +1110,8 @@ let state = {
         "key": "ORVV-9038",
         "name": "[시스템] 콤보 시스템"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 40,
@@ -1068,7 +1128,8 @@ let state = {
         "key": "ORVV-9038",
         "name": "[시스템] 콤보 시스템"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 41,
@@ -1086,7 +1147,8 @@ let state = {
         "key": "ORVV-9038",
         "name": "[시스템] 콤보 시스템"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 42,
@@ -1103,7 +1165,8 @@ let state = {
         "key": "ORVV-9038",
         "name": "[시스템] 콤보 시스템"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 43,
@@ -1118,7 +1181,8 @@ let state = {
         "key": "ORVV-9039",
         "name": "[시스템] 시나리오 시스템"
       },
-      "doneAt": "2026-08-13"
+      "doneAt": "2026-08-13",
+      "statusName": "완료"
     },
     {
       "id": 44,
@@ -1135,7 +1199,8 @@ let state = {
         "key": "ORVV-9039",
         "name": "[시스템] 시나리오 시스템"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 45,
@@ -1150,7 +1215,8 @@ let state = {
         "key": "ORVV-9039",
         "name": "[시스템] 시나리오 시스템"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 46,
@@ -1168,7 +1234,8 @@ let state = {
         "key": "ORVV-9039",
         "name": "[시스템] 시나리오 시스템"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 47,
@@ -1185,7 +1252,8 @@ let state = {
         "key": "ORVV-9039",
         "name": "[시스템] 시나리오 시스템"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 49,
@@ -1200,7 +1268,8 @@ let state = {
         "key": "ORVV-9112",
         "name": "[시스템][탐험] 성좌의 유희 시스템"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 50,
@@ -1215,7 +1284,8 @@ let state = {
         "key": "ORVV-9112",
         "name": "[시스템][탐험] 성좌의 유희 시스템"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 51,
@@ -1233,7 +1303,8 @@ let state = {
         "key": "ORVV-9112",
         "name": "[시스템][탐험] 성좌의 유희 시스템"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 206,
@@ -1248,7 +1319,8 @@ let state = {
         "key": "ORVV-9112",
         "name": "[시스템][탐험] 성좌의 유희 시스템"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 54,
@@ -1263,7 +1335,8 @@ let state = {
         "key": "ORVV-9165",
         "name": "[시스템][탐험] 회차공명 시스템 - 땅강아쥐 어둠 자락의 보물창고"
       },
-      "doneAt": "2026-07-03"
+      "doneAt": "2026-07-03",
+      "statusName": "완료"
     },
     {
       "id": 52,
@@ -1271,14 +1344,15 @@ let state = {
       "owner": "이동겸 · 시작일 미정",
       "start": "2026-08-19",
       "end": "2026-08-19",
-      "status": "review",
+      "status": "done",
       "deps": [],
       "jira": "ORVV-8355",
       "epic": {
         "key": "ORVV-9165",
         "name": "[시스템][탐험] 회차공명 시스템 - 땅강아쥐 어둠 자락의 보물창고"
       },
-      "doneAt": null
+      "doneAt": "2026-08-20",
+      "statusName": "완료"
     },
     {
       "id": 55,
@@ -1296,7 +1370,8 @@ let state = {
         "key": "ORVV-9165",
         "name": "[시스템][탐험] 회차공명 시스템 - 땅강아쥐 어둠 자락의 보물창고"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "대기 중"
     },
     {
       "id": 63,
@@ -1311,7 +1386,8 @@ let state = {
         "key": "ORVV-9165",
         "name": "[시스템][탐험] 회차공명 시스템 - 땅강아쥐 어둠 자락의 보물창고"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 53,
@@ -1326,7 +1402,8 @@ let state = {
         "key": "ORVV-9165",
         "name": "[시스템][탐험] 회차공명 시스템 - 땅강아쥐 어둠 자락의 보물창고"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 57,
@@ -1341,7 +1418,8 @@ let state = {
         "key": "ORVV-9165",
         "name": "[시스템][탐험] 회차공명 시스템 - 땅강아쥐 어둠 자락의 보물창고"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 58,
@@ -1356,7 +1434,8 @@ let state = {
         "key": "ORVV-9165",
         "name": "[시스템][탐험] 회차공명 시스템 - 땅강아쥐 어둠 자락의 보물창고"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 59,
@@ -1371,7 +1450,8 @@ let state = {
         "key": "ORVV-9165",
         "name": "[시스템][탐험] 회차공명 시스템 - 땅강아쥐 어둠 자락의 보물창고"
       },
-      "doneAt": "2026-08-19"
+      "doneAt": "2026-08-19",
+      "statusName": "완료"
     },
     {
       "id": 60,
@@ -1386,7 +1466,8 @@ let state = {
         "key": "ORVV-9165",
         "name": "[시스템][탐험] 회차공명 시스템 - 땅강아쥐 어둠 자락의 보물창고"
       },
-      "doneAt": "2026-08-19"
+      "doneAt": "2026-08-19",
+      "statusName": "완료"
     },
     {
       "id": 153,
@@ -1394,14 +1475,15 @@ let state = {
       "owner": "권상모",
       "start": "2026-08-19",
       "end": "2026-08-21",
-      "status": "review",
+      "status": "done",
       "deps": [],
       "jira": "ORVV-9228",
       "epic": {
         "key": "ORVV-9165",
         "name": "[시스템][탐험] 회차공명 시스템 - 땅강아쥐 어둠 자락의 보물창고"
       },
-      "doneAt": null
+      "doneAt": "2026-08-20",
+      "statusName": "완료"
     },
     {
       "id": 61,
@@ -1416,7 +1498,8 @@ let state = {
         "key": "ORVV-9165",
         "name": "[시스템][탐험] 회차공명 시스템 - 땅강아쥐 어둠 자락의 보물창고"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 62,
@@ -1431,7 +1514,8 @@ let state = {
         "key": "ORVV-9165",
         "name": "[시스템][탐험] 회차공명 시스템 - 땅강아쥐 어둠 자락의 보물창고"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "검수 요청"
     },
     {
       "id": 152,
@@ -1446,7 +1530,8 @@ let state = {
         "key": "ORVV-9165",
         "name": "[시스템][탐험] 회차공명 시스템 - 땅강아쥐 어둠 자락의 보물창고"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "검수 요청"
     },
     {
       "id": 193,
@@ -1461,7 +1546,8 @@ let state = {
         "key": "ORVV-9165",
         "name": "[시스템][탐험] 회차공명 시스템 - 땅강아쥐 어둠 자락의 보물창고"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 64,
@@ -1476,7 +1562,8 @@ let state = {
         "key": "ORVV-8772",
         "name": "[시스템] 플레이어 디폴트 카메라 수정"
       },
-      "doneAt": "2026-08-18"
+      "doneAt": "2026-08-18",
+      "statusName": "완료"
     },
     {
       "id": 65,
@@ -1493,7 +1580,8 @@ let state = {
         "key": "ORVV-8772",
         "name": "[시스템] 플레이어 디폴트 카메라 수정"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 185,
@@ -1508,7 +1596,8 @@ let state = {
         "key": "ORVV-8772",
         "name": "[시스템] 플레이어 디폴트 카메라 수정"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 67,
@@ -1516,14 +1605,15 @@ let state = {
       "owner": "김은정",
       "start": "2026-08-11",
       "end": "2026-08-13",
-      "status": "review",
+      "status": "done",
       "deps": [],
       "jira": "ORVV-9115",
       "epic": {
         "key": "ORVV-7958",
         "name": "[시스템] 격 내구도 시스템"
       },
-      "doneAt": null
+      "doneAt": "2026-08-20",
+      "statusName": "완료"
     },
     {
       "id": 68,
@@ -1538,7 +1628,8 @@ let state = {
         "key": "ORVV-7958",
         "name": "[시스템] 격 내구도 시스템"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 165,
@@ -1553,7 +1644,8 @@ let state = {
         "key": "ORVV-7958",
         "name": "[시스템] 격 내구도 시스템"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 71,
@@ -1568,7 +1660,8 @@ let state = {
         "key": "ORVV-7958",
         "name": "[시스템] 격 내구도 시스템"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 72,
@@ -1583,7 +1676,8 @@ let state = {
         "key": "ORVV-8649",
         "name": "[시스템] 퀵 레벨업 시스템"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "검수 요청"
     },
     {
       "id": 73,
@@ -1598,7 +1692,8 @@ let state = {
         "key": "ORVV-8765",
         "name": "[시스템] 슈퍼 스프린트 시스템 (김독자)"
       },
-      "doneAt": "2026-08-14"
+      "doneAt": "2026-08-14",
+      "statusName": "완료"
     },
     {
       "id": 74,
@@ -1615,7 +1710,8 @@ let state = {
         "key": "ORVV-8765",
         "name": "[시스템] 슈퍼 스프린트 시스템 (김독자)"
       },
-      "doneAt": "2026-08-20"
+      "doneAt": "2026-08-20",
+      "statusName": "완료"
     },
     {
       "id": 75,
@@ -1630,7 +1726,8 @@ let state = {
         "key": "ORVV-8765",
         "name": "[시스템] 슈퍼 스프린트 시스템 (김독자)"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "검수 요청"
     },
     {
       "id": 76,
@@ -1645,7 +1742,8 @@ let state = {
         "key": "ORVV-8765",
         "name": "[시스템] 슈퍼 스프린트 시스템 (김독자)"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 77,
@@ -1662,7 +1760,8 @@ let state = {
         "key": "ORVV-8765",
         "name": "[시스템] 슈퍼 스프린트 시스템 (김독자)"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 78,
@@ -1679,7 +1778,8 @@ let state = {
         "key": "ORVV-8765",
         "name": "[시스템] 슈퍼 스프린트 시스템 (김독자)"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 79,
@@ -1697,7 +1797,8 @@ let state = {
         "key": "ORVV-8765",
         "name": "[시스템] 슈퍼 스프린트 시스템 (김독자)"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 192,
@@ -1712,7 +1813,8 @@ let state = {
         "key": "ORVV-8765",
         "name": "[시스템] 슈퍼 스프린트 시스템 (김독자)"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 95,
@@ -1727,7 +1829,8 @@ let state = {
         "key": "ORVV-7820",
         "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 154,
@@ -1744,7 +1847,8 @@ let state = {
         "key": "ORVV-7820",
         "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 83,
@@ -1759,7 +1863,8 @@ let state = {
         "key": "ORVV-7820",
         "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "검수 요청"
     },
     {
       "id": 182,
@@ -1774,7 +1879,8 @@ let state = {
         "key": "ORVV-7820",
         "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "대기 중"
     },
     {
       "id": 183,
@@ -1789,7 +1895,8 @@ let state = {
         "key": "ORVV-7820",
         "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 89,
@@ -1804,7 +1911,8 @@ let state = {
         "key": "ORVV-7820",
         "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "검수 요청"
     },
     {
       "id": 90,
@@ -1819,7 +1927,8 @@ let state = {
         "key": "ORVV-7820",
         "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 96,
@@ -1834,7 +1943,8 @@ let state = {
         "key": "ORVV-7820",
         "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 201,
@@ -1849,7 +1959,8 @@ let state = {
         "key": "ORVV-7820",
         "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 84,
@@ -1857,14 +1968,15 @@ let state = {
       "owner": "임광수",
       "start": "2026-07-21",
       "end": "2026-08-21",
-      "status": "review",
+      "status": "done",
       "deps": [],
       "jira": "ORVV-8309",
       "epic": {
         "key": "ORVV-7820",
         "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
       },
-      "doneAt": null
+      "doneAt": "2026-08-20",
+      "statusName": "완료"
     },
     {
       "id": 93,
@@ -1879,7 +1991,8 @@ let state = {
         "key": "ORVV-7820",
         "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 91,
@@ -1894,7 +2007,8 @@ let state = {
         "key": "ORVV-7820",
         "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 200,
@@ -1909,7 +2023,8 @@ let state = {
         "key": "ORVV-7820",
         "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 181,
@@ -1924,7 +2039,8 @@ let state = {
         "key": "ORVV-7820",
         "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 86,
@@ -1939,7 +2055,8 @@ let state = {
         "key": "ORVV-7820",
         "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 87,
@@ -1954,7 +2071,8 @@ let state = {
         "key": "ORVV-7820",
         "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 88,
@@ -1969,7 +2087,8 @@ let state = {
         "key": "ORVV-7820",
         "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 80,
@@ -1984,7 +2103,8 @@ let state = {
         "key": "ORVV-7820",
         "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
       },
-      "doneAt": "2026-08-20"
+      "doneAt": "2026-08-20",
+      "statusName": "완료"
     },
     {
       "id": 81,
@@ -1999,7 +2119,8 @@ let state = {
         "key": "ORVV-7820",
         "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
       },
-      "doneAt": "2026-08-20"
+      "doneAt": "2026-08-20",
+      "statusName": "완료"
     },
     {
       "id": 82,
@@ -2014,7 +2135,8 @@ let state = {
         "key": "ORVV-7820",
         "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
       },
-      "doneAt": "2026-08-19"
+      "doneAt": "2026-08-19",
+      "statusName": "폐쇄"
     },
     {
       "id": 92,
@@ -2029,7 +2151,8 @@ let state = {
         "key": "ORVV-7820",
         "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 198,
@@ -2044,7 +2167,8 @@ let state = {
         "key": "ORVV-7820",
         "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 199,
@@ -2059,7 +2183,8 @@ let state = {
         "key": "ORVV-7820",
         "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "대기 중"
     },
     {
       "id": 210,
@@ -2074,7 +2199,8 @@ let state = {
         "key": "ORVV-7820",
         "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 157,
@@ -2089,7 +2215,8 @@ let state = {
         "key": "ORVV-7820",
         "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 158,
@@ -2104,7 +2231,8 @@ let state = {
         "key": "ORVV-7820",
         "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 159,
@@ -2119,7 +2247,8 @@ let state = {
         "key": "ORVV-7820",
         "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
       },
-      "doneAt": "2026-08-19"
+      "doneAt": "2026-08-19",
+      "statusName": "완료"
     },
     {
       "id": 160,
@@ -2134,7 +2263,8 @@ let state = {
         "key": "ORVV-7820",
         "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 212,
@@ -2149,7 +2279,8 @@ let state = {
         "key": "ORVV-7820",
         "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 94,
@@ -2164,7 +2295,8 @@ let state = {
         "key": "ORVV-7820",
         "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 224,
@@ -2179,7 +2311,8 @@ let state = {
         "key": "ORVV-8318",
         "name": "[컷씬] 정희원 '심판의 시간' 감정선 추가"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 179,
@@ -2194,59 +2327,63 @@ let state = {
         "key": "ORVV-8318",
         "name": "[컷씬] 정희원 '심판의 시간' 감정선 추가"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 226,
       "name": "[라이팅] 정희원 '심판의 시간' 감정선 추가",
       "owner": "정재윤 · 일정 미정",
-      "start": "2026-08-20",
-      "end": "2026-08-20",
-      "status": "todo",
+      "start": "2026-09-18",
+      "end": "2026-09-18",
+      "status": "inprog",
       "deps": [],
       "jira": "ORVV-8322",
       "epic": {
         "key": "ORVV-8318",
         "name": "[컷씬] 정희원 '심판의 시간' 감정선 추가"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "대기 중"
     },
     {
       "id": 225,
       "name": "[이펙트] 정희원 '심판의 시간' 감정선 추가",
-      "owner": "이용곤 · 시작일 미정",
+      "owner": "이용곤 · 일정 미정",
       "start": "2026-09-18",
       "end": "2026-09-18",
-      "status": "todo",
+      "status": "inprog",
       "deps": [],
       "jira": "ORVV-8321",
       "epic": {
         "key": "ORVV-8318",
         "name": "[컷씬] 정희원 '심판의 시간' 감정선 추가"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "대기 중"
     },
     {
       "id": 203,
       "name": "[사운드] 정희원 '심판의 시간' 감정선 추가",
       "owner": "[사운드]이예얼 · 일정 미정",
-      "start": "2026-08-20",
-      "end": "2026-08-20",
-      "status": "todo",
+      "start": "2026-09-18",
+      "end": "2026-09-18",
+      "status": "inprog",
       "deps": [],
       "jira": "ORVV-9378",
       "epic": {
         "key": "ORVV-8318",
         "name": "[컷씬] 정희원 '심판의 시간' 감정선 추가"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "대기 중"
     },
     {
       "id": 227,
       "name": "[컷씬] 정희원 각성과 심판의 시간 발동",
-      "owner": "김정근 · 시작일 미정",
-      "start": "2026-09-18",
-      "end": "2026-09-18",
+      "owner": "김정근",
+      "start": "2026-08-20",
+      "end": "2026-09-23",
       "status": "inprog",
       "deps": [],
       "jira": "ORVV-8326",
@@ -2254,14 +2391,15 @@ let state = {
         "key": "ORVV-7969",
         "name": "[컷씬] 정희원 각성과 심판의 시간 발동"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 230,
       "name": "[캐릭터모델링] 정희원 컷씬용 손 몰프 타겟 모델링",
-      "owner": "김나영 · 시작일 미정",
-      "start": "2026-10-29",
-      "end": "2026-10-29",
+      "owner": "김나영",
+      "start": "2026-08-27",
+      "end": "2026-08-28",
       "status": "todo",
       "deps": [],
       "jira": "ORVV-9102",
@@ -2269,7 +2407,8 @@ let state = {
         "key": "ORVV-7969",
         "name": "[컷씬] 정희원 각성과 심판의 시간 발동"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 180,
@@ -2284,59 +2423,63 @@ let state = {
         "key": "ORVV-7969",
         "name": "[컷씬] 정희원 각성과 심판의 시간 발동"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 229,
       "name": "[라이팅] 정희원 각성과 심판의 시간 발동",
       "owner": "정재윤 · 일정 미정",
-      "start": "2026-08-20",
-      "end": "2026-08-20",
-      "status": "todo",
+      "start": "2026-09-18",
+      "end": "2026-09-18",
+      "status": "inprog",
       "deps": [],
       "jira": "ORVV-8328",
       "epic": {
         "key": "ORVV-7969",
         "name": "[컷씬] 정희원 각성과 심판의 시간 발동"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "대기 중"
     },
     {
       "id": 228,
       "name": "[이펙트] 정희원 각성과 심판의 시간 발동",
-      "owner": "이용곤 · 시작일 미정",
+      "owner": "이용곤 · 일정 미정",
       "start": "2026-09-18",
       "end": "2026-09-18",
-      "status": "todo",
+      "status": "inprog",
       "deps": [],
       "jira": "ORVV-8327",
       "epic": {
         "key": "ORVV-7969",
         "name": "[컷씬] 정희원 각성과 심판의 시간 발동"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "대기 중"
     },
     {
       "id": 204,
       "name": "[사운드] 정희원 각성과 심판의 시간 발동",
       "owner": "[사운드]이예얼 · 일정 미정",
-      "start": "2026-08-20",
-      "end": "2026-08-20",
-      "status": "todo",
+      "start": "2026-09-18",
+      "end": "2026-09-18",
+      "status": "inprog",
       "deps": [],
       "jira": "ORVV-9377",
       "epic": {
         "key": "ORVV-7969",
         "name": "[컷씬] 정희원 각성과 심판의 시간 발동"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "대기 중"
     },
     {
       "id": 231,
       "name": "[컷씬] 천인호 처치",
-      "owner": "이창석 · 일정 미정",
-      "start": "2026-08-20",
-      "end": "2026-08-20",
+      "owner": "이창석",
+      "start": "2026-08-24",
+      "end": "2026-09-18",
       "status": "todo",
       "deps": [],
       "jira": "ORVV-8329",
@@ -2344,7 +2487,8 @@ let state = {
         "key": "ORVV-7971",
         "name": "[컷씬] 천인호 처치"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 177,
@@ -2359,7 +2503,8 @@ let state = {
         "key": "ORVV-7971",
         "name": "[컷씬] 천인호 처치"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 178,
@@ -2374,52 +2519,56 @@ let state = {
         "key": "ORVV-7971",
         "name": "[컷씬] 천인호 처치"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 233,
       "name": "[라이팅] 천인호 처치",
       "owner": "정재윤 · 일정 미정",
-      "start": "2026-08-20",
-      "end": "2026-08-20",
-      "status": "todo",
+      "start": "2026-09-18",
+      "end": "2026-09-18",
+      "status": "inprog",
       "deps": [],
       "jira": "ORVV-8331",
       "epic": {
         "key": "ORVV-7971",
         "name": "[컷씬] 천인호 처치"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "대기 중"
     },
     {
       "id": 232,
       "name": "[이펙트] 천인호 처치",
-      "owner": "이용곤 · 시작일 미정",
+      "owner": "이용곤 · 일정 미정",
       "start": "2026-09-18",
       "end": "2026-09-18",
-      "status": "todo",
+      "status": "inprog",
       "deps": [],
       "jira": "ORVV-8330",
       "epic": {
         "key": "ORVV-7971",
         "name": "[컷씬] 천인호 처치"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "대기 중"
     },
     {
       "id": 202,
       "name": "[사운드] 천인호 처치",
       "owner": "[사운드]이예얼 · 일정 미정",
-      "start": "2026-08-20",
-      "end": "2026-08-20",
-      "status": "todo",
+      "start": "2026-09-18",
+      "end": "2026-09-18",
+      "status": "inprog",
       "deps": [],
       "jira": "ORVV-9379",
       "epic": {
         "key": "ORVV-7971",
         "name": "[컷씬] 천인호 처치"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "대기 중"
     },
     {
       "id": 186,
@@ -2434,14 +2583,15 @@ let state = {
         "key": "ORVV-7820",
         "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 176,
       "name": "[캐릭터모델링] 정희원, 천인호 전투 컷씬용 배경 프랍 --> 카툰화 모델링",
-      "owner": "김웅 · 시작일 미정",
-      "start": "2026-08-27",
-      "end": "2026-08-27",
+      "owner": "김웅",
+      "start": "2026-08-24",
+      "end": "2026-08-26",
       "status": "todo",
       "deps": [],
       "jira": "ORVV-9371",
@@ -2449,7 +2599,8 @@ let state = {
         "key": "ORVV-7820",
         "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 211,
@@ -2466,7 +2617,8 @@ let state = {
         "key": "ORVV-7820",
         "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 205,
@@ -2481,7 +2633,8 @@ let state = {
         "key": "ORVV-7967",
         "name": "[컷씬] 천인호에 의해 금호역 전투 개시"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 85,
@@ -2496,7 +2649,8 @@ let state = {
         "key": "ORVV-7820",
         "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "대기 중"
     },
     {
       "id": 98,
@@ -2511,7 +2665,8 @@ let state = {
         "key": "ORVV-7822",
         "name": "[플레이] 동대입구역 장충단 공원 플레이 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 99,
@@ -2526,7 +2681,8 @@ let state = {
         "key": "ORVV-7822",
         "name": "[플레이] 동대입구역 장충단 공원 플레이 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 172,
@@ -2541,7 +2697,8 @@ let state = {
         "key": "ORVV-7822",
         "name": "[플레이] 동대입구역 장충단 공원 플레이 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 97,
@@ -2556,7 +2713,8 @@ let state = {
         "key": "ORVV-7822",
         "name": "[플레이] 동대입구역 장충단 공원 플레이 구현"
       },
-      "doneAt": "2026-08-20"
+      "doneAt": "2026-08-20",
+      "statusName": "완료"
     },
     {
       "id": 100,
@@ -2571,7 +2729,8 @@ let state = {
         "key": "ORVV-7822",
         "name": "[플레이] 동대입구역 장충단 공원 플레이 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "대기 중"
     },
     {
       "id": 101,
@@ -2586,7 +2745,8 @@ let state = {
         "key": "ORVV-7822",
         "name": "[플레이] 동대입구역 장충단 공원 플레이 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 197,
@@ -2601,7 +2761,8 @@ let state = {
         "key": "ORVV-7822",
         "name": "[플레이] 동대입구역 장충단 공원 플레이 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 217,
@@ -2616,7 +2777,8 @@ let state = {
         "key": "ORVV-7822",
         "name": "[플레이] 동대입구역 장충단 공원 플레이 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 155,
@@ -2631,7 +2793,8 @@ let state = {
         "key": "ORVV-7824",
         "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 156,
@@ -2648,7 +2811,8 @@ let state = {
         "key": "ORVV-7824",
         "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 164,
@@ -2663,7 +2827,8 @@ let state = {
         "key": "ORVV-7824",
         "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 104,
@@ -2678,7 +2843,8 @@ let state = {
         "key": "ORVV-7824",
         "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 163,
@@ -2693,7 +2859,8 @@ let state = {
         "key": "ORVV-7824",
         "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 167,
@@ -2708,7 +2875,8 @@ let state = {
         "key": "ORVV-7824",
         "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 168,
@@ -2723,7 +2891,8 @@ let state = {
         "key": "ORVV-7824",
         "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 166,
@@ -2738,7 +2907,8 @@ let state = {
         "key": "ORVV-7824",
         "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 171,
@@ -2753,7 +2923,8 @@ let state = {
         "key": "ORVV-7824",
         "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 169,
@@ -2768,7 +2939,8 @@ let state = {
         "key": "ORVV-7824",
         "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 170,
@@ -2783,7 +2955,8 @@ let state = {
         "key": "ORVV-7824",
         "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 196,
@@ -2798,7 +2971,8 @@ let state = {
         "key": "ORVV-7824",
         "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 209,
@@ -2813,14 +2987,15 @@ let state = {
         "key": "ORVV-7824",
         "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 105,
       "name": "[캐릭터모델링] 공필두 무기 모델링_로폴 제작",
       "owner": "이기해",
       "start": "2026-08-13",
-      "end": "2026-08-14",
+      "end": "2026-08-21",
       "status": "done",
       "deps": [],
       "jira": "ORVV-8989",
@@ -2828,7 +3003,8 @@ let state = {
         "key": "ORVV-9113",
         "name": "[플레이] 충무로역 - 공필두 플레이 구현"
       },
-      "doneAt": "2026-08-20"
+      "doneAt": "2026-08-20",
+      "statusName": "완료"
     },
     {
       "id": 107,
@@ -2836,7 +3012,7 @@ let state = {
       "owner": "김동석",
       "start": "2026-08-18",
       "end": "2026-08-19",
-      "status": "review",
+      "status": "done",
       "deps": [
         105
       ],
@@ -2845,7 +3021,8 @@ let state = {
         "key": "ORVV-9113",
         "name": "[플레이] 충무로역 - 공필두 플레이 구현"
       },
-      "doneAt": null
+      "doneAt": "2026-08-20",
+      "statusName": "완료"
     },
     {
       "id": 108,
@@ -2862,7 +3039,8 @@ let state = {
         "key": "ORVV-9113",
         "name": "[플레이] 충무로역 - 공필두 플레이 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 109,
@@ -2879,14 +3057,15 @@ let state = {
         "key": "ORVV-9113",
         "name": "[플레이] 충무로역 - 공필두 플레이 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 110,
       "name": "[기획] 공필두·미니포탑 - 스크립트",
       "owner": "장영환",
-      "start": "2026-08-25",
-      "end": "2026-08-27",
+      "start": "2026-08-21",
+      "end": "2026-08-28",
       "status": "todo",
       "deps": [],
       "jira": "ORVV-9133",
@@ -2894,7 +3073,8 @@ let state = {
         "key": "ORVV-9113",
         "name": "[플레이] 충무로역 - 공필두 플레이 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 111,
@@ -2911,7 +3091,8 @@ let state = {
         "key": "ORVV-9113",
         "name": "[플레이] 충무로역 - 공필두 플레이 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 106,
@@ -2926,7 +3107,8 @@ let state = {
         "key": "ORVV-9113",
         "name": "[플레이] 충무로역 - 공필두 플레이 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 184,
@@ -2941,7 +3123,8 @@ let state = {
         "key": "ORVV-9113",
         "name": "[플레이] 충무로역 - 공필두 플레이 구현"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 114,
@@ -2956,7 +3139,8 @@ let state = {
         "key": "ORVV-7828",
         "name": "[몬스터] 스펙터"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 123,
@@ -2973,7 +3157,8 @@ let state = {
         "key": "ORVV-7828",
         "name": "[몬스터] 스펙터"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 113,
@@ -2988,7 +3173,8 @@ let state = {
         "key": "ORVV-7828",
         "name": "[몬스터] 스펙터"
       },
-      "doneAt": "2026-08-13"
+      "doneAt": "2026-08-13",
+      "statusName": "완료"
     },
     {
       "id": 122,
@@ -3005,7 +3191,8 @@ let state = {
         "key": "ORVV-7828",
         "name": "[몬스터] 스펙터"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "검수 요청"
     },
     {
       "id": 117,
@@ -3020,7 +3207,8 @@ let state = {
         "key": "ORVV-7828",
         "name": "[몬스터] 스펙터"
       },
-      "doneAt": "2026-08-14"
+      "doneAt": "2026-08-14",
+      "statusName": "완료"
     },
     {
       "id": 118,
@@ -3037,14 +3225,15 @@ let state = {
         "key": "ORVV-7828",
         "name": "[몬스터] 스펙터"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 125,
       "name": "[기획] 스펙터 스크립트 작업 (몽타주·콤보그래프) 작업",
       "owner": "장영환",
       "start": "2026-08-17",
-      "end": "2026-08-20",
+      "end": "2026-08-31",
       "status": "inprog",
       "deps": [
         113,
@@ -3055,14 +3244,15 @@ let state = {
         "key": "ORVV-7828",
         "name": "[몬스터] 스펙터"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 126,
       "name": "[기획] 스펙터 검수",
       "owner": "장영환",
-      "start": "2026-08-21",
-      "end": "2026-08-21",
+      "start": "2026-08-31",
+      "end": "2026-08-31",
       "status": "todo",
       "deps": [
         125
@@ -3072,7 +3262,8 @@ let state = {
         "key": "ORVV-7828",
         "name": "[몬스터] 스펙터"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 189,
@@ -3087,7 +3278,8 @@ let state = {
         "key": "ORVV-7828",
         "name": "[몬스터] 스펙터"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 137,
@@ -3102,7 +3294,8 @@ let state = {
         "key": "ORVV-7808",
         "name": "[몬스터] 그롤"
       },
-      "doneAt": "2026-08-19"
+      "doneAt": "2026-08-19",
+      "statusName": "완료"
     },
     {
       "id": 138,
@@ -3117,7 +3310,8 @@ let state = {
         "key": "ORVV-7808",
         "name": "[몬스터] 그롤"
       },
-      "doneAt": "2026-08-19"
+      "doneAt": "2026-08-19",
+      "statusName": "완료"
     },
     {
       "id": 139,
@@ -3135,7 +3329,8 @@ let state = {
         "key": "ORVV-7808",
         "name": "[몬스터] 그롤"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 140,
@@ -3150,7 +3345,8 @@ let state = {
         "key": "ORVV-7808",
         "name": "[몬스터] 그롤"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 141,
@@ -3165,7 +3361,8 @@ let state = {
         "key": "ORVV-8960",
         "name": "[몬스터] 환영의 망령"
       },
-      "doneAt": "2026-08-13"
+      "doneAt": "2026-08-13",
+      "statusName": "완료"
     },
     {
       "id": 142,
@@ -3180,7 +3377,8 @@ let state = {
         "key": "ORVV-8960",
         "name": "[몬스터] 환영의 망령"
       },
-      "doneAt": "2026-08-13"
+      "doneAt": "2026-08-13",
+      "statusName": "완료"
     },
     {
       "id": 143,
@@ -3195,7 +3393,8 @@ let state = {
         "key": "ORVV-8960",
         "name": "[몬스터] 환영의 망령"
       },
-      "doneAt": "2026-08-13"
+      "doneAt": "2026-08-13",
+      "statusName": "완료"
     },
     {
       "id": 144,
@@ -3213,7 +3412,8 @@ let state = {
         "key": "ORVV-8960",
         "name": "[몬스터] 환영의 망령"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "검수 요청"
     },
     {
       "id": 145,
@@ -3221,7 +3421,7 @@ let state = {
       "owner": "김영욱",
       "start": "2026-08-13",
       "end": "2026-08-18",
-      "status": "review",
+      "status": "done",
       "deps": [
         142,
         143
@@ -3231,7 +3431,8 @@ let state = {
         "key": "ORVV-8960",
         "name": "[몬스터] 환영의 망령"
       },
-      "doneAt": null
+      "doneAt": "2026-08-20",
+      "statusName": "완료"
     },
     {
       "id": 146,
@@ -3249,7 +3450,8 @@ let state = {
         "key": "ORVV-8960",
         "name": "[몬스터] 환영의 망령"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 147,
@@ -3268,7 +3470,8 @@ let state = {
         "key": "ORVV-8960",
         "name": "[몬스터] 환영의 망령"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 148,
@@ -3287,7 +3490,8 @@ let state = {
         "key": "ORVV-8960",
         "name": "[몬스터] 환영의 망령"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 149,
@@ -3305,14 +3509,15 @@ let state = {
         "key": "ORVV-8960",
         "name": "[몬스터] 환영의 망령"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 150,
       "name": "[기획] 환영의 망령  검수",
       "owner": "장영환",
-      "start": "2026-08-25",
-      "end": "2026-08-26",
+      "start": "2026-08-31",
+      "end": "2026-08-31",
       "status": "todo",
       "deps": [
         148,
@@ -3323,7 +3528,8 @@ let state = {
         "key": "ORVV-8960",
         "name": "[몬스터] 환영의 망령"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 151,
@@ -3340,14 +3546,15 @@ let state = {
         "key": "ORVV-8960",
         "name": "[몬스터] 환영의 망령"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 161,
       "name": "[이펙트] 환영 몬스터 - 환영의 망령 바디 FX",
       "owner": "이용곤",
       "start": "2026-08-19",
-      "end": "2026-08-21",
+      "end": "2026-08-27",
       "status": "inprog",
       "deps": [],
       "jira": "ORVV-9350",
@@ -3355,7 +3562,8 @@ let state = {
         "key": "ORVV-8960",
         "name": "[몬스터] 환영의 망령"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 162,
@@ -3370,7 +3578,8 @@ let state = {
         "key": "ORVV-8960",
         "name": "[몬스터] 환영의 망령"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 188,
@@ -3385,7 +3594,8 @@ let state = {
         "key": "ORVV-8960",
         "name": "[몬스터] 환영의 망령"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 218,
@@ -3400,7 +3610,8 @@ let state = {
         "key": "ORVV-9020",
         "name": "[몬스터] 탐식의 망령"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     },
     {
       "id": 219,
@@ -3417,7 +3628,8 @@ let state = {
         "key": "ORVV-9020",
         "name": "[몬스터] 탐식의 망령"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 220,
@@ -3434,14 +3646,15 @@ let state = {
         "key": "ORVV-9020",
         "name": "[몬스터] 탐식의 망령"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 221,
       "name": "[기획] 탐식의 망령 전투 스크립트",
-      "owner": "장영환 · 시작일 미정",
-      "start": "2026-08-25",
-      "end": "2026-08-25",
+      "owner": "장영환",
+      "start": "2026-09-01",
+      "end": "2026-09-04",
       "status": "todo",
       "deps": [],
       "jira": "ORVV-9064",
@@ -3449,14 +3662,15 @@ let state = {
         "key": "ORVV-9020",
         "name": "[몬스터] 탐식의 망령"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 222,
       "name": "[기획] 탐식의 망령 검수",
-      "owner": "장영환 · 시작일 미정",
-      "start": "2026-08-26",
-      "end": "2026-08-26",
+      "owner": "장영환",
+      "start": "2026-09-11",
+      "end": "2026-09-11",
       "status": "todo",
       "deps": [],
       "jira": "ORVV-9065",
@@ -3464,7 +3678,8 @@ let state = {
         "key": "ORVV-9020",
         "name": "[몬스터] 탐식의 망령"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 223,
@@ -3479,7 +3694,8 @@ let state = {
         "key": "ORVV-9020",
         "name": "[몬스터] 탐식의 망령"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "대기 중"
     },
     {
       "id": 187,
@@ -3494,7 +3710,8 @@ let state = {
         "key": "ORVV-9020",
         "name": "[몬스터] 탐식의 망령"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 207,
@@ -3509,10 +3726,11 @@ let state = {
         "key": "ORVV-9165",
         "name": "[시스템][탐험] 회차공명 시스템 - 땅강아쥐 어둠 자락의 보물창고"
       },
-      "doneAt": null
+      "doneAt": null,
+      "statusName": "진행 중"
     }
   ],
-  "syncedAt": "2026-08-20T08:30:24.994Z"
+  "syncedAt": "2026-08-20T09:56:16.717Z"
 };
 let nextId = 234;
 function jiraUrl(key){return key ? (state.jiraBase + encodeURIComponent(key)) : null;}
@@ -3621,7 +3839,7 @@ function epicSpan(tasks){
   return (s===null || e===null) ? null : { start:s, end:e };
 }
 
-// 통계 카드를 눌러 들어가는 '대기 · 기한 초과' 목록과 **같은 기준**을 쓴다.
+// 통계 카드를 눌러 들어가는 '선행 대기 · 기한 초과' 목록과 **같은 기준**을 쓴다.
 // isBlocked(선행이 하나라도 미완료)로 세면 32건이 잡히는데 그중 지금 실제로 기다리는 건
 // 6건뿐이라, 그 숫자로는 어느 에픽을 봐야 할지 알 수 없었다. (숫자는 2026-08-19 기준)
 function epicSummary(g){
@@ -3629,7 +3847,7 @@ function epicSummary(g){
   const d=g.tasks.filter(t=>t.status==="done").length;
   const w=g.tasks.filter(isWaiting).length;
   const r=g.tasks.filter(t=>t.status==="risk").length;
-  return "작업 "+n+" · 완료 "+d+(w?" · 대기 "+w:"")+(r?" · 기한 초과 "+r:"");
+  return "작업 "+n+" · 완료 "+d+(w?" · 선행 대기 "+w:"")+(r?" · 기한 초과 "+r:"");
 }
 
 /* ---------- 화면 상태 (데이터가 아니라 보는 사람의 편의) ---------- */
@@ -3727,13 +3945,13 @@ function ownerParts(owner){
   return {name:p[0]||"", miss:p.slice(1).join(" · ")};
 }
 
-// 작업 줄에 붙는 주의 칩. 지금 무엇이 문제인지만 담는다 — 기한 초과와 대기는 함께 뜨지
+// 작업 줄에 붙는 주의 칩. 지금 무엇이 문제인지만 담는다 — 기한 초과와 선행 대기는 함께 뜨지
 // 않는다(기한 초과가 더 급한 신호라 그쪽만 남긴다).
 // f(표시 창)는 없어도 된다 — 표·상세 패널처럼 창 개념이 없는 자리에서는 '기간 밖'만 빠진다.
 function flagsOf(t, f){
   const out=[];
   if(t.status==="risk") out.push({k:"risk", s:"기한 초과"});
-  else if(isWaiting(t)) out.push({k:"wait", s:"대기"});
+  else if(isWaiting(t)) out.push({k:"wait", s:"선행 대기"});
   const miss=ownerParts(t.owner).miss;
   if(miss) out.push({k:"miss", s:miss});
   if(f && outOfWindow(f,t)) out.push({k:"oow", s:"기간 밖"});
@@ -3749,7 +3967,7 @@ function labelsHtml(lay, gs, f){
     if(it.type==="epic"){
       const g=it.g;
       const chip = g.key ? '<a class="ekey" href="'+jiraUrl(g.key)+'" target="_blank" rel="noopener" onclick="event.stopPropagation()">'+esc(g.key)+' ↗</a>' : '';
-      // 접든 펼치든 항상 보인다. 펼친 상태에서 '대기·기한 초과'가 사라지면
+      // 접든 펼치든 항상 보인다. 펼친 상태에서 '선행 대기·기한 초과'가 사라지면
       // 정작 안을 들여다볼 때 그 에픽의 현황을 알 수 없다.
       const sum = '<span class="esum">'+esc(epicSummary(g))+'</span>';
       let mv = "", dnd = "";
@@ -3884,7 +4102,7 @@ function barsHtml(f, taskY){
       return;
     }
     const left=cs*DAY_W+4, width=Math.max((ce-cs+1)*DAY_W-8,22);
-    const tip='title="'+esc(t.name)+' ('+STLABEL[t.status]+') '+mmdd(t.start)+'~'+mmdd(t.end)+'"';
+    const tip='title="'+esc(t.name)+' ('+stLabel(t)+') '+mmdd(t.start)+'~'+mmdd(t.end)+'"';
     const cls='bar '+t.status+(blk?' blocked':'')+(clipL?' clipL':'')+(clipR?' clipR':'');
     const inner=(clipL?'<span class="clip">‹</span>':'')+'<span class="ic">'+STICON[t.status]+'</span>';
     const tail=(clipR?'<span class="clip">›</span>':'');
@@ -3930,13 +4148,16 @@ function renderStats(f){
   // 카드 숫자는 목록과 같은 기준이어야 한다 — 눌러서 들어갔을 때 건수가 달라지면 안 된다.
   const blocked=T.filter(isWaiting).length;
   const risk=T.filter(t=>t.status==="risk").length;
+  const hold=T.filter(isHold).length;
   const ddText = dday>0?("D-"+dday):(dday===0?"D-Day":("D+"+(-dday)));
   document.getElementById("stats").innerHTML =
     stat("마감까지", ddText, "마감 "+mmdd(state.deadline)) +
     stat("전체 진척률", prog+"%", done+" / "+n+" 완료", prog, "done") +
-    stat("진행중", T.filter(t=>t.status==="inprog").length+"건",
-         "검수 요청 "+T.filter(t=>t.status==="review").length+" · 예정 "+T.filter(t=>t.status==="todo").length, undefined, "active") +
-    stat("대기·기한 초과", (blocked+risk)+"건", "⏳ 대기 "+blocked+" · ⚠ 기한 초과 "+risk, undefined, "attention");
+    // '대기 중'은 진행중에서 빼서 따로 센다 — statusCategory 로는 둘이 같은 칸에 접혀서,
+    // 착수도 안 한 일이 진행 중으로 세어졌다(2026-08-20 기준 93건 중 17건이 그랬다).
+    stat("진행중", (T.filter(t=>t.status==="inprog").length - hold)+"건",
+         "검수 요청 "+T.filter(t=>t.status==="review").length+" · 예정 "+T.filter(t=>t.status==="todo").length+" · 대기 중 "+hold, undefined, "active") +
+    stat("선행 대기·기한 초과", (blocked+risk)+"건", "⏳ 선행 대기 "+blocked+" · ⚠ 기한 초과 "+risk, undefined, "attention");
 }
 // kind 를 주면 눌러서 목록으로 들어가는 카드가 된다. onclick 은 인자 조립 없이
 // 리터럴 하나만 넣는다 — 문자열을 이어 붙이다 문법이 깨지면 핸들러가 통째로 죽는다.
@@ -3991,6 +4212,10 @@ function applyJiraIssues(tasks, issues, today, holdAt){
     // done 과 review 는 덮지 않는다. 검수 요청은 작업이 끝나고 확인만 남은 상태라,
     // 마감이 지났다고 '기한 초과'로 바꾸면 정작 누가 확인해야 하는지가 보이지 않는다.
     t.status=(!DONE_LIKE[j.status] && t.end<today) ? "risk" : j.status;
+    // **접기 전 이름을 남긴다.** 이게 없으면 화면은 접힌 값밖에 못 봐서 '대기 중'을
+    // '진행중'으로 적는다. 필드가 없는 응답(옛 Worker)은 저장된 값을 그대로 둔다
+    // — doneAt·blockedBy 와 같은 규칙이다.
+    if("statusName" in j) t.statusName = j.statusName || "";
     if(j.epicKey)  t.epic.key=j.epicKey;
     if(j.epicName) t.epic.name=j.epicName;
     // 실제로 완료 처리된 날(Jira resolutiondate). 마감(end)과 견줘야 일찍 끝났는지
@@ -4109,18 +4334,21 @@ const DRILL = {
     groupsOf: doneByDate,
   },
   active: {
-    title: "진행중 · 검수 요청 · 예정",
+    title: "진행중 · 검수 요청 · 예정 · 대기 중",
     groups: [
-      {label:"진행중",   pick:t=>t.status==="inprog"},
+      // 카드가 '대기 중'을 진행중에서 빼고 세므로 목록도 같이 빼야 한다 — 두 숫자가
+      // 어긋나면 눌러 들어갔을 때 건수가 달라진다.
+      {label:"진행중",   pick:t=>t.status==="inprog" && !isHold(t)},
       {label:"검수 요청", pick:t=>t.status==="review"},
       {label:"예정",     pick:t=>t.status==="todo"},
+      {label:"대기 중",   pick:isHold},
     ],
   },
   attention: {
-    title: "대기 · 기한 초과",
+    title: "선행 대기 · 기한 초과",
     colw: COLW_WIDE,   // 선행 작업 목록이 한 칸에 여러 줄로 들어간다
     groups: [
-      {label:"대기",     pick:t=>isWaiting(t),     col:"선행 작업", cell:prevListHtml},
+      {label:"선행 대기", pick:t=>isWaiting(t),     col:"선행 작업", cell:prevListHtml},
       {label:"기한 초과", pick:t=>t.status==="risk", col:"사유",      cell:t=>esc(riskReason(t))},
     ],
   },
@@ -4130,7 +4358,7 @@ let drillKind=null;
 // 착수 준비 기간. 시작일이 아직 이만큼 남았으면 선행이 안 끝난 게 정상이라 목록에 넣지 않는다.
 const LEAD_DAYS = 1;
 
-// 대기: 아직 '예정'이고, 선행이 미완료이고, 착수 준비 시점(시작일 -1일)을 이미 지난 것만.
+// 선행 대기: 아직 '예정'이고, 선행이 미완료이고, 착수 준비 시점(시작일 -1일)을 이미 지난 것만.
 //
 // **'예정'만 세는 이유**(2026-08-19): 진행중이거나 검수 요청이면 이미 착수했다는 뜻이고,
 // 그건 그 의존관계가 실제로는 막지 않았다는 증거다 — 선행 에셋을 받을 만큼만 받고 시작하는
@@ -4158,7 +4386,7 @@ function prevListHtml(t){
       ? '<a class="pk" href="'+jiraUrl(p.jira)+'" target="_blank" rel="noopener" onclick="event.stopPropagation()">'+esc(p.jira)+'</a>'
       : '<span class="pk">키 없음</span>';
     return '<div class="pv">'+key+'<span class="pn">'+esc(p.name)+'</span>'+
-           '<span class="pb '+p.status+'">'+STLABEL[p.status]+'</span></div>';
+           '<span class="pb '+p.status+'">'+stLabel(p)+'</span></div>';
   }).join("");
 }
 function riskReason(t){
@@ -4222,7 +4450,7 @@ function renderDrill(){
       const jk=t.jira?'<a class="jkey" href="'+jiraUrl(t.jira)+'" target="_blank" rel="noopener" onclick="event.stopPropagation()">'+esc(t.jira)+'</a>':'—';
       const tail = x.g.cell
         ? '<td class="why">'+x.g.cell(t)+'</td>'
-        : '<td>'+STLABEL[t.status]+'</td>';
+        : '<td>'+stLabel(t)+'</td>';
       h+='<tr onclick="openEdit('+t.id+')" style="cursor:pointer">'+
          '<td>'+ep+'</td><td>'+jk+'</td>'+
          '<td><span class="sdot" style="background:'+STVAR[t.status]+'"></span>'+esc(t.name)+flagsHtml(t)+'</td>'+
@@ -4245,7 +4473,7 @@ function renderTable(){
        '<td>'+ep+'</td><td>'+jk+'</td>'+
        '<td><span class="sdot" style="background:'+STVAR[t.status]+'"></span>'+esc(t.name)+flagsHtml(t)+'</td>'+
        '<td>'+esc(ownerParts(t.owner).name)+'</td><td>'+mmdd(t.start)+'~'+mmdd(t.end)+'</td>'+
-       '<td>'+STLABEL[t.status]+'</td>'+
+       '<td>'+stLabel(t)+'</td>'+
        '<td style="color:var(--muted)">'+esc(deps||'—')+'</td></tr>';
   });
   h+='</tbody></table>';
@@ -4283,7 +4511,7 @@ function openDetail(id){
     ["에픽", ep],
     ["담당", esc(ownerParts(t.owner).name||"—")],
     // 담당 칸에서 '시작일 미정' 같은 사유를 뗐으므로 여기서 칩으로 받아 준다.
-    ["상태", '<span class="dep-st '+t.status+'">'+STICON[t.status]+'</span> '+STLABEL[t.status]+flagsHtml(t)],
+    ["상태", '<span class="dep-st '+t.status+'">'+STICON[t.status]+'</span> '+stLabel(t)+flagsHtml(t)],
     ["기간", mmdd(t.start)+" ~ "+mmdd(t.end)],
     ["선행 작업", depDetailHtml(t)],
     ["후행 작업", succDetailHtml(t)],
@@ -4314,7 +4542,7 @@ function depDetailHtml(t){
   if(!deps.length) return '<span style="color:var(--muted)">없음</span>';
   const head=isBlocked(t)?'<div class="dep-warn">선행 작업이 완료되지 않아 대기 상태입니다</div>':"";
   return head+deps.map(function(p){
-    return depItemHtml(p, STLABEL[p.status]);
+    return depItemHtml(p, stLabel(p));
   }).join("");
 }
 // 후행 작업 = 이 작업을 선행으로 지정한 작업들. deps 는 후행 쪽에만 기록되므로
