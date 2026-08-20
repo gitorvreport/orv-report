@@ -434,7 +434,7 @@ let state = {
       "owner": "유세훈",
       "start": "2026-08-10",
       "end": "2026-08-28",
-      "status": "todo",
+      "status": "inprog",
       "deps": [
         1,
         2,
@@ -724,13 +724,30 @@ let state = {
       "doneAt": null
     },
     {
+      "id": 26,
+      "name": "[배경모델링] 도깨비방_스타스트림 패널",
+      "owner": "김봉석",
+      "start": "2026-08-12",
+      "end": "2026-08-31",
+      "status": "inprog",
+      "deps": [],
+      "jira": "ORVV-9131",
+      "epic": {
+        "key": "ORVV-8080",
+        "name": "[시스템] 도깨비방 구현"
+      },
+      "doneAt": null
+    },
+    {
       "id": 21,
       "name": "[UI] 스타스트림 패널 UI (도깨비방)",
       "owner": "강지한",
       "start": "2026-08-12",
       "end": "2026-08-20",
       "status": "review",
-      "deps": [],
+      "deps": [
+        26
+      ],
       "jira": "ORVV-9032",
       "epic": {
         "key": "ORVV-8080",
@@ -756,28 +773,15 @@ let state = {
       "doneAt": null
     },
     {
-      "id": 26,
-      "name": "[배경모델링] 도깨비방_스타스트림 패널",
-      "owner": "김봉석",
-      "start": "2026-08-12",
-      "end": "2026-08-31",
-      "status": "inprog",
-      "deps": [],
-      "jira": "ORVV-9131",
-      "epic": {
-        "key": "ORVV-8080",
-        "name": "[시스템] 도깨비방 구현"
-      },
-      "doneAt": null
-    },
-    {
       "id": 30,
       "name": "[이펙트] 도깨비방 패널 관련 이펙트 제작",
       "owner": "손석민",
       "start": "2026-09-01",
       "end": "2026-09-04",
       "status": "inprog",
-      "deps": [],
+      "deps": [
+        26
+      ],
       "jira": "ORVV-8734",
       "epic": {
         "key": "ORVV-8080",
@@ -833,6 +837,21 @@ let state = {
       "doneAt": null
     },
     {
+      "id": 195,
+      "name": "[사운드] 도깨비 방 무드 조성 및 환경 사운드",
+      "owner": "[사운드]이예얼 · 일정 미정",
+      "start": "2026-08-20",
+      "end": "2026-08-20",
+      "status": "todo",
+      "deps": [],
+      "jira": "ORVV-9386",
+      "epic": {
+        "key": "ORVV-8080",
+        "name": "[시스템] 도깨비방 구현"
+      },
+      "doneAt": null
+    },
+    {
       "id": 31,
       "name": "[기획] 도깨비방 시스템 검수",
       "owner": "신동석",
@@ -841,21 +860,6 @@ let state = {
       "status": "todo",
       "deps": [],
       "jira": "ORVV-8369",
-      "epic": {
-        "key": "ORVV-8080",
-        "name": "[시스템] 도깨비방 구현"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 174,
-      "name": "[캐릭터모델링] 도깨비 감투 모델링",
-      "owner": "김나영 · 시작일 미정",
-      "start": "2026-08-25",
-      "end": "2026-08-25",
-      "status": "todo",
-      "deps": [],
-      "jira": "ORVV-9374",
       "epic": {
         "key": "ORVV-8080",
         "name": "[시스템] 도깨비방 구현"
@@ -878,6 +882,40 @@ let state = {
       "doneAt": null
     },
     {
+      "id": 174,
+      "name": "[캐릭터모델링] 도깨비 감투 모델링",
+      "owner": "김나영 · 시작일 미정",
+      "start": "2026-08-25",
+      "end": "2026-08-25",
+      "status": "todo",
+      "deps": [
+        175
+      ],
+      "jira": "ORVV-9374",
+      "epic": {
+        "key": "ORVV-8080",
+        "name": "[시스템] 도깨비방 구현"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 213,
+      "name": "[TA] 도깨비 감투 리깅",
+      "owner": "김동석 · 시작일 미정",
+      "start": "2026-09-03",
+      "end": "2026-09-03",
+      "status": "todo",
+      "deps": [
+        174
+      ],
+      "jira": "ORVV-9403",
+      "epic": {
+        "key": "ORVV-8080",
+        "name": "[시스템] 도깨비방 구현"
+      },
+      "doneAt": null
+    },
+    {
       "id": 194,
       "name": "[사운드] 도깨비 방 UI 사운드",
       "owner": "[사운드]이예얼 · 일정 미정",
@@ -893,21 +931,6 @@ let state = {
       "doneAt": null
     },
     {
-      "id": 195,
-      "name": "[사운드] 도깨비 방 무드 조성 및 환경 사운드",
-      "owner": "[사운드]이예얼 · 일정 미정",
-      "start": "2026-08-20",
-      "end": "2026-08-20",
-      "status": "todo",
-      "deps": [],
-      "jira": "ORVV-9386",
-      "epic": {
-        "key": "ORVV-8080",
-        "name": "[시스템] 도깨비방 구현"
-      },
-      "doneAt": null
-    },
-    {
       "id": 208,
       "name": "[사운드] 도깨비방 - BGM",
       "owner": "[사운드]유종호",
@@ -916,21 +939,6 @@ let state = {
       "status": "inprog",
       "deps": [],
       "jira": "ORVV-9368",
-      "epic": {
-        "key": "ORVV-8080",
-        "name": "[시스템] 도깨비방 구현"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 213,
-      "name": "[TA] 도깨비 감투 리깅",
-      "owner": "김동석 · 시작일 미정",
-      "start": "2026-09-03",
-      "end": "2026-09-03",
-      "status": "todo",
-      "deps": [],
-      "jira": "ORVV-9403",
       "epic": {
         "key": "ORVV-8080",
         "name": "[시스템] 도깨비방 구현"
@@ -2433,7 +2441,7 @@ let state = {
     {
       "id": 101,
       "name": "[애니] 김독자가 석등을 향해 손을 내뻗는 모션",
-      "owner": "임광수 · 일정 미정",
+      "owner": "임광수",
       "start": "2026-08-20",
       "end": "2026-08-20",
       "status": "inprog",
@@ -2885,7 +2893,7 @@ let state = {
       "owner": "손석민",
       "start": "2026-08-14",
       "end": "2026-08-24",
-      "status": "todo",
+      "status": "inprog",
       "deps": [
         113
       ],
@@ -3185,9 +3193,9 @@ let state = {
     {
       "id": 151,
       "name": "[이펙트] 환영의 망령 이펙트",
-      "owner": "손석민 · 마감 미정",
+      "owner": "손석민",
       "start": "2026-08-21",
-      "end": "2026-08-21",
+      "end": "2026-08-28",
       "status": "todo",
       "deps": [
         149
@@ -3269,13 +3277,13 @@ let state = {
       "deps": [],
       "jira": "ORVV-9086",
       "epic": {
-        "key": "ORVV-9085",
-        "name": "B1 환경 사운드 제작"
+        "key": "ORVV-9165",
+        "name": "[시스템][탐험] 회차공명 시스템 - 땅강아쥐 어둠 자락의 보물창고"
       },
       "doneAt": null
     }
   ],
-  "syncedAt": "2026-08-20T07:14:49.028Z"
+  "syncedAt": "2026-08-20T07:45:47.293Z"
 };
 let nextId = 218;
 function jiraUrl(key){return key ? (state.jiraBase + encodeURIComponent(key)) : null;}
