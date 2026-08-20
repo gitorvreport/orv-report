@@ -1848,7 +1848,7 @@ let state = {
     },
     {
       "id": 107,
-      "name": "[리깅] 미니 포탑 1종 리깅",
+      "name": "[리깅] 공필두 전투용 미니 포탑 1차 리깅",
       "owner": "김동석",
       "start": "2026-08-18",
       "end": "2026-08-19",
@@ -1869,7 +1869,7 @@ let state = {
       "owner": "김영욱",
       "start": "2026-08-20",
       "end": "2026-08-21",
-      "status": "todo",
+      "status": "inprog",
       "deps": [
         107
       ],
@@ -2129,7 +2129,7 @@ let state = {
       "owner": "[사운드]이예얼",
       "start": "2026-08-18",
       "end": "2026-08-21",
-      "status": "todo",
+      "status": "inprog",
       "deps": [],
       "jira": "ORVV-9084",
       "epic": {
@@ -2224,7 +2224,7 @@ let state = {
       "name": "[애니] 환영의 망령 (기어다님) 로코 및 스킬",
       "owner": "김영욱",
       "start": "2026-08-19",
-      "end": "2026-08-24",
+      "end": "2026-08-26",
       "status": "inprog",
       "deps": [
         142,
@@ -3190,10 +3190,10 @@ let state = {
     {
       "id": 209,
       "name": "[사운드] 환영 감옥 - BGM",
-      "owner": "[사운드]김은지 · 일정 미정",
-      "start": "2026-08-20",
-      "end": "2026-08-20",
-      "status": "todo",
+      "owner": "[사운드]김은지 · 시작일 미정",
+      "start": "2026-08-31",
+      "end": "2026-08-31",
+      "status": "inprog",
       "deps": [],
       "jira": "ORVV-9367",
       "epic": {
@@ -3235,9 +3235,9 @@ let state = {
     {
       "id": 212,
       "name": "[애니] 불량배 및 시민 시체 포즈 제작",
-      "owner": "김영욱 · 일정 미정",
-      "start": "2026-08-20",
-      "end": "2026-08-20",
+      "owner": "김영욱",
+      "start": "2026-08-27",
+      "end": "2026-08-27",
       "status": "todo",
       "deps": [],
       "jira": "ORVV-9402",
@@ -3261,11 +3261,71 @@ let state = {
         "name": "[시스템] 도깨비방 구현"
       },
       "doneAt": null
+    },
+    {
+      "id": 214,
+      "name": "[클라] 세이브 시스템 - 인벤토리",
+      "owner": "황준기",
+      "start": "2026-08-24",
+      "end": "2026-08-25",
+      "status": "todo",
+      "deps": [],
+      "jira": "ORVV-9409",
+      "epic": {
+        "key": "ORVV-7708",
+        "name": "[시스템] 세이브·로드 시스템 구현"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 215,
+      "name": "[클라] 세이브 시스템 - Flow Graph",
+      "owner": "황준기",
+      "start": "2026-08-25",
+      "end": "2026-08-26",
+      "status": "todo",
+      "deps": [],
+      "jira": "ORVV-9410",
+      "epic": {
+        "key": "ORVV-7708",
+        "name": "[시스템] 세이브·로드 시스템 구현"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 216,
+      "name": "[클라] 세이브 시스템 - 레벨 액터",
+      "owner": "황준기",
+      "start": "2026-08-27",
+      "end": "2026-08-28",
+      "status": "todo",
+      "deps": [],
+      "jira": "ORVV-9411",
+      "epic": {
+        "key": "ORVV-7708",
+        "name": "[시스템] 세이브·로드 시스템 구현"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 217,
+      "name": "[클라][동대입구역] 플레이 프로세스 관리",
+      "owner": "이진형",
+      "start": "2026-08-21",
+      "end": "2026-09-18",
+      "status": "inprog",
+      "deps": [],
+      "jira": "ORVV-9407",
+      "epic": {
+        "key": "ORVV-7822",
+        "name": "[플레이] 동대입구역 장충단 공원 플레이 구현"
+      },
+      "doneAt": null
     }
   ],
-  "syncedAt": "2026-08-20T03:19:19.757Z"
+  "syncedAt": "2026-08-20T05:09:06.991Z"
 };
-let nextId = 214;
+let nextId = 218;
 function jiraUrl(key){return key ? (state.jiraBase + encodeURIComponent(key)) : null;}
 
 /* ---------- date helpers ---------- */
