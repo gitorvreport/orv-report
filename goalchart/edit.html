@@ -400,6 +400,18 @@ let state = {
   },
   "jiraBase": "https://offbeatplay.atlassian.net/browse/",
   "syncEndpoint": "https://orv-goalchart-jira.offbeat-696.workers.dev",
+  "epicGroups": [
+    {
+      "key": "CUT-CIH",
+      "name": "[컷씬] 천인호·정희원",
+      "members": [
+        "ORVV-7967",
+        "ORVV-7969",
+        "ORVV-7971",
+        "ORVV-8318"
+      ]
+    }
+  ],
   "tasks": [
     {
       "id": 1,
@@ -422,7 +434,7 @@ let state = {
       "owner": "최지현",
       "start": "2026-08-19",
       "end": "2026-08-20",
-      "status": "inprog",
+      "status": "review",
       "deps": [],
       "jira": "ORVV-9355",
       "epic": {
@@ -683,7 +695,7 @@ let state = {
       "id": 23,
       "name": "[클라] 스타스트림 패널 UI 구현",
       "owner": "홍주성",
-      "start": "2026-08-20",
+      "start": "2026-08-21",
       "end": "2026-08-25",
       "status": "todo",
       "deps": [
@@ -1608,7 +1620,7 @@ let state = {
       "owner": "손석민",
       "start": "2026-07-03",
       "end": "2026-08-28",
-      "status": "inprog",
+      "status": "review",
       "deps": [],
       "jira": "ORVV-8306",
       "epic": {
@@ -1775,14 +1787,14 @@ let state = {
       "owner": "이용곤",
       "start": "2026-06-16",
       "end": "2026-08-28",
-      "status": "inprog",
+      "status": "done",
       "deps": [],
       "jira": "ORVV-8071",
       "epic": {
         "key": "ORVV-7822",
         "name": "[플레이] 동대입구역 장충단 공원 플레이 구현"
       },
-      "doneAt": null
+      "doneAt": "2026-08-20"
     },
     {
       "id": 100,
@@ -2490,21 +2502,6 @@ let state = {
       "epic": {
         "key": "ORVV-8960",
         "name": "[몬스터] 환영의 망령"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 103,
-      "name": "[이펙트] 스펙터 전투 - 환영감옥 플레이 블록아웃 컨셉 이펙트 제작",
-      "owner": "이용곤",
-      "start": "2026-07-13",
-      "end": "2026-08-31",
-      "status": "todo",
-      "deps": [],
-      "jira": "ORVV-8619",
-      "epic": {
-        "key": "ORVV-7824",
-        "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
       },
       "doneAt": null
     },
@@ -3323,7 +3320,7 @@ let state = {
       "doneAt": null
     }
   ],
-  "syncedAt": "2026-08-20T05:09:06.991Z"
+  "syncedAt": "2026-08-20T06:09:03.371Z"
 };
 let nextId = 218;
 function jiraUrl(key){return key ? (state.jiraBase + encodeURIComponent(key)) : null;}
@@ -3365,7 +3362,28 @@ function isBlocked(t){
   return (t.deps||[]).some(id=>{const p=state.tasks.find(x=>x.id===id); return p && p.status!=="done";});
 }
 
+// 에픽 여러 개를 한 스윔레인으로 묶는다(예: 컷씬 4개 → "[컷씬] 천인호·정희원").
+// **t.epic 을 고쳐서 합치면 안 된다** — 갱신할 때마다 applyJiraIssues 가 Jira 의
+// parent 로 도로 덮는다. 그래서 합치기는 '묶는 키'를 따로 두는 것으로 해결한다:
+// t.epic 은 Jira 값 그대로 남고(행 상세·표는 진짜 소속을 계속 보여준다),
+// 레인만 그룹 단위로 묶인다.
+//
+// 그룹 key 는 실제 에픽 키와 겹치면 안 된다 — 겹치면 그 에픽이 그룹에 흡수된다.
+//
+// 표가 작아서(그룹 몇 개 × 멤버 몇 개) 그냥 훑는다. 캐시를 두면 '불러오기'로 state 가
+// 통째로 바뀔 때 낡은 표가 남을 수 있는데, 아낄 시간이 없는 곳에서 그 위험을 살 이유가 없다.
+function epicGroupFor(t){
+  const k = (t && t.epic && t.epic.key) || "";
+  const gs = (state && state.epicGroups) || [];
+  for(let i=0;i<gs.length;i++){
+    if((gs[i].members||[]).indexOf(k) !== -1) return gs[i];
+  }
+  return null;
+}
+
 function epicKeyOf(t){
+  const g = epicGroupFor(t);
+  if(g) return g.key;
   return (t && t.epic && t.epic.key) || "__none__";
 }
 
@@ -3375,7 +3393,12 @@ function groups(){
   const rows=ordered(), map=new Map();
   rows.forEach(t=>{
     const key = epicKeyOf(t);
-    if(!map.has(key)) map.set(key,{gkey:key, key:(t.epic&&t.epic.key)||null, name:(t.epic&&t.epic.name)||"미분류", tasks:[]});
+    // 묶인 레인에는 Jira 키가 하나로 정해지지 않으므로 key 를 비운다 —
+    // 레인 오른쪽의 이슈 링크 칩이 자연히 사라진다(어느 에픽으로 보낼지 고를 수 없다).
+    const eg = epicGroupFor(t);
+    if(!map.has(key)) map.set(key,{gkey:key,
+      key: eg ? null : ((t.epic&&t.epic.key)||null),
+      name: eg ? eg.name : ((t.epic&&t.epic.name)||"미분류"), tasks:[]});
     map.get(key).tasks.push(t);
   });
   const arr=[...map.values()];
