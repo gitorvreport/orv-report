@@ -339,11 +339,11 @@ const MODE = "view";
 const IS_EDIT = MODE === "edit";
 let state = {
   "title": "B1 마감 Goal Chart",
-  "deadline": "2026-08-31",
+  "deadline": "2026-09-18",
   "window": {
     "on": true,
     "start": "2026-08-13",
-    "end": "2026-08-31"
+    "end": "2026-09-18"
   },
   "jiraBase": "https://offbeatplay.atlassian.net/browse/",
   "syncEndpoint": "https://orv-goalchart-jira.offbeat-696.workers.dev",
@@ -358,9 +358,10 @@ let state = {
         "ORVV-8318"
       ],
       "issues": [
-        "ORVV-9400",
         "ORVV-9371",
-        "ORVV-9360"
+        "ORVV-9360",
+        "ORVV-9352",
+        "ORVV-9400"
       ]
     }
   ],
@@ -428,6 +429,55 @@ let state = {
       "doneAt": "2026-08-20"
     },
     {
+      "id": 4,
+      "name": "[이펙트] 김독자 Y·B 콤보 이펙트 제작",
+      "owner": "유세훈",
+      "start": "2026-08-10",
+      "end": "2026-08-28",
+      "status": "todo",
+      "deps": [
+        1,
+        2,
+        3
+      ],
+      "jira": "ORVV-9045",
+      "epic": {
+        "key": "ORVV-7686",
+        "name": "[캐릭터] 김독자"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 191,
+      "name": "[사운드] 김독자 전투 액션 사운드",
+      "owner": "[사운드]이예얼 · 일정 미정",
+      "start": "2026-08-20",
+      "end": "2026-08-20",
+      "status": "todo",
+      "deps": [],
+      "jira": "ORVV-9390",
+      "epic": {
+        "key": "ORVV-7686",
+        "name": "[캐릭터] 김독자"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 190,
+      "name": "[사운드] 유중혁 전투 액션 사운드",
+      "owner": "[사운드]이예얼 · 일정 미정",
+      "start": "2026-08-20",
+      "end": "2026-08-20",
+      "status": "todo",
+      "deps": [],
+      "jira": "ORVV-9391",
+      "epic": {
+        "key": "ORVV-7687",
+        "name": "[캐릭터][베타] 유중혁"
+      },
+      "doneAt": null
+    },
+    {
       "id": 7,
       "name": "[기획] 세이브/로드 시스템 기능 검수",
       "owner": "소원태",
@@ -441,6 +491,51 @@ let state = {
         "name": "[시스템] 세이브·로드 시스템 구현"
       },
       "doneAt": "2026-08-19"
+    },
+    {
+      "id": 214,
+      "name": "[클라] 세이브 시스템 - 인벤토리",
+      "owner": "황준기",
+      "start": "2026-08-24",
+      "end": "2026-08-25",
+      "status": "todo",
+      "deps": [],
+      "jira": "ORVV-9409",
+      "epic": {
+        "key": "ORVV-7708",
+        "name": "[시스템] 세이브·로드 시스템 구현"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 215,
+      "name": "[클라] 세이브 시스템 - Flow Graph",
+      "owner": "황준기",
+      "start": "2026-08-25",
+      "end": "2026-08-26",
+      "status": "todo",
+      "deps": [],
+      "jira": "ORVV-9410",
+      "epic": {
+        "key": "ORVV-7708",
+        "name": "[시스템] 세이브·로드 시스템 구현"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 216,
+      "name": "[클라] 세이브 시스템 - 레벨 액터",
+      "owner": "황준기",
+      "start": "2026-08-27",
+      "end": "2026-08-28",
+      "status": "todo",
+      "deps": [],
+      "jira": "ORVV-9411",
+      "epic": {
+        "key": "ORVV-7708",
+        "name": "[시스템] 세이브·로드 시스템 구현"
+      },
+      "doneAt": null
     },
     {
       "id": 9,
@@ -604,7 +699,7 @@ let state = {
       "owner": "천서주",
       "start": "2026-08-19",
       "end": "2026-08-21",
-      "status": "inprog",
+      "status": "review",
       "deps": [],
       "jira": "ORVV-9110",
       "epic": {
@@ -753,6 +848,96 @@ let state = {
       "doneAt": null
     },
     {
+      "id": 174,
+      "name": "[캐릭터모델링] 도깨비 감투 모델링",
+      "owner": "김나영 · 시작일 미정",
+      "start": "2026-08-25",
+      "end": "2026-08-25",
+      "status": "todo",
+      "deps": [],
+      "jira": "ORVV-9374",
+      "epic": {
+        "key": "ORVV-8080",
+        "name": "[시스템] 도깨비방 구현"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 175,
+      "name": "[캐릭터원화] 도깨비 감투 원화",
+      "owner": "구민구",
+      "start": "2026-08-20",
+      "end": "2026-08-20",
+      "status": "inprog",
+      "deps": [],
+      "jira": "ORVV-9372",
+      "epic": {
+        "key": "ORVV-8080",
+        "name": "[시스템] 도깨비방 구현"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 194,
+      "name": "[사운드] 도깨비 방 UI 사운드",
+      "owner": "[사운드]이예얼 · 일정 미정",
+      "start": "2026-08-20",
+      "end": "2026-08-20",
+      "status": "todo",
+      "deps": [],
+      "jira": "ORVV-9387",
+      "epic": {
+        "key": "ORVV-8080",
+        "name": "[시스템] 도깨비방 구현"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 195,
+      "name": "[사운드] 도깨비 방 무드 조성 및 환경 사운드",
+      "owner": "[사운드]이예얼 · 일정 미정",
+      "start": "2026-08-20",
+      "end": "2026-08-20",
+      "status": "todo",
+      "deps": [],
+      "jira": "ORVV-9386",
+      "epic": {
+        "key": "ORVV-8080",
+        "name": "[시스템] 도깨비방 구현"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 208,
+      "name": "[사운드] 도깨비방 - BGM",
+      "owner": "[사운드]유종호",
+      "start": "2026-08-20",
+      "end": "2026-08-31",
+      "status": "inprog",
+      "deps": [],
+      "jira": "ORVV-9368",
+      "epic": {
+        "key": "ORVV-8080",
+        "name": "[시스템] 도깨비방 구현"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 213,
+      "name": "[TA] 도깨비 감투 리깅",
+      "owner": "김동석 · 시작일 미정",
+      "start": "2026-09-03",
+      "end": "2026-09-03",
+      "status": "todo",
+      "deps": [],
+      "jira": "ORVV-9403",
+      "epic": {
+        "key": "ORVV-8080",
+        "name": "[시스템] 도깨비방 구현"
+      },
+      "doneAt": null
+    },
+    {
       "id": 32,
       "name": "[클라] 스타스트림 성좌 반응 시스템",
       "owner": "김효훈",
@@ -833,7 +1018,7 @@ let state = {
       "owner": "정도훈",
       "start": "2026-08-10",
       "end": "2026-08-21",
-      "status": "inprog",
+      "status": "review",
       "deps": [],
       "jira": "ORVV-9094",
       "epic": {
@@ -1058,6 +1243,21 @@ let state = {
       "doneAt": null
     },
     {
+      "id": 206,
+      "name": "[사운드] 성좌 유희 - BGM",
+      "owner": "[사운드]유종호",
+      "start": "2026-08-20",
+      "end": "2026-08-31",
+      "status": "inprog",
+      "deps": [],
+      "jira": "ORVV-9370",
+      "epic": {
+        "key": "ORVV-9112",
+        "name": "[시스템][탐험] 성좌의 유희 시스템"
+      },
+      "doneAt": null
+    },
+    {
       "id": 54,
       "name": "[연출] 회차 공명 시작/종료 시그니처 연출 시퀀스 - 프리비즈",
       "owner": "김웅빈",
@@ -1201,7 +1401,7 @@ let state = {
       "owner": "권상모",
       "start": "2026-08-19",
       "end": "2026-08-21",
-      "status": "inprog",
+      "status": "review",
       "deps": [],
       "jira": "ORVV-9228",
       "epic": {
@@ -1219,6 +1419,51 @@ let state = {
       "status": "inprog",
       "deps": [],
       "jira": "ORVV-9143",
+      "epic": {
+        "key": "ORVV-9165",
+        "name": "[시스템][탐험] 회차공명 시스템 - 땅강아쥐 어둠 자락의 보물창고"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 62,
+      "name": "[기획] 회차공명·어둠 자락의 보물창고 - 스크립트",
+      "owner": "염승훈",
+      "start": "2026-08-14",
+      "end": "2026-08-26",
+      "status": "review",
+      "deps": [],
+      "jira": "ORVV-9142",
+      "epic": {
+        "key": "ORVV-9165",
+        "name": "[시스템][탐험] 회차공명 시스템 - 땅강아쥐 어둠 자락의 보물창고"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 193,
+      "name": "[사운드] 땅강아쥐 어둠자락(회차 공명) 무드 조성 및 환경 사운드",
+      "owner": "[사운드]이예얼 · 일정 미정",
+      "start": "2026-08-20",
+      "end": "2026-08-20",
+      "status": "todo",
+      "deps": [],
+      "jira": "ORVV-9388",
+      "epic": {
+        "key": "ORVV-9165",
+        "name": "[시스템][탐험] 회차공명 시스템 - 땅강아쥐 어둠 자락의 보물창고"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 207,
+      "name": "[사운드] 회차 공명 - BGM",
+      "owner": "[사운드]유종호",
+      "start": "2026-08-20",
+      "end": "2026-08-31",
+      "status": "inprog",
+      "deps": [],
+      "jira": "ORVV-9369",
       "epic": {
         "key": "ORVV-9165",
         "name": "[시스템][탐험] 회차공명 시스템 - 땅강아쥐 어둠 자락의 보물창고"
@@ -1251,6 +1496,21 @@ let state = {
         64
       ],
       "jira": "ORVV-8773",
+      "epic": {
+        "key": "ORVV-8772",
+        "name": "[시스템] 플레이어 디폴트 카메라 수정"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 185,
+      "name": "[클라] 락온 카메라 기능 추가 및 개선",
+      "owner": "손동우",
+      "start": "2026-08-18",
+      "end": "2026-08-21",
+      "status": "inprog",
+      "deps": [],
+      "jira": "ORVV-9353",
       "epic": {
         "key": "ORVV-8772",
         "name": "[시스템] 플레이어 디폴트 카메라 수정"
@@ -1296,6 +1556,21 @@ let state = {
       "status": "todo",
       "deps": [],
       "jira": "ORVV-9354",
+      "epic": {
+        "key": "ORVV-7958",
+        "name": "[시스템] 격 내구도 시스템"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 71,
+      "name": "[사운드] 격 파괴 및 생성 (캐릭터·몬스터)",
+      "owner": "[사운드]이예얼",
+      "start": "2026-08-05",
+      "end": "2026-08-20",
+      "status": "inprog",
+      "deps": [],
+      "jira": "ORVV-9091",
       "epic": {
         "key": "ORVV-7958",
         "name": "[시스템] 격 내구도 시스템"
@@ -1432,49 +1707,51 @@ let state = {
       "doneAt": null
     },
     {
-      "id": 80,
-      "name": "[애니] 정희원 연출 - 클린업 그룹 G",
-      "owner": "김현석",
-      "start": "2026-07-29",
-      "end": "2026-08-13",
-      "status": "done",
-      "deps": [],
-      "jira": "ORVV-8605",
-      "epic": {
-        "key": "ORVV-7820",
-        "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
-      },
-      "doneAt": "2026-08-20"
-    },
-    {
-      "id": 81,
-      "name": "[애니] 정희원 연출 - 클린업 그룹 H",
-      "owner": "김현석",
-      "start": "2026-07-31",
-      "end": "2026-08-13",
-      "status": "done",
-      "deps": [],
-      "jira": "ORVV-8606",
-      "epic": {
-        "key": "ORVV-7820",
-        "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
-      },
-      "doneAt": "2026-08-20"
-    },
-    {
-      "id": 82,
-      "name": "[애니] 정희원 연출 - 클린업 그룹 I",
-      "owner": "김현석 · 일정 미정",
+      "id": 192,
+      "name": "[사운드] 슈퍼 스프린트",
+      "owner": "[사운드]이예얼 · 일정 미정",
       "start": "2026-08-20",
       "end": "2026-08-20",
-      "status": "done",
+      "status": "todo",
       "deps": [],
-      "jira": "ORVV-8607",
+      "jira": "ORVV-9389",
+      "epic": {
+        "key": "ORVV-8765",
+        "name": "[시스템] 슈퍼 스프린트 시스템 (김독자)"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 95,
+      "name": "[캐릭터모델링] 정희원 얼굴/헤어/기본 복장 재 모델링",
+      "owner": "김나영",
+      "start": "2026-07-14",
+      "end": "2026-08-21",
+      "status": "inprog",
+      "deps": [],
+      "jira": "ORVV-8729",
       "epic": {
         "key": "ORVV-7820",
         "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
       },
-      "doneAt": "2026-08-19"
+      "doneAt": null
+    },
+    {
+      "id": 154,
+      "name": "[리깅] 정희원 기본 복장 수정 본 리깅",
+      "owner": "구본수",
+      "start": "2026-08-26",
+      "end": "2026-09-02",
+      "status": "inprog",
+      "deps": [
+        95
+      ],
+      "jira": "ORVV-9229",
+      "epic": {
+        "key": "ORVV-7820",
+        "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
+      },
+      "doneAt": null
     },
     {
       "id": 83,
@@ -1485,6 +1762,96 @@ let state = {
       "status": "review",
       "deps": [],
       "jira": "ORVV-9130",
+      "epic": {
+        "key": "ORVV-7820",
+        "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 182,
+      "name": "[애니] 천인호 ~ 정희원 전투 액션 피드백 수정 (지원)",
+      "owner": "남지원",
+      "start": "2026-08-27",
+      "end": "2026-08-28",
+      "status": "inprog",
+      "deps": [],
+      "jira": "ORVV-9359",
+      "epic": {
+        "key": "ORVV-7820",
+        "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 183,
+      "name": "[애니] 천인호 ~ 정희원 전투 액션 피드백 수정 (현석)",
+      "owner": "김현석",
+      "start": "2026-08-14",
+      "end": "2026-08-25",
+      "status": "inprog",
+      "deps": [],
+      "jira": "ORVV-9358",
+      "epic": {
+        "key": "ORVV-7820",
+        "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 89,
+      "name": "[이펙트] 정희원 '심판의 시간' 상태 오오라 및 콤보 이펙트 제작",
+      "owner": "손석민",
+      "start": "2026-07-03",
+      "end": "2026-08-28",
+      "status": "review",
+      "deps": [],
+      "jira": "ORVV-8306",
+      "epic": {
+        "key": "ORVV-7820",
+        "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 90,
+      "name": "[이펙트] 천인호 전투 - 정희원 '심판의 시간' 연출 QTE·페이탈 이펙트 제작",
+      "owner": "손석민",
+      "start": "2026-07-03",
+      "end": "2026-08-28",
+      "status": "todo",
+      "deps": [],
+      "jira": "ORVV-8307",
+      "epic": {
+        "key": "ORVV-7820",
+        "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 96,
+      "name": "[클라][정희원] 필요 기능 대응",
+      "owner": "정도훈",
+      "start": "2026-06-10",
+      "end": "2026-08-28",
+      "status": "inprog",
+      "deps": [],
+      "jira": "ORVV-7951",
+      "epic": {
+        "key": "ORVV-7820",
+        "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 201,
+      "name": "[사운드] 정희원 인게임 전투 사운드",
+      "owner": "[사운드]이예얼",
+      "start": "2026-08-20",
+      "end": "2026-08-24",
+      "status": "todo",
+      "deps": [],
+      "jira": "ORVV-9380",
       "epic": {
         "key": "ORVV-7820",
         "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
@@ -1612,34 +1979,49 @@ let state = {
       "doneAt": null
     },
     {
-      "id": 89,
-      "name": "[이펙트] 정희원 '심판의 시간' 상태 오오라 및 콤보 이펙트 제작",
-      "owner": "손석민",
-      "start": "2026-07-03",
-      "end": "2026-08-28",
-      "status": "review",
+      "id": 80,
+      "name": "[애니] 정희원 연출 - 클린업 그룹 G",
+      "owner": "김현석",
+      "start": "2026-07-29",
+      "end": "2026-08-13",
+      "status": "done",
       "deps": [],
-      "jira": "ORVV-8306",
+      "jira": "ORVV-8605",
       "epic": {
         "key": "ORVV-7820",
         "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
       },
-      "doneAt": null
+      "doneAt": "2026-08-20"
     },
     {
-      "id": 90,
-      "name": "[이펙트] 천인호 전투 - 정희원 '심판의 시간' 연출 QTE·페이탈 이펙트 제작",
-      "owner": "손석민",
-      "start": "2026-07-03",
-      "end": "2026-08-28",
-      "status": "todo",
+      "id": 81,
+      "name": "[애니] 정희원 연출 - 클린업 그룹 H",
+      "owner": "김현석",
+      "start": "2026-07-31",
+      "end": "2026-08-13",
+      "status": "done",
       "deps": [],
-      "jira": "ORVV-8307",
+      "jira": "ORVV-8606",
       "epic": {
         "key": "ORVV-7820",
         "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
       },
-      "doneAt": null
+      "doneAt": "2026-08-20"
+    },
+    {
+      "id": 82,
+      "name": "[애니] 정희원 연출 - 클린업 그룹 I",
+      "owner": "김현석 · 일정 미정",
+      "start": "2026-08-20",
+      "end": "2026-08-20",
+      "status": "done",
+      "deps": [],
+      "jira": "ORVV-8607",
+      "epic": {
+        "key": "ORVV-7820",
+        "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
+      },
+      "doneAt": "2026-08-19"
     },
     {
       "id": 92,
@@ -1672,17 +2054,304 @@ let state = {
       "doneAt": null
     },
     {
-      "id": 95,
-      "name": "[캐릭터모델링] 정희원 얼굴/헤어/기본 복장 재 모델링",
-      "owner": "김나영",
-      "start": "2026-07-14",
-      "end": "2026-08-21",
-      "status": "inprog",
+      "id": 198,
+      "name": "[사운드] 금호역(천인호 전투) 플레이 사운드",
+      "owner": "[사운드]이예얼",
+      "start": "2026-08-20",
+      "end": "2026-08-26",
+      "status": "todo",
       "deps": [],
-      "jira": "ORVV-8729",
+      "jira": "ORVV-9383",
       "epic": {
         "key": "ORVV-7820",
         "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 199,
+      "name": "[사운드] 천인호 전투 진행 중 전투 연출 사운드",
+      "owner": "[사운드]이예얼 · 일정 미정",
+      "start": "2026-08-20",
+      "end": "2026-08-20",
+      "status": "todo",
+      "deps": [],
+      "jira": "ORVV-9382",
+      "epic": {
+        "key": "ORVV-7820",
+        "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 210,
+      "name": "[사운드] 금호역 (천인호 전투) - BGM",
+      "owner": "[사운드]이예얼",
+      "start": "2026-08-26",
+      "end": "2026-08-28",
+      "status": "todo",
+      "deps": [],
+      "jira": "ORVV-9366",
+      "epic": {
+        "key": "ORVV-7820",
+        "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 157,
+      "name": "[배경] 지하철 전광판 화면 깨져있는 에셋 제작",
+      "owner": "양귀민",
+      "start": "2026-08-18",
+      "end": "2026-08-21",
+      "status": "inprog",
+      "deps": [],
+      "jira": "ORVV-9233",
+      "epic": {
+        "key": "ORVV-7820",
+        "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 158,
+      "name": "[배경] 전투 후 혈흔 및 전투 흔적 레이어 구성",
+      "owner": "양귀민",
+      "start": "2026-08-18",
+      "end": "2026-08-21",
+      "status": "inprog",
+      "deps": [],
+      "jira": "ORVV-9234",
+      "epic": {
+        "key": "ORVV-7820",
+        "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 159,
+      "name": "[배경] 시네마틱용 배경 프랍 정리",
+      "owner": "안유빈",
+      "start": "2026-08-18",
+      "end": "2026-08-21",
+      "status": "done",
+      "deps": [],
+      "jira": "ORVV-9235",
+      "epic": {
+        "key": "ORVV-7820",
+        "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
+      },
+      "doneAt": "2026-08-19"
+    },
+    {
+      "id": 160,
+      "name": "[배경] 전투 중 방해되는 프랍에셋 재배치 드레싱",
+      "owner": "양귀민",
+      "start": "2026-08-18",
+      "end": "2026-08-21",
+      "status": "inprog",
+      "deps": [],
+      "jira": "ORVV-9236",
+      "epic": {
+        "key": "ORVV-7820",
+        "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 212,
+      "name": "[애니] 불량배 및 시민 시체 포즈 제작",
+      "owner": "김영욱",
+      "start": "2026-08-27",
+      "end": "2026-08-27",
+      "status": "todo",
+      "deps": [],
+      "jira": "ORVV-9402",
+      "epic": {
+        "key": "ORVV-7820",
+        "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 181,
+      "name": "[애니] 천인호 ~ 정희원 전투 컷신 4종 모캡 포스트",
+      "owner": "남지원",
+      "start": "2026-08-14",
+      "end": "2026-08-26",
+      "status": "todo",
+      "deps": [],
+      "jira": "ORVV-9360",
+      "epic": {
+        "key": "ORVV-7820",
+        "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 180,
+      "name": "[애니] 정희원 각성 컷씬 - 클린업",
+      "owner": "남지원",
+      "start": "2026-09-01",
+      "end": "2026-09-18",
+      "status": "todo",
+      "deps": [],
+      "jira": "ORVV-9361",
+      "epic": {
+        "key": "ORVV-7969",
+        "name": "[컷씬] 정희원 각성과 심판의 시간 발동"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 179,
+      "name": "[애니][외주] 정희원 감정선 컷씬 - 클린업",
+      "owner": "박찬용",
+      "start": "2026-08-21",
+      "end": "2026-09-18",
+      "status": "todo",
+      "deps": [],
+      "jira": "ORVV-9362",
+      "epic": {
+        "key": "ORVV-8318",
+        "name": "[컷씬] 정희원 '심판의 시간' 감정선 추가"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 186,
+      "name": "[배경] 금호동 편의점 창고_레벨 드레싱",
+      "owner": "양귀민",
+      "start": "2026-08-24",
+      "end": "2026-08-25",
+      "status": "todo",
+      "deps": [],
+      "jira": "ORVV-9352",
+      "epic": {
+        "key": "ORVV-7820",
+        "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 176,
+      "name": "[캐릭터모델링] 정희원, 천인호 전투 컷씬용 배경 프랍 --> 카툰화 모델링",
+      "owner": "김웅 · 시작일 미정",
+      "start": "2026-08-27",
+      "end": "2026-08-27",
+      "status": "todo",
+      "deps": [],
+      "jira": "ORVV-9371",
+      "epic": {
+        "key": "ORVV-7820",
+        "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 211,
+      "name": "[TA] 정희원 각성 컷씬용 배경 프랍들 소켓 추가",
+      "owner": "구본수 · 시작일 미정",
+      "start": "2026-08-27",
+      "end": "2026-08-27",
+      "status": "todo",
+      "deps": [
+        176
+      ],
+      "jira": "ORVV-9400",
+      "epic": {
+        "key": "ORVV-7820",
+        "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 203,
+      "name": "[사운드] 정희원 '심판의 시간' 감정선 추가",
+      "owner": "[사운드]이예얼 · 일정 미정",
+      "start": "2026-08-20",
+      "end": "2026-08-20",
+      "status": "todo",
+      "deps": [],
+      "jira": "ORVV-9378",
+      "epic": {
+        "key": "ORVV-8318",
+        "name": "[컷씬] 정희원 '심판의 시간' 감정선 추가"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 204,
+      "name": "[사운드] 정희원 각성과 심판의 시간 발동",
+      "owner": "[사운드]이예얼 · 일정 미정",
+      "start": "2026-08-20",
+      "end": "2026-08-20",
+      "status": "todo",
+      "deps": [],
+      "jira": "ORVV-9377",
+      "epic": {
+        "key": "ORVV-7969",
+        "name": "[컷씬] 정희원 각성과 심판의 시간 발동"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 177,
+      "name": "[애니] 천인호 처치 컷씬 - 클린업 (광수)_씬 140 ~ 380",
+      "owner": "임광수",
+      "start": "2026-08-21",
+      "end": "2026-09-18",
+      "status": "todo",
+      "deps": [],
+      "jira": "ORVV-9364",
+      "epic": {
+        "key": "ORVV-7971",
+        "name": "[컷씬] 천인호 처치"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 178,
+      "name": "[애니] 천인호 처치 컷씬 - 클린업 (현석)_씬 110 ~ 130",
+      "owner": "김현석",
+      "start": "2026-08-14",
+      "end": "2026-09-18",
+      "status": "todo",
+      "deps": [],
+      "jira": "ORVV-9363",
+      "epic": {
+        "key": "ORVV-7971",
+        "name": "[컷씬] 천인호 처치"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 202,
+      "name": "[사운드] 천인호 처치",
+      "owner": "[사운드]이예얼 · 일정 미정",
+      "start": "2026-08-20",
+      "end": "2026-08-20",
+      "status": "todo",
+      "deps": [],
+      "jira": "ORVV-9379",
+      "epic": {
+        "key": "ORVV-7971",
+        "name": "[컷씬] 천인호 처치"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 205,
+      "name": "[사운드] 천인호에 의해 금호역 전투 개시",
+      "owner": "[사운드]이예얼 · 일정 미정",
+      "start": "2026-08-20",
+      "end": "2026-08-20",
+      "status": "todo",
+      "deps": [],
+      "jira": "ORVV-9376",
+      "epic": {
+        "key": "ORVV-7967",
+        "name": "[컷씬] 천인호에 의해 금호역 전투 개시"
       },
       "doneAt": null
     },
@@ -1762,6 +2431,51 @@ let state = {
       "doneAt": null
     },
     {
+      "id": 101,
+      "name": "[애니] 김독자가 석등을 향해 손을 내뻗는 모션",
+      "owner": "임광수 · 일정 미정",
+      "start": "2026-08-20",
+      "end": "2026-08-20",
+      "status": "inprog",
+      "deps": [],
+      "jira": "ORVV-8957",
+      "epic": {
+        "key": "ORVV-7822",
+        "name": "[플레이] 동대입구역 장충단 공원 플레이 구현"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 197,
+      "name": "[사운드] 장충단공원 플레이 사운드",
+      "owner": "[사운드]이예얼 · 일정 미정",
+      "start": "2026-08-20",
+      "end": "2026-08-20",
+      "status": "todo",
+      "deps": [],
+      "jira": "ORVV-9384",
+      "epic": {
+        "key": "ORVV-7822",
+        "name": "[플레이] 동대입구역 장충단 공원 플레이 구현"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 217,
+      "name": "[클라][동대입구역] 플레이 프로세스 관리",
+      "owner": "이진형",
+      "start": "2026-08-21",
+      "end": "2026-09-18",
+      "status": "inprog",
+      "deps": [],
+      "jira": "ORVV-9407",
+      "epic": {
+        "key": "ORVV-7822",
+        "name": "[플레이] 동대입구역 장충단 공원 플레이 구현"
+      },
+      "doneAt": null
+    },
+    {
       "id": 155,
       "name": "[배경] 환영감옥 - 블록아웃 제작",
       "owner": "이형근",
@@ -1787,6 +2501,171 @@ let state = {
         155
       ],
       "jira": "ORVV-9232",
+      "epic": {
+        "key": "ORVV-7824",
+        "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 164,
+      "name": "[TA] 환영 감옥 큐브 블록 머터리얼 제작",
+      "owner": "권상모",
+      "start": "2026-08-19",
+      "end": "2026-08-28",
+      "status": "todo",
+      "deps": [],
+      "jira": "ORVV-9357",
+      "epic": {
+        "key": "ORVV-7824",
+        "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 104,
+      "name": "[기획] 스펙터 전투 - 환영감옥 블록아웃 스크립트 대응",
+      "owner": "소원태",
+      "start": "2026-08-10",
+      "end": "2026-08-21",
+      "status": "inprog",
+      "deps": [],
+      "jira": "ORVV-8727",
+      "epic": {
+        "key": "ORVV-7824",
+        "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 163,
+      "name": "[클라][환영감옥] 입장, 퇴장, 진행 프로세스",
+      "owner": "이진형",
+      "start": "2026-08-19",
+      "end": "2026-08-28",
+      "status": "todo",
+      "deps": [],
+      "jira": "ORVV-9348",
+      "epic": {
+        "key": "ORVV-7824",
+        "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 167,
+      "name": "[클라][환영감옥] 재시작 시스템",
+      "owner": "김기돈",
+      "start": "2026-08-24",
+      "end": "2026-08-28",
+      "status": "inprog",
+      "deps": [],
+      "jira": "ORVV-9345",
+      "epic": {
+        "key": "ORVV-7824",
+        "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 168,
+      "name": "[클라][환영감옥] 전용 포탈",
+      "owner": "이진형",
+      "start": "2026-08-19",
+      "end": "2026-08-28",
+      "status": "inprog",
+      "deps": [],
+      "jira": "ORVV-9346",
+      "epic": {
+        "key": "ORVV-7824",
+        "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 166,
+      "name": "[클라][환영감옥] 중력 시스템",
+      "owner": "김기돈",
+      "start": "2026-08-24",
+      "end": "2026-08-28",
+      "status": "todo",
+      "deps": [],
+      "jira": "ORVV-9344",
+      "epic": {
+        "key": "ORVV-7824",
+        "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 171,
+      "name": "[클라][환영감옥] 중력 전환 플레이시 플레이어 로코모션 개선",
+      "owner": "이주식",
+      "start": "2026-08-24",
+      "end": "2026-08-28",
+      "status": "inprog",
+      "deps": [],
+      "jira": "ORVV-9365",
+      "epic": {
+        "key": "ORVV-7824",
+        "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 169,
+      "name": "[클라][환영감옥] 무빙 오브젝트",
+      "owner": "이미륵",
+      "start": "2026-08-19",
+      "end": "2026-08-28",
+      "status": "todo",
+      "deps": [],
+      "jira": "ORVV-9347",
+      "epic": {
+        "key": "ORVV-7824",
+        "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 170,
+      "name": "[클라][환영감옥] 스펙터 분신",
+      "owner": "이미륵",
+      "start": "2026-08-19",
+      "end": "2026-08-28",
+      "status": "inprog",
+      "deps": [],
+      "jira": "ORVV-9349",
+      "epic": {
+        "key": "ORVV-7824",
+        "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 196,
+      "name": "[사운드] 환영감옥 플레이",
+      "owner": "[사운드]이예얼 · 일정 미정",
+      "start": "2026-08-20",
+      "end": "2026-08-20",
+      "status": "todo",
+      "deps": [],
+      "jira": "ORVV-9385",
+      "epic": {
+        "key": "ORVV-7824",
+        "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 209,
+      "name": "[사운드] 환영 감옥 - BGM",
+      "owner": "[사운드]김은지 · 시작일 미정",
+      "start": "2026-08-31",
+      "end": "2026-08-31",
+      "status": "inprog",
+      "deps": [],
+      "jira": "ORVV-9367",
       "epic": {
         "key": "ORVV-7824",
         "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
@@ -1900,6 +2779,21 @@ let state = {
       "status": "inprog",
       "deps": [],
       "jira": "ORVV-7864",
+      "epic": {
+        "key": "ORVV-9113",
+        "name": "[플레이] 충무로역 - 공필두 플레이 구현"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 184,
+      "name": "[캐릭터모델링] 공필두 무기 모델링_하이폴 제작",
+      "owner": "이기해",
+      "start": "2026-08-18",
+      "end": "2026-08-21",
+      "status": "inprog",
+      "deps": [],
+      "jira": "ORVV-9356",
       "epic": {
         "key": "ORVV-9113",
         "name": "[플레이] 충무로역 - 공필두 플레이 구현"
@@ -2031,6 +2925,21 @@ let state = {
         125
       ],
       "jira": "ORVV-8473",
+      "epic": {
+        "key": "ORVV-7828",
+        "name": "[몬스터] 스펙터"
+      },
+      "doneAt": null
+    },
+    {
+      "id": 189,
+      "name": "[사운드] 몬스터 스펙터 사운드",
+      "owner": "[사운드]이예얼 · 일정 미정",
+      "start": "2026-08-20",
+      "end": "2026-08-20",
+      "status": "todo",
+      "deps": [],
+      "jira": "ORVV-9392",
       "epic": {
         "key": "ORVV-7828",
         "name": "[몬스터] 스펙터"
@@ -2291,143 +3200,6 @@ let state = {
       "doneAt": null
     },
     {
-      "id": 152,
-      "name": "[사운드] 땅강아쥐 보물창고 무드 조성 및 환경 사운드",
-      "owner": "[사운드]이예얼",
-      "start": "2026-08-19",
-      "end": "2026-08-19",
-      "status": "review",
-      "deps": [],
-      "jira": "ORVV-9086",
-      "epic": {
-        "key": "ORVV-9085",
-        "name": "B1 환경 사운드 제작"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 62,
-      "name": "[기획] 회차공명·어둠 자락의 보물창고 - 스크립트",
-      "owner": "염승훈",
-      "start": "2026-08-14",
-      "end": "2026-08-26",
-      "status": "review",
-      "deps": [],
-      "jira": "ORVV-9142",
-      "epic": {
-        "key": "ORVV-9165",
-        "name": "[시스템][탐험] 회차공명 시스템 - 땅강아쥐 어둠 자락의 보물창고"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 154,
-      "name": "[리깅] 정희원 기본 복장 수정 본 리깅",
-      "owner": "구본수",
-      "start": "2026-08-26",
-      "end": "2026-09-02",
-      "status": "inprog",
-      "deps": [
-        95
-      ],
-      "jira": "ORVV-9229",
-      "epic": {
-        "key": "ORVV-7820",
-        "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 164,
-      "name": "[TA] 환영 감옥 큐브 블록 머터리얼 제작",
-      "owner": "권상모",
-      "start": "2026-08-19",
-      "end": "2026-08-28",
-      "status": "todo",
-      "deps": [],
-      "jira": "ORVV-9357",
-      "epic": {
-        "key": "ORVV-7824",
-        "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 104,
-      "name": "[기획] 스펙터 전투 - 환영감옥 블록아웃 스크립트 대응",
-      "owner": "소원태",
-      "start": "2026-08-10",
-      "end": "2026-08-21",
-      "status": "inprog",
-      "deps": [],
-      "jira": "ORVV-8727",
-      "epic": {
-        "key": "ORVV-7824",
-        "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 96,
-      "name": "[클라][정희원] 필요 기능 대응",
-      "owner": "정도훈",
-      "start": "2026-06-10",
-      "end": "2026-08-28",
-      "status": "inprog",
-      "deps": [],
-      "jira": "ORVV-7951",
-      "epic": {
-        "key": "ORVV-7820",
-        "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 157,
-      "name": "[배경] 지하철 전광판 화면 깨져있는 에셋 제작",
-      "owner": "양귀민",
-      "start": "2026-08-18",
-      "end": "2026-08-21",
-      "status": "inprog",
-      "deps": [],
-      "jira": "ORVV-9233",
-      "epic": {
-        "key": "ORVV-7820",
-        "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 158,
-      "name": "[배경] 전투 후 혈흔 및 전투 흔적 레이어 구성",
-      "owner": "양귀민",
-      "start": "2026-08-18",
-      "end": "2026-08-21",
-      "status": "inprog",
-      "deps": [],
-      "jira": "ORVV-9234",
-      "epic": {
-        "key": "ORVV-7820",
-        "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 159,
-      "name": "[배경] 시네마틱용 배경 프랍 정리",
-      "owner": "안유빈",
-      "start": "2026-08-18",
-      "end": "2026-08-21",
-      "status": "done",
-      "deps": [],
-      "jira": "ORVV-9235",
-      "epic": {
-        "key": "ORVV-7820",
-        "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
-      },
-      "doneAt": "2026-08-19"
-    },
-    {
       "id": 161,
       "name": "[이펙트] 환영 몬스터 - 환영의 망령 바디 FX",
       "owner": "이용곤",
@@ -2458,351 +3230,17 @@ let state = {
       "doneAt": null
     },
     {
-      "id": 163,
-      "name": "[클라][환영감옥] 입장, 퇴장, 진행 프로세스",
-      "owner": "이진형",
-      "start": "2026-08-19",
-      "end": "2026-08-28",
-      "status": "todo",
-      "deps": [],
-      "jira": "ORVV-9348",
-      "epic": {
-        "key": "ORVV-7824",
-        "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 71,
-      "name": "[사운드] 격 파괴 및 생성 (캐릭터·몬스터)",
-      "owner": "[사운드]이예얼",
-      "start": "2026-08-05",
-      "end": "2026-08-20",
-      "status": "inprog",
-      "deps": [],
-      "jira": "ORVV-9091",
-      "epic": {
-        "key": "ORVV-7958",
-        "name": "[시스템] 격 내구도 시스템"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 167,
-      "name": "[클라][환영감옥] 재시작 시스템",
-      "owner": "김기돈",
-      "start": "2026-08-24",
-      "end": "2026-08-28",
-      "status": "inprog",
-      "deps": [],
-      "jira": "ORVV-9345",
-      "epic": {
-        "key": "ORVV-7824",
-        "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 168,
-      "name": "[클라][환영감옥] 전용 포탈",
-      "owner": "이진형",
-      "start": "2026-08-19",
-      "end": "2026-08-28",
-      "status": "inprog",
-      "deps": [],
-      "jira": "ORVV-9346",
-      "epic": {
-        "key": "ORVV-7824",
-        "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 166,
-      "name": "[클라][환영감옥] 중력 시스템",
-      "owner": "김기돈",
-      "start": "2026-08-24",
-      "end": "2026-08-28",
-      "status": "todo",
-      "deps": [],
-      "jira": "ORVV-9344",
-      "epic": {
-        "key": "ORVV-7824",
-        "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 171,
-      "name": "[클라][환영감옥] 중력 전환 플레이시 플레이어 로코모션 개선",
-      "owner": "이주식",
-      "start": "2026-08-24",
-      "end": "2026-08-28",
-      "status": "inprog",
-      "deps": [],
-      "jira": "ORVV-9365",
-      "epic": {
-        "key": "ORVV-7824",
-        "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 169,
-      "name": "[클라][환영감옥] 무빙 오브젝트",
-      "owner": "이미륵",
-      "start": "2026-08-19",
-      "end": "2026-08-28",
-      "status": "todo",
-      "deps": [],
-      "jira": "ORVV-9347",
-      "epic": {
-        "key": "ORVV-7824",
-        "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 170,
-      "name": "[클라][환영감옥] 스펙터 분신",
-      "owner": "이미륵",
-      "start": "2026-08-19",
-      "end": "2026-08-28",
-      "status": "inprog",
-      "deps": [],
-      "jira": "ORVV-9349",
-      "epic": {
-        "key": "ORVV-7824",
-        "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 101,
-      "name": "[애니] 김독자가 석등을 향해 손을 내뻗는 모션",
-      "owner": "임광수 · 일정 미정",
+      "id": 188,
+      "name": "[사운드] 몬스터 환영의 망령 사운드",
+      "owner": "[사운드]이예얼 · 일정 미정",
       "start": "2026-08-20",
       "end": "2026-08-20",
-      "status": "inprog",
-      "deps": [],
-      "jira": "ORVV-8957",
-      "epic": {
-        "key": "ORVV-7822",
-        "name": "[플레이] 동대입구역 장충단 공원 플레이 구현"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 4,
-      "name": "[이펙트] 김독자 Y·B 콤보 이펙트 제작",
-      "owner": "유세훈",
-      "start": "2026-08-10",
-      "end": "2026-08-28",
-      "status": "todo",
-      "deps": [
-        1,
-        2,
-        3
-      ],
-      "jira": "ORVV-9045",
-      "epic": {
-        "key": "ORVV-7686",
-        "name": "[캐릭터] 김독자"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 174,
-      "name": "[캐릭터모델링] 도깨비 감투 모델링",
-      "owner": "김나영 · 시작일 미정",
-      "start": "2026-08-25",
-      "end": "2026-08-25",
       "status": "todo",
       "deps": [],
-      "jira": "ORVV-9374",
+      "jira": "ORVV-9393",
       "epic": {
-        "key": "ORVV-8080",
-        "name": "[시스템] 도깨비방 구현"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 175,
-      "name": "[캐릭터원화] 도깨비 감투 원화",
-      "owner": "구민구",
-      "start": "2026-08-20",
-      "end": "2026-08-20",
-      "status": "inprog",
-      "deps": [],
-      "jira": "ORVV-9372",
-      "epic": {
-        "key": "ORVV-8080",
-        "name": "[시스템] 도깨비방 구현"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 176,
-      "name": "[캐릭터모델링] 정희원, 천인호 전투 컷씬용 배경 프랍 --> 카툰화 모델링",
-      "owner": "김웅 · 시작일 미정",
-      "start": "2026-08-27",
-      "end": "2026-08-27",
-      "status": "todo",
-      "deps": [],
-      "jira": "ORVV-9371",
-      "epic": {
-        "key": "ORVV-7820",
-        "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 177,
-      "name": "[애니] 천인호 처치 컷씬 - 클린업 (광수)_씬 140 ~ 380",
-      "owner": "임광수",
-      "start": "2026-08-21",
-      "end": "2026-09-18",
-      "status": "todo",
-      "deps": [],
-      "jira": "ORVV-9364",
-      "epic": {
-        "key": "ORVV-7971",
-        "name": "[컷씬] 천인호 처치"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 178,
-      "name": "[애니] 천인호 처치 컷씬 - 클린업 (현석)_씬 110 ~ 130",
-      "owner": "김현석",
-      "start": "2026-08-14",
-      "end": "2026-09-18",
-      "status": "todo",
-      "deps": [],
-      "jira": "ORVV-9363",
-      "epic": {
-        "key": "ORVV-7971",
-        "name": "[컷씬] 천인호 처치"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 179,
-      "name": "[애니][외주] 정희원 감정선 컷씬 - 클린업",
-      "owner": "박찬용",
-      "start": "2026-08-21",
-      "end": "2026-09-18",
-      "status": "todo",
-      "deps": [],
-      "jira": "ORVV-9362",
-      "epic": {
-        "key": "ORVV-8318",
-        "name": "[컷씬] 정희원 '심판의 시간' 감정선 추가"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 180,
-      "name": "[애니] 정희원 각성 컷씬 - 클린업",
-      "owner": "남지원",
-      "start": "2026-09-01",
-      "end": "2026-09-18",
-      "status": "todo",
-      "deps": [],
-      "jira": "ORVV-9361",
-      "epic": {
-        "key": "ORVV-7969",
-        "name": "[컷씬] 정희원 각성과 심판의 시간 발동"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 181,
-      "name": "[애니] 천인호 ~ 정희원 전투 컷신 4종 모캡 포스트",
-      "owner": "남지원",
-      "start": "2026-08-14",
-      "end": "2026-08-26",
-      "status": "todo",
-      "deps": [],
-      "jira": "ORVV-9360",
-      "epic": {
-        "key": "ORVV-7820",
-        "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 160,
-      "name": "[배경] 전투 중 방해되는 프랍에셋 재배치 드레싱",
-      "owner": "양귀민",
-      "start": "2026-08-18",
-      "end": "2026-08-21",
-      "status": "inprog",
-      "deps": [],
-      "jira": "ORVV-9236",
-      "epic": {
-        "key": "ORVV-7820",
-        "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 182,
-      "name": "[애니] 천인호 ~ 정희원 전투 액션 피드백 수정 (지원)",
-      "owner": "남지원",
-      "start": "2026-08-27",
-      "end": "2026-08-28",
-      "status": "inprog",
-      "deps": [],
-      "jira": "ORVV-9359",
-      "epic": {
-        "key": "ORVV-7820",
-        "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 184,
-      "name": "[캐릭터모델링] 공필두 무기 모델링_하이폴 제작",
-      "owner": "이기해",
-      "start": "2026-08-18",
-      "end": "2026-08-21",
-      "status": "inprog",
-      "deps": [],
-      "jira": "ORVV-9356",
-      "epic": {
-        "key": "ORVV-9113",
-        "name": "[플레이] 충무로역 - 공필두 플레이 구현"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 185,
-      "name": "[클라] 락온 카메라 기능 추가 및 개선",
-      "owner": "손동우",
-      "start": "2026-08-18",
-      "end": "2026-08-21",
-      "status": "inprog",
-      "deps": [],
-      "jira": "ORVV-9353",
-      "epic": {
-        "key": "ORVV-8772",
-        "name": "[시스템] 플레이어 디폴트 카메라 수정"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 183,
-      "name": "[애니] 천인호 ~ 정희원 전투 액션 피드백 수정 (현석)",
-      "owner": "김현석",
-      "start": "2026-08-14",
-      "end": "2026-08-25",
-      "status": "inprog",
-      "deps": [],
-      "jira": "ORVV-9358",
-      "epic": {
-        "key": "ORVV-7820",
-        "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
+        "key": "ORVV-8960",
+        "name": "[몬스터] 환영의 망령"
       },
       "doneAt": null
     },
@@ -2822,457 +3260,22 @@ let state = {
       "doneAt": null
     },
     {
-      "id": 188,
-      "name": "[사운드] 몬스터 환영의 망령 사운드",
-      "owner": "[사운드]이예얼 · 일정 미정",
-      "start": "2026-08-20",
-      "end": "2026-08-20",
-      "status": "todo",
-      "deps": [],
-      "jira": "ORVV-9393",
-      "epic": {
-        "key": "ORVV-8960",
-        "name": "[몬스터] 환영의 망령"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 189,
-      "name": "[사운드] 몬스터 스펙터 사운드",
-      "owner": "[사운드]이예얼 · 일정 미정",
-      "start": "2026-08-20",
-      "end": "2026-08-20",
-      "status": "todo",
-      "deps": [],
-      "jira": "ORVV-9392",
-      "epic": {
-        "key": "ORVV-7828",
-        "name": "[몬스터] 스펙터"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 190,
-      "name": "[사운드] 유중혁 전투 액션 사운드",
-      "owner": "[사운드]이예얼 · 일정 미정",
-      "start": "2026-08-20",
-      "end": "2026-08-20",
-      "status": "todo",
-      "deps": [],
-      "jira": "ORVV-9391",
-      "epic": {
-        "key": "ORVV-7687",
-        "name": "[캐릭터][베타] 유중혁"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 191,
-      "name": "[사운드] 김독자 전투 액션 사운드",
-      "owner": "[사운드]이예얼 · 일정 미정",
-      "start": "2026-08-20",
-      "end": "2026-08-20",
-      "status": "todo",
-      "deps": [],
-      "jira": "ORVV-9390",
-      "epic": {
-        "key": "ORVV-7686",
-        "name": "[캐릭터] 김독자"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 192,
-      "name": "[사운드] 슈퍼 스프린트",
-      "owner": "[사운드]이예얼 · 일정 미정",
-      "start": "2026-08-20",
-      "end": "2026-08-20",
-      "status": "todo",
-      "deps": [],
-      "jira": "ORVV-9389",
-      "epic": {
-        "key": "ORVV-8765",
-        "name": "[시스템] 슈퍼 스프린트 시스템 (김독자)"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 193,
-      "name": "[사운드] 땅강아쥐 어둠자락(회차 공명) 무드 조성 및 환경 사운드",
-      "owner": "[사운드]이예얼 · 일정 미정",
-      "start": "2026-08-20",
-      "end": "2026-08-20",
-      "status": "todo",
-      "deps": [],
-      "jira": "ORVV-9388",
-      "epic": {
-        "key": "ORVV-9165",
-        "name": "[시스템][탐험] 회차공명 시스템 - 땅강아쥐 어둠 자락의 보물창고"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 194,
-      "name": "[사운드] 도깨비 방 UI 사운드",
-      "owner": "[사운드]이예얼 · 일정 미정",
-      "start": "2026-08-20",
-      "end": "2026-08-20",
-      "status": "todo",
-      "deps": [],
-      "jira": "ORVV-9387",
-      "epic": {
-        "key": "ORVV-8080",
-        "name": "[시스템] 도깨비방 구현"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 195,
-      "name": "[사운드] 도깨비 방 무드 조성 및 환경 사운드",
-      "owner": "[사운드]이예얼 · 일정 미정",
-      "start": "2026-08-20",
-      "end": "2026-08-20",
-      "status": "todo",
-      "deps": [],
-      "jira": "ORVV-9386",
-      "epic": {
-        "key": "ORVV-8080",
-        "name": "[시스템] 도깨비방 구현"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 196,
-      "name": "[사운드] 환영감옥 플레이",
-      "owner": "[사운드]이예얼 · 일정 미정",
-      "start": "2026-08-20",
-      "end": "2026-08-20",
-      "status": "todo",
-      "deps": [],
-      "jira": "ORVV-9385",
-      "epic": {
-        "key": "ORVV-7824",
-        "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 197,
-      "name": "[사운드] 장충단공원 플레이 사운드",
-      "owner": "[사운드]이예얼 · 일정 미정",
-      "start": "2026-08-20",
-      "end": "2026-08-20",
-      "status": "todo",
-      "deps": [],
-      "jira": "ORVV-9384",
-      "epic": {
-        "key": "ORVV-7822",
-        "name": "[플레이] 동대입구역 장충단 공원 플레이 구현"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 186,
-      "name": "[배경] 금호동 편의점 창고_레벨 드레싱",
-      "owner": "양귀민",
-      "start": "2026-08-24",
-      "end": "2026-08-25",
-      "status": "todo",
-      "deps": [],
-      "jira": "ORVV-9352",
-      "epic": {
-        "key": "ORVV-7820",
-        "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 198,
-      "name": "[사운드] 금호역(천인호 전투) 플레이 사운드",
+      "id": 152,
+      "name": "[사운드] 땅강아쥐 보물창고 무드 조성 및 환경 사운드",
       "owner": "[사운드]이예얼",
-      "start": "2026-08-20",
-      "end": "2026-08-26",
-      "status": "todo",
+      "start": "2026-08-19",
+      "end": "2026-08-19",
+      "status": "review",
       "deps": [],
-      "jira": "ORVV-9383",
+      "jira": "ORVV-9086",
       "epic": {
-        "key": "ORVV-7820",
-        "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 199,
-      "name": "[사운드] 천인호 전투 진행 중 전투 연출 사운드",
-      "owner": "[사운드]이예얼 · 일정 미정",
-      "start": "2026-08-20",
-      "end": "2026-08-20",
-      "status": "todo",
-      "deps": [],
-      "jira": "ORVV-9382",
-      "epic": {
-        "key": "ORVV-7820",
-        "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 201,
-      "name": "[사운드] 정희원 인게임 전투 사운드",
-      "owner": "[사운드]이예얼",
-      "start": "2026-08-20",
-      "end": "2026-08-24",
-      "status": "todo",
-      "deps": [],
-      "jira": "ORVV-9380",
-      "epic": {
-        "key": "ORVV-7820",
-        "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 202,
-      "name": "[사운드] 천인호 처치",
-      "owner": "[사운드]이예얼 · 일정 미정",
-      "start": "2026-08-20",
-      "end": "2026-08-20",
-      "status": "todo",
-      "deps": [],
-      "jira": "ORVV-9379",
-      "epic": {
-        "key": "ORVV-7971",
-        "name": "[컷씬] 천인호 처치"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 203,
-      "name": "[사운드] 정희원 '심판의 시간' 감정선 추가",
-      "owner": "[사운드]이예얼 · 일정 미정",
-      "start": "2026-08-20",
-      "end": "2026-08-20",
-      "status": "todo",
-      "deps": [],
-      "jira": "ORVV-9378",
-      "epic": {
-        "key": "ORVV-8318",
-        "name": "[컷씬] 정희원 '심판의 시간' 감정선 추가"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 204,
-      "name": "[사운드] 정희원 각성과 심판의 시간 발동",
-      "owner": "[사운드]이예얼 · 일정 미정",
-      "start": "2026-08-20",
-      "end": "2026-08-20",
-      "status": "todo",
-      "deps": [],
-      "jira": "ORVV-9377",
-      "epic": {
-        "key": "ORVV-7969",
-        "name": "[컷씬] 정희원 각성과 심판의 시간 발동"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 205,
-      "name": "[사운드] 천인호에 의해 금호역 전투 개시",
-      "owner": "[사운드]이예얼 · 일정 미정",
-      "start": "2026-08-20",
-      "end": "2026-08-20",
-      "status": "todo",
-      "deps": [],
-      "jira": "ORVV-9376",
-      "epic": {
-        "key": "ORVV-7967",
-        "name": "[컷씬] 천인호에 의해 금호역 전투 개시"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 206,
-      "name": "[사운드] 성좌 유희 - BGM",
-      "owner": "[사운드]유종호",
-      "start": "2026-08-20",
-      "end": "2026-08-31",
-      "status": "inprog",
-      "deps": [],
-      "jira": "ORVV-9370",
-      "epic": {
-        "key": "ORVV-9112",
-        "name": "[시스템][탐험] 성좌의 유희 시스템"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 207,
-      "name": "[사운드] 회차 공명 - BGM",
-      "owner": "[사운드]유종호",
-      "start": "2026-08-20",
-      "end": "2026-08-31",
-      "status": "inprog",
-      "deps": [],
-      "jira": "ORVV-9369",
-      "epic": {
-        "key": "ORVV-9165",
-        "name": "[시스템][탐험] 회차공명 시스템 - 땅강아쥐 어둠 자락의 보물창고"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 208,
-      "name": "[사운드] 도깨비방 - BGM",
-      "owner": "[사운드]유종호",
-      "start": "2026-08-20",
-      "end": "2026-08-31",
-      "status": "inprog",
-      "deps": [],
-      "jira": "ORVV-9368",
-      "epic": {
-        "key": "ORVV-8080",
-        "name": "[시스템] 도깨비방 구현"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 209,
-      "name": "[사운드] 환영 감옥 - BGM",
-      "owner": "[사운드]김은지 · 시작일 미정",
-      "start": "2026-08-31",
-      "end": "2026-08-31",
-      "status": "inprog",
-      "deps": [],
-      "jira": "ORVV-9367",
-      "epic": {
-        "key": "ORVV-7824",
-        "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 210,
-      "name": "[사운드] 금호역 (천인호 전투) - BGM",
-      "owner": "[사운드]이예얼",
-      "start": "2026-08-26",
-      "end": "2026-08-28",
-      "status": "todo",
-      "deps": [],
-      "jira": "ORVV-9366",
-      "epic": {
-        "key": "ORVV-7820",
-        "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 211,
-      "name": "[TA] 정희원 각성 컷씬용 배경 프랍들 소켓 추가",
-      "owner": "구본수 · 시작일 미정",
-      "start": "2026-08-27",
-      "end": "2026-08-27",
-      "status": "todo",
-      "deps": [],
-      "jira": "ORVV-9400",
-      "epic": {
-        "key": "ORVV-7820",
-        "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 212,
-      "name": "[애니] 불량배 및 시민 시체 포즈 제작",
-      "owner": "김영욱",
-      "start": "2026-08-27",
-      "end": "2026-08-27",
-      "status": "todo",
-      "deps": [],
-      "jira": "ORVV-9402",
-      "epic": {
-        "key": "ORVV-7820",
-        "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 213,
-      "name": "[TA] 도깨비 감투 리깅",
-      "owner": "김동석 · 시작일 미정",
-      "start": "2026-09-03",
-      "end": "2026-09-03",
-      "status": "todo",
-      "deps": [],
-      "jira": "ORVV-9403",
-      "epic": {
-        "key": "ORVV-8080",
-        "name": "[시스템] 도깨비방 구현"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 214,
-      "name": "[클라] 세이브 시스템 - 인벤토리",
-      "owner": "황준기",
-      "start": "2026-08-24",
-      "end": "2026-08-25",
-      "status": "todo",
-      "deps": [],
-      "jira": "ORVV-9409",
-      "epic": {
-        "key": "ORVV-7708",
-        "name": "[시스템] 세이브·로드 시스템 구현"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 215,
-      "name": "[클라] 세이브 시스템 - Flow Graph",
-      "owner": "황준기",
-      "start": "2026-08-25",
-      "end": "2026-08-26",
-      "status": "todo",
-      "deps": [],
-      "jira": "ORVV-9410",
-      "epic": {
-        "key": "ORVV-7708",
-        "name": "[시스템] 세이브·로드 시스템 구현"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 216,
-      "name": "[클라] 세이브 시스템 - 레벨 액터",
-      "owner": "황준기",
-      "start": "2026-08-27",
-      "end": "2026-08-28",
-      "status": "todo",
-      "deps": [],
-      "jira": "ORVV-9411",
-      "epic": {
-        "key": "ORVV-7708",
-        "name": "[시스템] 세이브·로드 시스템 구현"
-      },
-      "doneAt": null
-    },
-    {
-      "id": 217,
-      "name": "[클라][동대입구역] 플레이 프로세스 관리",
-      "owner": "이진형",
-      "start": "2026-08-21",
-      "end": "2026-09-18",
-      "status": "inprog",
-      "deps": [],
-      "jira": "ORVV-9407",
-      "epic": {
-        "key": "ORVV-7822",
-        "name": "[플레이] 동대입구역 장충단 공원 플레이 구현"
+        "key": "ORVV-9085",
+        "name": "B1 환경 사운드 제작"
       },
       "doneAt": null
     }
   ],
-  "syncedAt": "2026-08-20T06:34:22.134Z"
+  "syncedAt": "2026-08-20T07:14:49.028Z"
 };
 let nextId = 218;
 function jiraUrl(key){return key ? (state.jiraBase + encodeURIComponent(key)) : null;}
