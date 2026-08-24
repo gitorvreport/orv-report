@@ -1003,7 +1003,7 @@ let state = {
       "owner": "김나영",
       "start": "2026-08-24",
       "end": "2026-08-25",
-      "status": "todo",
+      "status": "inprog",
       "deps": [
         175
       ],
@@ -1013,7 +1013,7 @@ let state = {
         "name": "[시스템] 도깨비방 구현"
       },
       "doneAt": null,
-      "statusName": "할 일"
+      "statusName": "진행 중"
     },
     {
       "id": 213,
@@ -1865,7 +1865,7 @@ let state = {
       "owner": "김나영",
       "start": "2026-07-14",
       "end": "2026-08-24",
-      "status": "inprog",
+      "status": "review",
       "deps": [],
       "jira": "ORVV-8729",
       "epic": {
@@ -1873,7 +1873,7 @@ let state = {
         "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
       },
       "doneAt": null,
-      "statusName": "진행 중"
+      "statusName": "검수 요청"
     },
     {
       "id": 83,
@@ -1975,8 +1975,8 @@ let state = {
       "id": 90,
       "name": "[이펙트] 천인호 전투 - 정희원 '심판의 시간' 연출 QTE·페이탈 이펙트 제작",
       "owner": "손석민",
-      "start": "2026-07-03",
-      "end": "2026-08-28",
+      "start": "2026-08-26",
+      "end": "2026-09-17",
       "status": "todo",
       "deps": [],
       "jira": "ORVV-8307",
@@ -2441,7 +2441,7 @@ let state = {
       "owner": "박찬용",
       "start": "2026-08-21",
       "end": "2026-09-18",
-      "status": "todo",
+      "status": "inprog",
       "deps": [],
       "jira": "ORVV-9362",
       "epic": {
@@ -2449,7 +2449,7 @@ let state = {
         "name": "[컷씬] 정희원 '심판의 시간' 감정선 추가"
       },
       "doneAt": null,
-      "statusName": "할 일"
+      "statusName": "진행 중"
     },
     {
       "id": 226,
@@ -2538,7 +2538,9 @@ let state = {
       "start": "2026-08-25",
       "end": "2026-08-31",
       "status": "todo",
-      "deps": [],
+      "deps": [
+        230
+      ],
       "jira": "ORVV-9468",
       "epic": {
         "key": "ORVV-7969",
@@ -2810,7 +2812,9 @@ let state = {
       "start": "2026-08-26",
       "end": "2026-08-26",
       "status": "todo",
-      "deps": [],
+      "deps": [
+        255
+      ],
       "jira": "ORVV-9140",
       "epic": {
         "key": "ORVV-7967",
@@ -3106,6 +3110,38 @@ let state = {
       },
       "doneAt": null,
       "statusName": "진행 중"
+    },
+    {
+      "id": 259,
+      "name": "[배경] 환영감옥_디테일 목업",
+      "owner": "임수연",
+      "start": "2026-08-24",
+      "end": "2026-09-18",
+      "status": "todo",
+      "deps": [],
+      "jira": "ORVV-9518",
+      "epic": {
+        "key": "ORVV-7824",
+        "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
+      },
+      "doneAt": null,
+      "statusName": "할 일"
+    },
+    {
+      "id": 260,
+      "name": "[배경모델링] 환영감옥_프랍 지원",
+      "owner": "김봉석",
+      "start": "2026-08-25",
+      "end": "2026-09-18",
+      "status": "todo",
+      "deps": [],
+      "jira": "ORVV-9519",
+      "epic": {
+        "key": "ORVV-7824",
+        "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
+      },
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 156,
@@ -4163,9 +4199,9 @@ let state = {
       "statusName": "할 일"
     }
   ],
-  "syncedAt": "2026-08-24T07:07:41.754Z"
+  "syncedAt": "2026-08-24T08:11:33.427Z"
 };
-let nextId = 259;
+let nextId = 261;
 function jiraUrl(key){return key ? (state.jiraBase + encodeURIComponent(key)) : null;}
 
 /* ---------- date helpers ---------- */
