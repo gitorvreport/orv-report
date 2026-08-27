@@ -1876,16 +1876,16 @@ let state = {
       "name": "[카메라] 슈퍼스프린트 사용·종료 시 카메라 연출",
       "owner": "김웅빈",
       "start": "2026-08-24",
-      "end": "2026-08-31",
-      "status": "inprog",
+      "end": "2026-08-27",
+      "status": "done",
       "deps": [],
       "jira": "ORVV-9016",
       "epic": {
         "key": "ORVV-8765",
         "name": "[시스템] 슈퍼 스프린트 시스템 (김독자)"
       },
-      "doneAt": null,
-      "statusName": "진행 중"
+      "doneAt": "2026-08-27",
+      "statusName": "완료"
     },
     {
       "id": 77,
@@ -2034,6 +2034,22 @@ let state = {
       },
       "doneAt": "2026-08-27",
       "statusName": "완료"
+    },
+    {
+      "id": 278,
+      "name": "[라이팅] 정희원 플레이 환경 라이팅 작업",
+      "owner": "정재윤",
+      "start": "2026-08-27",
+      "end": "2026-09-18",
+      "status": "todo",
+      "deps": [],
+      "jira": "ORVV-10022",
+      "epic": {
+        "key": "ORVV-7820",
+        "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
+      },
+      "doneAt": null,
+      "statusName": "할 일"
     },
     {
       "id": 89,
@@ -3392,7 +3408,7 @@ let state = {
       "owner": "김기돈",
       "start": "2026-08-24",
       "end": "2026-08-28",
-      "status": "inprog",
+      "status": "review",
       "deps": [],
       "jira": "ORVV-9344",
       "epic": {
@@ -3400,7 +3416,7 @@ let state = {
         "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
       },
       "doneAt": null,
-      "statusName": "진행 중"
+      "statusName": "검수 요청"
     },
     {
       "id": 171,
@@ -4426,9 +4442,9 @@ let state = {
       "statusName": "할 일"
     }
   ],
-  "syncedAt": "2026-08-27T08:42:26.963Z"
+  "syncedAt": "2026-08-27T10:38:00.121Z"
 };
-let nextId = 278;
+let nextId = 279;
 function jiraUrl(key){return key ? (state.jiraBase + encodeURIComponent(key)) : null;}
 
 /* ---------- date helpers ---------- */
