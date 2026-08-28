@@ -4829,6 +4829,13 @@ function render(){
 
   renderStats(f);
   renderTable();
+  // **드릴다운 목록이 열려 있으면 같이 다시 그린다.** 표(renderTable)는 이미 그러고 있는데
+  // 이 목록만 빠져 있었다 — 그래서 목록에서 작업을 열어 지워도 지운 행이 그대로 남았다
+  // (차트는 갱신되는데 보고 있는 화면만 낡은 채였다). render() 를 '전부 다시 그린다'로
+  // 유지하면 삭제·저장·순서변경·갱신이 전부 한 번에 맞는다.
+  // drillKind 는 아래에 let 으로 선언돼 있지만, render() 를 부르는 곳이 전부 함수 안이고
+  // 부트는 파일 맨 끝이라 실행 시점에는 이미 초기화돼 있다.
+  if(drillKind) renderDrill();
 }
 
 function renderStats(f){
