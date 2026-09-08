@@ -766,22 +766,6 @@ let state = {
       "statusName": "완료"
     },
     {
-      "id": 239,
-      "name": "[캐릭터원화] 도깨비방 스타스트림 패널용 원화 제작_화신 2종(2)",
-      "owner": "구민구",
-      "start": "2026-09-29",
-      "end": "2026-10-15",
-      "status": "todo",
-      "deps": [],
-      "jira": "ORVV-9227",
-      "epic": {
-        "key": "ORVV-8080",
-        "name": "[시스템] 도깨비방 구현"
-      },
-      "doneAt": null,
-      "statusName": "할 일"
-    },
-    {
       "id": 240,
       "name": "[캐릭터원화] 도깨비방 스타스트림 패널용 성좌 4종_원화 제작",
       "owner": "천서주",
@@ -899,9 +883,9 @@ let state = {
     {
       "id": 30,
       "name": "[이펙트] 도깨비방 패널 관련 이펙트 제작",
-      "owner": "손석민",
-      "start": "2026-09-01",
-      "end": "2026-09-11",
+      "owner": "손석민 · 일정 미정",
+      "start": "2026-09-18",
+      "end": "2026-09-18",
       "status": "inprog",
       "deps": [
         26
@@ -912,7 +896,7 @@ let state = {
         "name": "[시스템] 도깨비방 구현"
       },
       "doneAt": null,
-      "statusName": "진행 중"
+      "statusName": "대기 중"
     },
     {
       "id": 24,
@@ -2756,22 +2740,6 @@ let state = {
       "statusName": "완료"
     },
     {
-      "id": 253,
-      "name": "[캐릭터원화] 시퀀스 용 원화(천인호 금호역 전투 개시)",
-      "owner": "천서주",
-      "start": "2026-10-16",
-      "end": "2026-10-22",
-      "status": "todo",
-      "deps": [],
-      "jira": "ORVV-9509",
-      "epic": {
-        "key": "ORVV-7967",
-        "name": "[컷씬] 천인호에 의해 금호역 전투 개시"
-      },
-      "doneAt": null,
-      "statusName": "할 일"
-    },
-    {
       "id": 254,
       "name": "[컷씬] 천인호에 의해 금호역 전투 개시",
       "owner": "김웅빈 · 일정 미정",
@@ -2902,9 +2870,9 @@ let state = {
     {
       "id": 234,
       "name": "[이펙트] 장충단비(봉인 상태) 이펙트",
-      "owner": "유세훈",
-      "start": "2026-09-04",
-      "end": "2026-09-09",
+      "owner": "유세훈 · 일정 미정",
+      "start": "2026-09-18",
+      "end": "2026-09-18",
       "status": "inprog",
       "deps": [],
       "jira": "ORVV-9417",
@@ -2913,7 +2881,7 @@ let state = {
         "name": "[플레이] 동대입구역 장충단 공원 플레이 구현"
       },
       "doneAt": null,
-      "statusName": "진행 중"
+      "statusName": "대기 중"
     },
     {
       "id": 235,
@@ -3956,22 +3924,6 @@ let state = {
       "statusName": "완료"
     },
     {
-      "id": 223,
-      "name": "[이펙트] 탐식의 망령 이펙트 (바디, 사망, 스킬)",
-      "owner": "유세훈",
-      "start": "2026-09-29",
-      "end": "2026-09-30",
-      "status": "inprog",
-      "deps": [],
-      "jira": "ORVV-9066",
-      "epic": {
-        "key": "ORVV-9020",
-        "name": "[몬스터] 탐식의 망령"
-      },
-      "doneAt": null,
-      "statusName": "대기 중"
-    },
-    {
       "id": 187,
       "name": "[사운드] 몬스터 탐식의 망령 사운드",
       "owner": "[사운드]이예얼",
@@ -4038,28 +3990,12 @@ let state = {
       "statusName": "진행 중"
     },
     {
-      "id": 31,
-      "name": "[기획] 도깨비방 시스템 검수",
-      "owner": "신동석",
-      "start": "2026-08-28",
-      "end": "2026-09-30",
-      "status": "todo",
-      "deps": [],
-      "jira": "ORVV-8369",
-      "epic": {
-        "key": "ORVV-8080",
-        "name": "[시스템] 도깨비방 구현"
-      },
-      "doneAt": null,
-      "statusName": "할 일"
-    },
-    {
       "id": 41,
       "name": "[기획] 콤보 시스템 검수",
       "owner": "최미희",
       "start": "2026-08-28",
       "end": "2026-09-11",
-      "status": "inprog",
+      "status": "review",
       "deps": [
         38,
         40
@@ -4070,7 +4006,7 @@ let state = {
         "name": "[시스템] 콤보 시스템"
       },
       "doneAt": null,
-      "statusName": "진행 중"
+      "statusName": "검수 요청"
     },
     {
       "id": 47,
@@ -4198,7 +4134,7 @@ let state = {
       "statusName": "할 일"
     }
   ],
-  "syncedAt": "2026-09-08T09:31:30.138Z"
+  "syncedAt": "2026-09-08T10:22:09.985Z"
 };
 let nextId = 280;
 function jiraUrl(key){return key ? (state.jiraBase + encodeURIComponent(key)) : null;}
