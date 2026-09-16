@@ -1,0 +1,48 @@
+{
+  "chartId": "b2",
+  "title": "B2 테스트 차트",
+  "deadline": "2026-11-27",
+  "window": {
+    "on": true,
+    "start": "2026-09-23",
+    "end": "2026-11-27"
+  },
+  "jiraBase": "https://offbeatplay.atlassian.net/browse/",
+  "syncEndpoint": "https://orv-goalchart-jira.offbeat-696.workers.dev",
+  "syncedAt": "2026-09-16T08:30:43.471Z",
+  "epicGroups": [],
+  "tasks": [
+    {
+      "id": 1,
+      "name": "[기획] 결정타 시스템 - 기획서 작성",
+      "owner": "최미희",
+      "start": null,
+      "end": null,
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-10035",
+        "name": "[시스템] 결정타 시스템 구현"
+      },
+      "jira": "ORVV-10058",
+      "deps": []
+    },
+    {
+      "id": 2,
+      "name": "[기획] 저스트 회피 시스템 - 기획서 작성",
+      "owner": "최미희",
+      "start": "2026-09-07",
+      "end": null,
+      "status": "inprog",
+      "statusName": "진행 중",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-10036",
+        "name": "[시스템] 저스트 회피 시스템 구현"
+      },
+      "jira": "ORVV-10059",
+      "deps": []
+    }
+  ]
+}
