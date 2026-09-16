@@ -9,7 +9,7 @@
   },
   "jiraBase": "https://offbeatplay.atlassian.net/browse/",
   "syncEndpoint": "https://orv-goalchart-jira.offbeat-696.workers.dev",
-  "syncedAt": "2026-09-16T07:27:26.841Z",
+  "syncedAt": "2026-09-16T07:28:13.052Z",
   "epicGroups": [
     {
       "key": "G1",
