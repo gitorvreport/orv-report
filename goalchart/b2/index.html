@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Weekly Goal 간트차트</title>
+<link rel="stylesheet" href="../_app/app.css">
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div id="topLeft"></div>
+    <div class="btns" id="topBtns"></div>
+  </div>
+
+  <div class="stats" id="stats"></div>
+
+  <div class="sync-note" id="syncNote"></div>
+
+  <div class="legend">
+    <span class="lg"><span class="sw done"></span>완료</span>
+    <span class="lg"><span class="sw inprog"></span>진행중</span>
+    <span class="lg"><span class="sw review"></span>검수 요청</span>
+    <span class="lg"><span class="sw todo"></span>예정</span>
+    <span class="lg"><span class="sw risk"></span>기한 초과</span>
+    <span class="lg"><svg width="34" height="10"><line x1="0" y1="5" x2="26" y2="5" stroke="var(--dep)" stroke-width="2"/><path d="M26 5 l-6 -3 v6 z" fill="var(--dep)"/></svg>의존</span>
+    <span class="lg"><svg width="34" height="10"><line x1="0" y1="5" x2="26" y2="5" stroke="var(--dep-block)" stroke-width="2" stroke-dasharray="4 3"/><path d="M26 5 l-6 -3 v6 z" fill="var(--dep-block)"/></svg>선행 미완료 (선행 대기)</span>
+  </div>
+
+  <div class="card">
+    <div class="loading" id="loading"><span class="spin"></span>Jira에서 최신 일정을 불러오는 중…</div>
+    <div class="chart-body" id="chartBody">
+      <div class="labels" id="labels"></div>
+      <div class="resizer" id="resizer" title="드래그해서 좌측 폭 조절"></div>
+      <div class="tl-scroll"><div class="timeline" id="timeline"></div></div>
+    </div>
+    <div class="tblview" id="tblview" style="display:none"></div>
+    <div class="tblview" id="drillview" style="display:none"></div>
+  </div>
+
+  <div class="foot">읽기 전용 보기입니다. 내용 수정은 관리자에게 요청하세요.</div>
+
+</div>
+
+<!-- Detail panel (읽기 전용) -->
+<div class="ov" id="ovD">
+  <div class="modal">
+    <h3 id="dTitle">작업</h3>
+    <div id="dBody"></div>
+    <div class="modal-actions" style="justify-content:flex-end">
+      <button class="ghost" onclick="closeDetail()">닫기</button>
+    </div>
+  </div>
+</div>
+
+<script src="../_app/app.js" defer></script>
+</body>
+</html>
