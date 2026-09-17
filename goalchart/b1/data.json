@@ -5,11 +5,11 @@
   "window": {
     "on": true,
     "start": "2026-08-13",
-    "end": "2026-09-18"
+    "end": "2026-09-22"
   },
   "jiraBase": "https://offbeatplay.atlassian.net/browse/",
   "syncEndpoint": "https://orv-goalchart-jira.offbeat-696.workers.dev",
-  "syncedAt": "2026-09-17T08:57:21.774Z",
+  "syncedAt": "2026-09-17T10:18:13.750Z",
   "epicGroups": [
     {
       "key": "G1",
@@ -922,9 +922,9 @@
       "owner": "주완호",
       "start": "2026-08-26",
       "end": "2026-09-03",
-      "status": "review",
-      "statusName": "검수 요청",
-      "doneAt": null,
+      "status": "done",
+      "statusName": "완료",
+      "doneAt": "2026-09-17",
       "epic": {
         "key": "ORVV-9112",
         "name": "[시스템][탐험] 성좌의 유희 시스템"
@@ -1867,9 +1867,9 @@
       "owner": "주완호",
       "start": "2026-08-14",
       "end": "2026-09-15",
-      "status": "inprog",
-      "statusName": "진행 중",
-      "doneAt": null,
+      "status": "done",
+      "statusName": "완료",
+      "doneAt": "2026-09-17",
       "epic": {
         "key": "ORVV-7820",
         "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
@@ -3560,7 +3560,7 @@
       "name": "[기획] 천인호 전투 - 정희원 각성 플레이 검수",
       "owner": "주완호",
       "start": "2026-08-21",
-      "end": "2026-09-15",
+      "end": "2026-09-18",
       "status": "todo",
       "statusName": "할 일",
       "doneAt": null,
