@@ -460,6 +460,20 @@ function barsHtml(f, taskY){
   return grid;
 }
 
+// 첫 그리기에서 한 번만 오늘 칸이 가운데 오도록 가로 스크롤한다. 표시 창이 2주라
+// 왼쪽 끝에서 시작하면 지난 날짜부터 보게 된다. 그릴 때마다 하면 보는 사람이 옮겨 둔
+// 위치를 되돌려 버리므로 한 번으로 막는다. 오늘이 표시 창 밖이면 건드리지 않는다.
+let focusedToday=false;
+function focusToday(f){
+  if(focusedToday) return;
+  focusedToday=true;
+  const sc=document.querySelector(".tl-scroll");
+  if(!sc) return;
+  const ti=diffD(f.start, todayMid());
+  if(ti<0 || ti>=f.days) return;
+  sc.scrollLeft=Math.max(0, ti*DAY_W - Math.max(0,(sc.clientWidth-DAY_W)/2));
+}
+
 // 조립만 한다. 각 조각이 문자열을 만들고 여기서 두 번의 innerHTML 로 끝난다 —
 // 조각을 늘리더라도 DOM 쓰기는 이 두 곳으로 유지할 것(중간 리플로우를 만들지 않는다).
 function render(){
@@ -480,6 +494,8 @@ function render(){
                + arrowsHtml(f, taskY, W, H)
                + barsHtml(f, taskY)
                + '</div>';
+
+  focusToday(f);
 
   renderStats(f);
   renderTable();
