@@ -463,15 +463,24 @@ function barsHtml(f, taskY){
 // 첫 그리기에서 한 번만 오늘 칸이 가운데 오도록 가로 스크롤한다. 표시 창이 2주라
 // 왼쪽 끝에서 시작하면 지난 날짜부터 보게 된다. 그릴 때마다 하면 보는 사람이 옮겨 둔
 // 위치를 되돌려 버리므로 한 번으로 막는다. 오늘이 표시 창 밖이면 건드리지 않는다.
+// **첫 render() 시점에는 차트가 아직 숨어 있다** — setLoading(false) 가 chartBody 를
+// 되살리지 않고 뒤따르는 syncPanes() 가 한다. 폭이 0 인 요소에 scrollLeft 를 쓰면
+// 브라우저가 0 으로 잘라 버려 아무 일도 안 일어난다(이 순서 때문에 처음 배포한 판이
+// 동작하지 않았다). 그래서 한 프레임 뒤에 재고, 그래도 폭이 0 이면 플래그를 쓰지 않아
+// 다음 그리기에서 다시 시도한다.
 let focusedToday=false;
 function focusToday(f){
   if(focusedToday) return;
-  focusedToday=true;
-  const sc=document.querySelector(".tl-scroll");
-  if(!sc) return;
-  const ti=diffD(f.start, todayMid());
-  if(ti<0 || ti>=f.days) return;
-  sc.scrollLeft=Math.max(0, ti*DAY_W - Math.max(0,(sc.clientWidth-DAY_W)/2));
+  const run=function(){
+    if(focusedToday) return;
+    const sc=document.querySelector(".tl-scroll");
+    if(!sc || !sc.clientWidth) return;
+    focusedToday=true;
+    const ti=diffD(f.start, todayMid());
+    if(ti<0 || ti>=f.days) return;
+    sc.scrollLeft=Math.max(0, ti*DAY_W - Math.max(0,(sc.clientWidth-DAY_W)/2));
+  };
+  if(typeof requestAnimationFrame==="function") requestAnimationFrame(run); else run();
 }
 
 // 조립만 한다. 각 조각이 문자열을 만들고 여기서 두 번의 innerHTML 로 끝난다 —
