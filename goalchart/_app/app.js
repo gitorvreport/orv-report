@@ -148,6 +148,13 @@ function epicSummary(g){
   return "작업 "+n+" · 완료 "+d+(w?" · 선행 대기 "+w:"")+(r?" · 기한 초과 "+r:"");
 }
 
+// 레인(에픽)이 통째로 끝났나. **작업이 하나도 없으면 완료가 아니다** — every 는 빈 배열에
+// 참을 주므로 그대로 두면 빈 레인이 완료로 표시된다.
+// 판정은 t.status 로 한다. 화면에 적는 이름은 stLabel 이지만 여기는 접힌 값으로 재는 자리다.
+function epicAllDone(g){
+  return g.tasks.length > 0 && g.tasks.every(function(t){ return t.status==="done"; });
+}
+
 /* ---------- 화면 상태 (데이터가 아니라 보는 사람의 편의) ---------- */
 // file:// 에서는 localStorage 가 막힐 수 있다(Safari 는 차단, Chrome 도 설정에 따라 던짐).
 // 실패해도 앱이 죽지 않게 전부 삼키고 메모리 상태로만 동작시킨다.
@@ -266,14 +273,18 @@ function labelsHtml(lay, gs, f){
       // 접든 펼치든 항상 보인다. 펼친 상태에서 '선행 대기·기한 초과'가 사라지면
       // 정작 안을 들여다볼 때 그 에픽의 현황을 알 수 없다.
       const sum = '<span class="esum">'+esc(epicSummary(g))+'</span>';
+      // 끝난 레인은 가라앉히고(.done 이 이름·요약의 채도를 낮춘다) 배지 하나만 또렷하게
+      // 남긴다 — 남은 일을 찾는 화면이라 완료가 눈을 가져가면 안 된다.
+      const fin = epicAllDone(g);
+      const done = fin ? '<span class="edone">✅ 완료</span>' : '';
       let mv = "", dnd = "";
       
       // 좌측 폭이 좁으면 이름이 잘린다(요약·키가 자리를 먼저 가져간다). 잘린 채로 두면
       // 어느 에픽인지 알 수 없으므로 전체 이름과 현황을 툴팁에 담는다.
-      const etip=esc(g.name+' — '+epicSummary(g)+(g.key?' ('+g.key+')':''))+'&#10;클릭해서 접기/펼치기';
-      lh += '<div class="erow"'+dnd+' style="border-left:3px solid '+g.color+'" onclick="toggleEpicAt('+it.gi+')" title="'+etip+'">'+
+      const etip=esc(g.name+' — '+epicSummary(g)+(fin?' · 레인 완료':'')+(g.key?' ('+g.key+')':''))+'&#10;클릭해서 접기/펼치기';
+      lh += '<div class="erow'+(fin?' done':'')+'"'+dnd+' style="border-left:3px solid '+g.color+'" onclick="toggleEpicAt('+it.gi+')" title="'+etip+'">'+
         '<span class="ecar">'+(it.collapsed?'+':'−')+'</span>'+
-        '<span class="edot" style="background:'+g.color+'"></span><span class="enm">'+esc(g.name)+'</span>'+sum+chip+mv+'</div>';
+        '<span class="edot" style="background:'+g.color+'"></span><span class="enm">'+esc(g.name)+'</span>'+done+sum+chip+mv+'</div>';
     }else{
       const t=it.t, blk=isBlocked(t);
       const jk = t.jira ? '<a class="jkey" href="'+jiraUrl(t.jira)+'" target="_blank" rel="noopener" onclick="event.stopPropagation()">'+esc(t.jira)+'</a> · ' : '';

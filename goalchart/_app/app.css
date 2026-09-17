@@ -120,6 +120,11 @@ button.ghost{background:transparent;}
   border:1px solid var(--border); border-radius:4px; background:var(--page);}
 .erow:hover .ecar{color:var(--inprog); border-color:var(--inprog);}
 .erow .esum{flex:0 0 auto; font-size:10.5px; font-weight:500; color:var(--muted); white-space:nowrap;}
+/* 끝난 레인. 배지만 또렷하게 두고 나머지는 채도를 낮춘다 — 남은 일을 찾는 화면이라
+   완료가 시선을 가져가면 안 된다. 행 전체에 opacity 를 걸지 않는 이유가 이것이다. */
+.erow.done .enm,.erow.done .esum,.erow.done .edot,.erow.done .ecar,.erow.done .ekey{opacity:.45;}
+.erow.done .edone{flex:0 0 auto; font-size:10.5px; font-weight:700; color:var(--done);
+  background:var(--chip); border:1px solid var(--done); border-radius:999px; padding:1px 7px; white-space:nowrap;}
 .mv{display:none; flex:0 0 auto; gap:2px; margin-left:6px;}
 .lrow:hover .mv,.erow:hover .mv{display:flex;}
 .mvb{font:inherit; font-size:9px; line-height:1; padding:2px 4px; cursor:pointer;
