@@ -9,7 +9,7 @@
   },
   "jiraBase": "https://offbeatplay.atlassian.net/browse/",
   "syncEndpoint": "https://orv-goalchart-jira.offbeat-696.workers.dev",
-  "syncedAt": "2026-09-22T01:42:01.373Z",
+  "syncedAt": "2026-09-22T01:44:56.061Z",
   "epicGroups": [
     {
       "key": "G1",
@@ -155,20 +155,30 @@
     },
     {
       "key": "G14",
+      "name": "[플레이] 대한극장 - 쥬라기공원",
+      "issues": [
+        "ORVV-11113",
+        "ORVV-11112",
+        "ORVV-11110",
+        "ORVV-11109"
+      ]
+    },
+    {
+      "key": "G15",
       "name": "[몬스터] 스펙터",
       "issues": [
         "ORVV-8471"
       ]
     },
     {
-      "key": "G15",
+      "key": "G16",
       "name": "[몬스터] 환영의 망령",
       "issues": [
         "ORVV-9350"
       ]
     },
     {
-      "key": "G16",
+      "key": "G17",
       "name": "[몬스터] 탐식의 망령",
       "issues": [
         "ORVV-9065",
@@ -176,7 +186,7 @@
       ]
     },
     {
-      "key": "G17",
+      "key": "G18",
       "name": "[몬스터] 보스 정희원",
       "issues": [
         "ORVV-11091",
@@ -184,14 +194,14 @@
       ]
     },
     {
-      "key": "G18",
+      "key": "G19",
       "name": "[몬스터] 명량 - 구루시마",
       "issues": [
         "ORVV-10116"
       ]
     },
     {
-      "key": "G19",
+      "key": "G20",
       "name": "[몬스터] 명량 - 왜군",
       "issues": [
         "ORVV-10120",
@@ -200,14 +210,14 @@
       ]
     },
     {
-      "key": "G20",
+      "key": "G21",
       "name": "[몬스터] 쥬라기 공원 - 벨로시랩터",
       "issues": [
         "ORVV-10117"
       ]
     },
     {
-      "key": "G21",
+      "key": "G22",
       "name": "[몬스터] 공필두 (미니포탑 포함)",
       "issues": [
         "ORVV-11089",
@@ -217,16 +227,6 @@
         "ORVV-11086",
         "ORVV-10731",
         "ORVV-10112"
-      ]
-    },
-    {
-      "key": "G22",
-      "name": "[플레이] 대한극장 - 쥬라기공원",
-      "issues": [
-        "ORVV-11113",
-        "ORVV-11112",
-        "ORVV-11110",
-        "ORVV-11109"
       ]
     }
   ],
@@ -1259,294 +1259,6 @@
     },
     {
       "id": 65,
-      "name": "[이펙트] 스펙터 스킬 2차 (2번, 3번, 4번)",
-      "owner": "손석민",
-      "start": "2026-09-21",
-      "end": "2026-10-07",
-      "status": "todo",
-      "statusName": "할 일",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-7828",
-        "name": "[몬스터] 스펙터"
-      },
-      "jira": "ORVV-8471",
-      "deps": []
-    },
-    {
-      "id": 66,
-      "name": "[이펙트] 환영 몬스터 - 환영의 망령 (바디,피격)",
-      "owner": "이용곤",
-      "start": "2026-09-01",
-      "end": "2026-09-21",
-      "status": "inprog",
-      "statusName": "진행 중",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-8960",
-        "name": "[몬스터] 환영의 망령"
-      },
-      "jira": "ORVV-9350",
-      "deps": []
-    },
-    {
-      "id": 67,
-      "name": "[기획] 탐식의 망령 검수",
-      "owner": "장영환",
-      "start": null,
-      "end": null,
-      "status": "todo",
-      "statusName": "할 일",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-9020",
-        "name": "[몬스터] 탐식의 망령"
-      },
-      "jira": "ORVV-9065",
-      "deps": []
-    },
-    {
-      "id": 68,
-      "name": "[이펙트] 탐식의 망령 이펙트 (바디, 사망, 스킬,피격)",
-      "owner": "이용곤",
-      "start": "2026-09-14",
-      "end": "2026-09-21",
-      "status": "inprog",
-      "statusName": "대기 중",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-9020",
-        "name": "[몬스터] 탐식의 망령"
-      },
-      "jira": "ORVV-9066",
-      "deps": []
-    },
-    {
-      "id": 69,
-      "name": "[애니] 보스 정희원 - 스킬 모션 제작",
-      "owner": "박찬용",
-      "start": "2026-09-02",
-      "end": "2026-09-28",
-      "status": "inprog",
-      "statusName": "진행 중",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-9525",
-        "name": "[몬스터] 보스 정희원"
-      },
-      "jira": "ORVV-11091",
-      "deps": []
-    },
-    {
-      "id": 70,
-      "name": "[애니] 보스 정희원 - 로코 및 기본 모션",
-      "owner": "박찬용",
-      "start": "2026-09-02",
-      "end": "2026-09-28",
-      "status": "inprog",
-      "statusName": "진행 중",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-9525",
-        "name": "[몬스터] 보스 정희원"
-      },
-      "jira": "ORVV-11090",
-      "deps": []
-    },
-    {
-      "id": 71,
-      "name": "[캐릭터모델링] 구루시마 미치후사 모델링",
-      "owner": "김현종",
-      "start": "2026-09-07",
-      "end": "2026-10-13",
-      "status": "inprog",
-      "statusName": "진행 중",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-10044",
-        "name": "[몬스터] 명량 - 구루시마"
-      },
-      "jira": "ORVV-10116",
-      "deps": []
-    },
-    {
-      "id": 72,
-      "name": "[캐릭터모델링] 명량해전_왜군 일반 병사 무기 3종 모델링",
-      "owner": "이기해",
-      "start": "2026-10-06",
-      "end": "2026-10-19",
-      "status": "todo",
-      "statusName": "할 일",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-10045",
-        "name": "[몬스터] 명량 - 왜군 (방패병)"
-      },
-      "jira": "ORVV-10120",
-      "deps": []
-    },
-    {
-      "id": 73,
-      "name": "[캐릭터모델링] 명량해전_왜군 일반 병사 3종 모델링(무기 제외)",
-      "owner": "이락원",
-      "start": "2026-09-15",
-      "end": "2026-10-15",
-      "status": "inprog",
-      "statusName": "진행 중",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-10047",
-        "name": "[몬스터] 명량 - 왜군 (검병)"
-      },
-      "jira": "ORVV-10115",
-      "deps": []
-    },
-    {
-      "id": 74,
-      "name": "[캐릭터모델링] 명량해전_왜군 간부 병사 1종 모델링",
-      "owner": "김나영",
-      "start": "2026-09-08",
-      "end": "2026-10-02",
-      "status": "inprog",
-      "statusName": "진행 중",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-10773",
-        "name": "[몬스터] 명량 - 왜군 (지휘병)"
-      },
-      "jira": "ORVV-10118",
-      "deps": []
-    },
-    {
-      "id": 75,
-      "name": "[캐릭터모델링] 벨로시랩터 모델링 수정",
-      "owner": "김웅",
-      "start": "2026-09-11",
-      "end": "2026-09-18",
-      "status": "inprog",
-      "statusName": "진행 중",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-10049",
-        "name": "[몬스터] 쥬라기 공원 - 벨로시랩터"
-      },
-      "jira": "ORVV-10117",
-      "deps": []
-    },
-    {
-      "id": 76,
-      "name": "[캐릭터원화] 공필두_거대 포탑",
-      "owner": "천서주",
-      "start": "2026-10-13",
-      "end": "2026-10-15",
-      "status": "todo",
-      "statusName": "할 일",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-10051",
-        "name": "[몬스터] 공필두 (미니포탑 포함)"
-      },
-      "jira": "ORVV-11089",
-      "deps": []
-    },
-    {
-      "id": 77,
-      "name": "[캐릭터원화] 공필두_섹터 차단벽",
-      "owner": "천서주",
-      "start": "2026-10-07",
-      "end": "2026-10-12",
-      "status": "todo",
-      "statusName": "할 일",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-10051",
-        "name": "[몬스터] 공필두 (미니포탑 포함)"
-      },
-      "jira": "ORVV-11088",
-      "deps": []
-    },
-    {
-      "id": 78,
-      "name": "[캐릭터원화] 공필두_차단벽",
-      "owner": "천서주",
-      "start": "2026-10-01",
-      "end": "2026-10-06",
-      "status": "todo",
-      "statusName": "할 일",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-10051",
-        "name": "[몬스터] 공필두 (미니포탑 포함)"
-      },
-      "jira": "ORVV-11087",
-      "deps": []
-    },
-    {
-      "id": 79,
-      "name": "[캐릭터원화] 공필두_미니 드론",
-      "owner": "천서주",
-      "start": "2026-09-28",
-      "end": "2026-09-30",
-      "status": "todo",
-      "statusName": "할 일",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-10051",
-        "name": "[몬스터] 공필두 (미니포탑 포함)"
-      },
-      "jira": "ORVV-11085",
-      "deps": []
-    },
-    {
-      "id": 80,
-      "name": "[캐릭터원화] 공필두_중계기",
-      "owner": "천서주",
-      "start": "2026-09-21",
-      "end": "2026-09-23",
-      "status": "inprog",
-      "statusName": "진행 중",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-10051",
-        "name": "[몬스터] 공필두 (미니포탑 포함)"
-      },
-      "jira": "ORVV-11086",
-      "deps": []
-    },
-    {
-      "id": 81,
-      "name": "[캐릭터모델링] 공필두 무기 미니포탑 II / 미니포탑 III 모델링",
-      "owner": "이기해",
-      "start": "2026-09-14",
-      "end": "2026-10-02",
-      "status": "inprog",
-      "statusName": "진행 중",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-10051",
-        "name": "[몬스터] 공필두 (미니포탑 포함)"
-      },
-      "jira": "ORVV-10731",
-      "deps": []
-    },
-    {
-      "id": 82,
-      "name": "[이펙트] 미니포탑 스폰 및 유지",
-      "owner": "안영아",
-      "start": null,
-      "end": null,
-      "status": "done",
-      "statusName": "폐쇄",
-      "doneAt": "2026-09-21",
-      "epic": {
-        "key": "ORVV-10051",
-        "name": "[몬스터] 공필두 (미니포탑 포함)"
-      },
-      "jira": "ORVV-10112",
-      "deps": []
-    },
-    {
-      "id": 83,
       "name": "[컷씬][제작] 쥬라기_티렉스 처치",
       "owner": "김정근",
       "start": null,
@@ -1562,7 +1274,7 @@
       "deps": []
     },
     {
-      "id": 84,
+      "id": 66,
       "name": "[컷씬][프리비즈] 쥬라기_티렉스 처치",
       "owner": "김정근",
       "start": "2026-10-02",
@@ -1578,7 +1290,7 @@
       "deps": []
     },
     {
-      "id": 85,
+      "id": 67,
       "name": "[컷씬][제작] 쥬라기_티렉스 인카운터",
       "owner": "김정근",
       "start": null,
@@ -1594,7 +1306,7 @@
       "deps": []
     },
     {
-      "id": 86,
+      "id": 68,
       "name": "[컷씬][프리비즈] 쥬라기_티렉스 인카운터",
       "owner": "김정근",
       "start": "2026-09-22",
@@ -1607,6 +1319,294 @@
         "name": "[컷씬][대한극장] 쥬라기_티렉스 인카운터"
       },
       "jira": "ORVV-11109",
+      "deps": []
+    },
+    {
+      "id": 69,
+      "name": "[이펙트] 스펙터 스킬 2차 (2번, 3번, 4번)",
+      "owner": "손석민",
+      "start": "2026-09-21",
+      "end": "2026-10-07",
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-7828",
+        "name": "[몬스터] 스펙터"
+      },
+      "jira": "ORVV-8471",
+      "deps": []
+    },
+    {
+      "id": 70,
+      "name": "[이펙트] 환영 몬스터 - 환영의 망령 (바디,피격)",
+      "owner": "이용곤",
+      "start": "2026-09-01",
+      "end": "2026-09-21",
+      "status": "inprog",
+      "statusName": "진행 중",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-8960",
+        "name": "[몬스터] 환영의 망령"
+      },
+      "jira": "ORVV-9350",
+      "deps": []
+    },
+    {
+      "id": 71,
+      "name": "[기획] 탐식의 망령 검수",
+      "owner": "장영환",
+      "start": null,
+      "end": null,
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-9020",
+        "name": "[몬스터] 탐식의 망령"
+      },
+      "jira": "ORVV-9065",
+      "deps": []
+    },
+    {
+      "id": 72,
+      "name": "[이펙트] 탐식의 망령 이펙트 (바디, 사망, 스킬,피격)",
+      "owner": "이용곤",
+      "start": "2026-09-14",
+      "end": "2026-09-21",
+      "status": "inprog",
+      "statusName": "대기 중",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-9020",
+        "name": "[몬스터] 탐식의 망령"
+      },
+      "jira": "ORVV-9066",
+      "deps": []
+    },
+    {
+      "id": 73,
+      "name": "[애니] 보스 정희원 - 스킬 모션 제작",
+      "owner": "박찬용",
+      "start": "2026-09-02",
+      "end": "2026-09-28",
+      "status": "inprog",
+      "statusName": "진행 중",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-9525",
+        "name": "[몬스터] 보스 정희원"
+      },
+      "jira": "ORVV-11091",
+      "deps": []
+    },
+    {
+      "id": 74,
+      "name": "[애니] 보스 정희원 - 로코 및 기본 모션",
+      "owner": "박찬용",
+      "start": "2026-09-02",
+      "end": "2026-09-28",
+      "status": "inprog",
+      "statusName": "진행 중",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-9525",
+        "name": "[몬스터] 보스 정희원"
+      },
+      "jira": "ORVV-11090",
+      "deps": []
+    },
+    {
+      "id": 75,
+      "name": "[캐릭터모델링] 구루시마 미치후사 모델링",
+      "owner": "김현종",
+      "start": "2026-09-07",
+      "end": "2026-10-13",
+      "status": "inprog",
+      "statusName": "진행 중",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-10044",
+        "name": "[몬스터] 명량 - 구루시마"
+      },
+      "jira": "ORVV-10116",
+      "deps": []
+    },
+    {
+      "id": 76,
+      "name": "[캐릭터모델링] 명량해전_왜군 일반 병사 무기 3종 모델링",
+      "owner": "이기해",
+      "start": "2026-10-06",
+      "end": "2026-10-19",
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-10045",
+        "name": "[몬스터] 명량 - 왜군 (방패병)"
+      },
+      "jira": "ORVV-10120",
+      "deps": []
+    },
+    {
+      "id": 77,
+      "name": "[캐릭터모델링] 명량해전_왜군 일반 병사 3종 모델링(무기 제외)",
+      "owner": "이락원",
+      "start": "2026-09-15",
+      "end": "2026-10-15",
+      "status": "inprog",
+      "statusName": "진행 중",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-10047",
+        "name": "[몬스터] 명량 - 왜군 (검병)"
+      },
+      "jira": "ORVV-10115",
+      "deps": []
+    },
+    {
+      "id": 78,
+      "name": "[캐릭터모델링] 명량해전_왜군 간부 병사 1종 모델링",
+      "owner": "김나영",
+      "start": "2026-09-08",
+      "end": "2026-10-02",
+      "status": "inprog",
+      "statusName": "진행 중",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-10773",
+        "name": "[몬스터] 명량 - 왜군 (지휘병)"
+      },
+      "jira": "ORVV-10118",
+      "deps": []
+    },
+    {
+      "id": 79,
+      "name": "[캐릭터모델링] 벨로시랩터 모델링 수정",
+      "owner": "김웅",
+      "start": "2026-09-11",
+      "end": "2026-09-18",
+      "status": "inprog",
+      "statusName": "진행 중",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-10049",
+        "name": "[몬스터] 쥬라기 공원 - 벨로시랩터"
+      },
+      "jira": "ORVV-10117",
+      "deps": []
+    },
+    {
+      "id": 80,
+      "name": "[캐릭터원화] 공필두_거대 포탑",
+      "owner": "천서주",
+      "start": "2026-10-13",
+      "end": "2026-10-15",
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-10051",
+        "name": "[몬스터] 공필두 (미니포탑 포함)"
+      },
+      "jira": "ORVV-11089",
+      "deps": []
+    },
+    {
+      "id": 81,
+      "name": "[캐릭터원화] 공필두_섹터 차단벽",
+      "owner": "천서주",
+      "start": "2026-10-07",
+      "end": "2026-10-12",
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-10051",
+        "name": "[몬스터] 공필두 (미니포탑 포함)"
+      },
+      "jira": "ORVV-11088",
+      "deps": []
+    },
+    {
+      "id": 82,
+      "name": "[캐릭터원화] 공필두_차단벽",
+      "owner": "천서주",
+      "start": "2026-10-01",
+      "end": "2026-10-06",
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-10051",
+        "name": "[몬스터] 공필두 (미니포탑 포함)"
+      },
+      "jira": "ORVV-11087",
+      "deps": []
+    },
+    {
+      "id": 83,
+      "name": "[캐릭터원화] 공필두_미니 드론",
+      "owner": "천서주",
+      "start": "2026-09-28",
+      "end": "2026-09-30",
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-10051",
+        "name": "[몬스터] 공필두 (미니포탑 포함)"
+      },
+      "jira": "ORVV-11085",
+      "deps": []
+    },
+    {
+      "id": 84,
+      "name": "[캐릭터원화] 공필두_중계기",
+      "owner": "천서주",
+      "start": "2026-09-21",
+      "end": "2026-09-23",
+      "status": "inprog",
+      "statusName": "진행 중",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-10051",
+        "name": "[몬스터] 공필두 (미니포탑 포함)"
+      },
+      "jira": "ORVV-11086",
+      "deps": []
+    },
+    {
+      "id": 85,
+      "name": "[캐릭터모델링] 공필두 무기 미니포탑 II / 미니포탑 III 모델링",
+      "owner": "이기해",
+      "start": "2026-09-14",
+      "end": "2026-10-02",
+      "status": "inprog",
+      "statusName": "진행 중",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-10051",
+        "name": "[몬스터] 공필두 (미니포탑 포함)"
+      },
+      "jira": "ORVV-10731",
+      "deps": []
+    },
+    {
+      "id": 86,
+      "name": "[이펙트] 미니포탑 스폰 및 유지",
+      "owner": "안영아",
+      "start": null,
+      "end": null,
+      "status": "done",
+      "statusName": "폐쇄",
+      "doneAt": "2026-09-21",
+      "epic": {
+        "key": "ORVV-10051",
+        "name": "[몬스터] 공필두 (미니포탑 포함)"
+      },
+      "jira": "ORVV-10112",
       "deps": []
     }
   ]
