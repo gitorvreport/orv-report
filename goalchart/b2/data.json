@@ -9,7 +9,7 @@
   },
   "jiraBase": "https://offbeatplay.atlassian.net/browse/",
   "syncEndpoint": "https://orv-goalchart-jira.offbeat-696.workers.dev",
-  "syncedAt": "2026-09-22T07:01:47.163Z",
+  "syncedAt": "2026-09-22T07:02:24.547Z",
   "epicGroups": [
     {
       "key": "G1",
@@ -202,7 +202,8 @@
       "name": "[몬스터] 탐식의 망령",
       "issues": [
         "ORVV-9065",
-        "ORVV-9066"
+        "ORVV-9066",
+        "ORVV-11189"
       ]
     },
     {
