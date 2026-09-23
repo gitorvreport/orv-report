@@ -9,7 +9,7 @@
   },
   "jiraBase": "https://offbeatplay.atlassian.net/browse/",
   "syncEndpoint": "https://orv-goalchart-jira.offbeat-696.workers.dev",
-  "syncedAt": "2026-09-23T07:18:31.088Z",
+  "syncedAt": "2026-09-23T07:29:15.658Z",
   "epicGroups": [
     {
       "key": "G1",
@@ -47,6 +47,30 @@
     },
     {
       "key": "G3",
+      "name": "[캐릭터] 이길영",
+      "issues": [
+        "ORVV-11203",
+        "ORVV-10191",
+        "ORVV-10198",
+        "ORVV-10200",
+        "ORVV-10192",
+        "ORVV-10197",
+        "ORVV-10983"
+      ]
+    },
+    {
+      "key": "G4",
+      "name": "[캐릭터] 이현성",
+      "issues": [
+        "ORVV-10202",
+        "ORVV-10213",
+        "ORVV-10204",
+        "ORVV-10203",
+        "ORVV-10205"
+      ]
+    },
+    {
+      "key": "G5",
       "name": "[전투] 전투 시스템",
       "issues": [
         "ORVV-10058",
@@ -54,7 +78,7 @@
       ]
     },
     {
-      "key": "G4",
+      "key": "G6",
       "name": "[전투] 격 내구도",
       "issues": [
         "ORVV-11202",
@@ -63,7 +87,7 @@
       ]
     },
     {
-      "key": "G5",
+      "key": "G7",
       "name": "[전투] 속성ㆍ상태이상",
       "issues": [
         "ORVV-11194",
@@ -73,7 +97,7 @@
       ]
     },
     {
-      "key": "G6",
+      "key": "G8",
       "name": "[시스템] 도깨비방",
       "issues": [
         "ORVV-11271",
@@ -90,7 +114,7 @@
       ]
     },
     {
-      "key": "G7",
+      "key": "G9",
       "name": "[탐험] 회차공명",
       "issues": [
         "ORVV-10965",
@@ -103,7 +127,7 @@
       ]
     },
     {
-      "key": "G8",
+      "key": "G10",
       "name": "[탐험] 성좌유희",
       "issues": [
         "ORVV-11134",
@@ -114,7 +138,7 @@
       ]
     },
     {
-      "key": "G9",
+      "key": "G11",
       "name": "[플레이] 금호역 - 천인호 전투",
       "issues": [
         "ORVV-8313",
@@ -125,7 +149,7 @@
       ]
     },
     {
-      "key": "G10",
+      "key": "G12",
       "name": "[플레이] 장충단공원",
       "issues": [
         "ORVV-8956",
@@ -136,7 +160,7 @@
       ]
     },
     {
-      "key": "G11",
+      "key": "G13",
       "name": "[플레이] 환영감옥",
       "issues": [
         "ORVV-11081",
@@ -146,17 +170,6 @@
         "ORVV-11329",
         "ORVV-11330",
         "ORVV-10964",
-        "ORVV-10191",
-        "ORVV-10198",
-        "ORVV-10200",
-        "ORVV-10192",
-        "ORVV-10197",
-        "ORVV-10983",
-        "ORVV-10202",
-        "ORVV-10213",
-        "ORVV-10204",
-        "ORVV-10203",
-        "ORVV-10205",
         "ORVV-11297",
         "ORVV-11298",
         "ORVV-11299",
@@ -179,7 +192,7 @@
       ]
     },
     {
-      "key": "G12",
+      "key": "G14",
       "name": "[플레이] 충무로역",
       "issues": [
         "ORVV-6224",
@@ -207,7 +220,7 @@
       ]
     },
     {
-      "key": "G13",
+      "key": "G15",
       "name": "[플레이] 대한극장",
       "issues": [
         "ORVV-11016",
@@ -220,7 +233,7 @@
       ]
     },
     {
-      "key": "G14",
+      "key": "G16",
       "name": "[플레이] 대한극장 - 명량",
       "issues": [
         "ORVV-10763",
@@ -243,7 +256,7 @@
       ]
     },
     {
-      "key": "G15",
+      "key": "G17",
       "name": "[플레이] 대한극장 - 타이타닉",
       "issues": [
         "ORVV-10771",
@@ -255,7 +268,7 @@
       ]
     },
     {
-      "key": "G16",
+      "key": "G18",
       "name": "[플레이] 대한극장 - 쥬라기공원",
       "issues": [
         "ORVV-9523",
@@ -271,7 +284,7 @@
       ]
     },
     {
-      "key": "G17",
+      "key": "G19",
       "name": "[몬스터] 스펙터",
       "issues": [
         "ORVV-10254",
@@ -280,14 +293,14 @@
       ]
     },
     {
-      "key": "G18",
+      "key": "G20",
       "name": "[몬스터] 환영의 망령",
       "issues": [
         "ORVV-9350"
       ]
     },
     {
-      "key": "G19",
+      "key": "G21",
       "name": "[몬스터] 탐식의 망령",
       "issues": [
         "ORVV-9065",
@@ -296,7 +309,7 @@
       ]
     },
     {
-      "key": "G20",
+      "key": "G22",
       "name": "[몬스터] 보스 정희원",
       "issues": [
         "ORVV-11269",
@@ -309,7 +322,7 @@
       ]
     },
     {
-      "key": "G21",
+      "key": "G23",
       "name": "[몬스터] 명량 - 구루시마",
       "issues": [
         "ORVV-10116",
@@ -330,7 +343,7 @@
       ]
     },
     {
-      "key": "G22",
+      "key": "G24",
       "name": "[몬스터] 명량 - 왜군 지휘병",
       "issues": [
         "ORVV-10118",
@@ -346,7 +359,7 @@
       ]
     },
     {
-      "key": "G23",
+      "key": "G25",
       "name": "[몬스터] 명량 - 왜군 방패병",
       "issues": [
         "ORVV-11318",
@@ -363,7 +376,7 @@
       ]
     },
     {
-      "key": "G24",
+      "key": "G26",
       "name": "[몬스터] 명량 - 왜군 검병",
       "issues": [
         "ORVV-11317",
@@ -380,7 +393,7 @@
       ]
     },
     {
-      "key": "G25",
+      "key": "G27",
       "name": "[몬스터] 명량 - 왜군 조총병",
       "issues": [
         "ORVV-11321",
@@ -397,7 +410,7 @@
       ]
     },
     {
-      "key": "G26",
+      "key": "G28",
       "name": "[NPC] 명량 - 조선군",
       "issues": [
         "ORVV-10114",
@@ -413,7 +426,7 @@
       ]
     },
     {
-      "key": "G27",
+      "key": "G29",
       "name": "[몬스터] 쥬라기 공원 - 티렉스",
       "issues": [
         "ORVV-10993",
@@ -428,7 +441,7 @@
       ]
     },
     {
-      "key": "G28",
+      "key": "G30",
       "name": "[몬스터] 쥬라기 공원 - 벨로시랩터",
       "issues": [
         "ORVV-10117",
@@ -444,7 +457,7 @@
       ]
     },
     {
-      "key": "G29",
+      "key": "G31",
       "name": "[몬스터] 타이타닉 - 씨서펜트",
       "issues": [
         "ORVV-10795",
@@ -460,7 +473,7 @@
       ]
     },
     {
-      "key": "G30",
+      "key": "G32",
       "name": "[몬스터] 공필두 (미니포탑 포함)",
       "issues": [
         "ORVV-11089",
@@ -853,792 +866,22 @@
     },
     {
       "id": 23,
-      "name": "[기획] 결정타 시스템 - 기획서 작성",
-      "owner": "최미희",
-      "start": null,
-      "end": null,
-      "status": "todo",
-      "statusName": "할 일",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-10035",
-        "name": "[시스템] 결정타 시스템 구현"
-      },
-      "jira": "ORVV-10058",
-      "deps": []
-    },
-    {
-      "id": 24,
-      "name": "[기획] 저스트 회피 시스템 - 기획서 작성",
-      "owner": "최미희",
-      "start": "2026-09-07",
-      "end": null,
-      "status": "review",
-      "statusName": "검수 요청",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-10036",
-        "name": "[시스템] 저스트 회피 시스템 구현"
-      },
-      "jira": "ORVV-10059",
-      "deps": []
-    },
-    {
-      "id": 25,
-      "name": "[기획] 격 내구도 연출 개선 - 기획서 작성",
-      "owner": "최미희",
-      "start": "2026-09-28",
-      "end": "2026-09-30",
-      "status": "todo",
-      "statusName": "할 일",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-11200",
-        "name": "[시스템] 격 내구도 연출 개선"
-      },
-      "jira": "ORVV-11202",
-      "deps": []
-    },
-    {
-      "id": 26,
-      "name": "[이펙트] 격 내구도 연출 개선",
-      "owner": "유세훈",
-      "start": "2026-10-01",
-      "end": "2026-10-12",
-      "status": "todo",
-      "statusName": "할 일",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-11200",
-        "name": "[시스템] 격 내구도 연출 개선"
-      },
-      "jira": "ORVV-11201",
-      "deps": []
-    },
-    {
-      "id": 27,
-      "name": "[UI] 인게임 자코몹 HP,격 게이지바 작업",
-      "owner": "이승민",
-      "start": "2026-09-28",
-      "end": "2026-09-29",
-      "status": "todo",
-      "statusName": "할 일",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-11200",
-        "name": "[시스템] 격 내구도 연출 개선"
-      },
-      "jira": "ORVV-11296",
-      "deps": []
-    },
-    {
-      "id": 28,
-      "name": "[기획] 상태이상 시스템 - 기획서 작성",
-      "owner": "장영환",
-      "start": "2026-09-18",
-      "end": "2026-09-21",
-      "status": "inprog",
-      "statusName": "진행 중",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-11193",
-        "name": "[시스템] 상태이상 시스템"
-      },
-      "jira": "ORVV-11194",
-      "deps": []
-    },
-    {
-      "id": 29,
-      "name": "[이펙트] 상태이상 불·번개·혼돈 이펙트 컨셉  작업 (용곤)",
-      "owner": "이용곤",
-      "start": "2026-09-28",
-      "end": "2026-10-07",
-      "status": "todo",
-      "statusName": "할 일",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-11193",
-        "name": "[시스템] 상태이상 시스템"
-      },
-      "jira": "ORVV-11196",
-      "deps": []
-    },
-    {
-      "id": 30,
-      "name": "[이펙트] 상태이상 불·번개·혼돈 이펙트 컨셉  작업 (영아)",
-      "owner": "안영아",
-      "start": "2026-09-29",
-      "end": "2026-10-07",
-      "status": "todo",
-      "statusName": "할 일",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-11193",
-        "name": "[시스템] 상태이상 시스템"
-      },
-      "jira": "ORVV-11195",
-      "deps": []
-    },
-    {
-      "id": 31,
-      "name": "[클라] 상태이상 시스템 구축",
-      "owner": "정도훈",
-      "start": null,
-      "end": "2026-10-23",
-      "status": "todo",
-      "statusName": "할 일",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-11193",
-        "name": "[시스템] 상태이상 시스템"
-      },
-      "jira": "ORVV-11278",
-      "deps": []
-    },
-    {
-      "id": 32,
-      "name": "[클라] 장비 코어 시스템",
-      "owner": "정도훈",
-      "start": null,
-      "end": "2026-10-23",
-      "status": "todo",
-      "statusName": "할 일",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-8080",
-        "name": "[시스템] 도깨비방 구현"
-      },
-      "jira": "ORVV-11271",
-      "deps": []
-    },
-    {
-      "id": 33,
-      "name": "[클라] 장비 강화 시스템",
-      "owner": "홍주성",
-      "start": null,
-      "end": "2026-10-23",
-      "status": "todo",
-      "statusName": "할 일",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-8080",
-        "name": "[시스템] 도깨비방 구현"
-      },
-      "jira": "ORVV-11272",
-      "deps": []
-    },
-    {
-      "id": 34,
-      "name": "[클라] 장비 UI 시스템",
-      "owner": "홍주성",
-      "start": null,
-      "end": "2026-10-23",
-      "status": "todo",
-      "statusName": "할 일",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-8080",
-        "name": "[시스템] 도깨비방 구현"
-      },
-      "jira": "ORVV-11273",
-      "deps": []
-    },
-    {
-      "id": 35,
-      "name": "[클라] 장비 몬스터핵 시스템",
-      "owner": "이미륵",
-      "start": null,
-      "end": "2026-10-23",
-      "status": "todo",
-      "statusName": "할 일",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-8080",
-        "name": "[시스템] 도깨비방 구현"
-      },
-      "jira": "ORVV-11274",
-      "deps": []
-    },
-    {
-      "id": 36,
-      "name": "[클라] 장비 설화 시스템",
-      "owner": "홍주성",
-      "start": null,
-      "end": "2026-10-23",
-      "status": "todo",
-      "statusName": "할 일",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-8080",
-        "name": "[시스템] 도깨비방 구현"
-      },
-      "jira": "ORVV-11275",
-      "deps": []
-    },
-    {
-      "id": 37,
-      "name": "[클라] 장비 상징체 시스템",
-      "owner": "김기돈",
-      "start": null,
-      "end": "2026-10-23",
-      "status": "todo",
-      "statusName": "할 일",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-8080",
-        "name": "[시스템] 도깨비방 구현"
-      },
-      "jira": "ORVV-11276",
-      "deps": []
-    },
-    {
-      "id": 38,
-      "name": "[캐릭터원화] 도깨비방 스타스트림 패널용 원화 제작_화신 2종(2)",
-      "owner": "구민구",
-      "start": "2026-10-07",
-      "end": "2026-10-22",
-      "status": "todo",
-      "statusName": "할 일",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-8080",
-        "name": "[시스템] 도깨비방 구현"
-      },
-      "jira": "ORVV-9227",
-      "deps": []
-    },
-    {
-      "id": 39,
-      "name": "[기획] 도깨비방 시스템 검수",
-      "owner": "신동석",
-      "start": "2026-08-28",
-      "end": "2026-09-30",
-      "status": "todo",
-      "statusName": "할 일",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-8080",
-        "name": "[시스템] 도깨비방 구현"
-      },
-      "jira": "ORVV-8369",
-      "deps": []
-    },
-    {
-      "id": 40,
-      "name": "[이펙트] 도깨비방 패널 관련 이펙트 제작",
-      "owner": "손석민",
-      "start": "2026-09-01",
-      "end": "2026-10-30",
-      "status": "inprog",
-      "statusName": "진행 중",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-8080",
-        "name": "[시스템] 도깨비방 구현"
-      },
-      "jira": "ORVV-8734",
-      "deps": []
-    },
-    {
-      "id": 41,
-      "name": "[사운드] 도깨비 방 UI 사운드",
-      "owner": "[사운드]이예얼",
-      "start": "2026-09-14",
-      "end": "2026-09-16",
-      "status": "review",
-      "statusName": "검수 요청",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-8080",
-        "name": "[시스템] 도깨비방 구현"
-      },
-      "jira": "ORVV-9387",
-      "deps": []
-    },
-    {
-      "id": 42,
-      "name": "[사운드] 도깨비 방 무드 조성 및 환경 사운드",
-      "owner": "[사운드]이예얼",
-      "start": "2026-09-14",
-      "end": "2026-09-16",
-      "status": "review",
-      "statusName": "검수 요청",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-8080",
-        "name": "[시스템] 도깨비방 구현"
-      },
-      "jira": "ORVV-9386",
-      "deps": []
-    },
-    {
-      "id": 43,
-      "name": "[TA] 일반 상자와 희귀 상자 재임포트",
-      "owner": "구본수",
-      "start": null,
-      "end": null,
-      "status": "inprog",
-      "statusName": "대기 중",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-9165",
-        "name": "[시스템][탐험] 회차공명 시스템 - 땅강아쥐 어둠 자락의 보물창고"
-      },
-      "jira": "ORVV-10965",
-      "deps": []
-    },
-    {
-      "id": 44,
-      "name": "[애니] 김독자·유중혁 상자 여는 모션",
-      "owner": "김영욱",
-      "start": null,
-      "end": null,
-      "status": "inprog",
-      "statusName": "대기 중",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-9165",
-        "name": "[시스템][탐험] 회차공명 시스템 - 땅강아쥐 어둠 자락의 보물창고"
-      },
-      "jira": "ORVV-9145",
-      "deps": [
-        43
-      ]
-    },
-    {
-      "id": 45,
-      "name": "[사운드] 땅강아쥐 어둠자락(회차 공명) 연출 및 무드 조성 및 환경 사운드",
-      "owner": "[사운드]이예얼",
-      "start": "2026-09-16",
-      "end": "2026-09-17",
-      "status": "review",
-      "statusName": "검수 요청",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-9165",
-        "name": "[시스템][탐험] 회차공명 시스템 - 땅강아쥐 어둠 자락의 보물창고"
-      },
-      "jira": "ORVV-9388",
-      "deps": []
-    },
-    {
-      "id": 46,
-      "name": "[연출] 회차 공명 시작/종료 시그니처 연출 시퀀스",
-      "owner": "김웅빈",
-      "start": "2026-09-01",
-      "end": "2026-09-18",
-      "status": "review",
-      "statusName": "검수 요청",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-9165",
-        "name": "[시스템][탐험] 회차공명 시스템 - 땅강아쥐 어둠 자락의 보물창고"
-      },
-      "jira": "ORVV-8354",
-      "deps": []
-    },
-    {
-      "id": 47,
-      "name": "[연출][제작] 근거리 화각 회차 공명 전환 시퀀스 (실내용)",
-      "owner": "김웅빈",
-      "start": "2026-10-07",
-      "end": "2026-10-07",
-      "status": "todo",
-      "statusName": "할 일",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-11135",
-        "name": "[연출][보상의방] 회차공명 연출"
-      },
-      "jira": "ORVV-11136",
-      "deps": []
-    },
-    {
-      "id": 48,
-      "name": "[라이팅] 회차공명 연출",
-      "owner": "정재윤",
-      "start": null,
-      "end": null,
-      "status": "todo",
-      "statusName": "할 일",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-11135",
-        "name": "[연출][보상의방] 회차공명 연출"
-      },
-      "jira": "ORVV-11347",
-      "deps": []
-    },
-    {
-      "id": 49,
-      "name": "[UI] 회차공명_대한극장 (퍼즐 단서 팝업)",
-      "owner": "강지한",
-      "start": null,
-      "end": null,
-      "status": "todo",
-      "statusName": "할 일",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-10034",
-        "name": "[시스템][탐험] 회차공명 시스템 - 대한극장 구현"
-      },
-      "jira": "ORVV-11180",
-      "deps": []
-    },
-    {
-      "id": 50,
-      "name": "[연출][제작] 성좌 유희 (무대화)",
-      "owner": "김웅빈",
-      "start": null,
-      "end": null,
-      "status": "todo",
-      "statusName": "할 일",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-11132",
-        "name": "[연출] 성좌 유희 (무대화)"
-      },
-      "jira": "ORVV-11134",
-      "deps": []
-    },
-    {
-      "id": 51,
-      "name": "[연출][프리비즈] 성좌 유희 (무대화)",
-      "owner": "김웅빈",
-      "start": "2026-10-14",
+      "name": "[캐릭터모델링] 이길영 얼굴/헤어 모델링 퀄업",
+      "owner": "김나영",
+      "start": "2026-10-06",
       "end": "2026-10-15",
       "status": "todo",
       "statusName": "할 일",
       "doneAt": null,
       "epic": {
-        "key": "ORVV-11132",
-        "name": "[연출] 성좌 유희 (무대화)"
+        "key": "ORVV-7691",
+        "name": "[캐릭터][베타] 이길영"
       },
-      "jira": "ORVV-11133",
+      "jira": "ORVV-11203",
       "deps": []
     },
     {
-      "id": 52,
-      "name": "[라이팅] 성좌 유희 (무대화)",
-      "owner": "정재윤",
-      "start": null,
-      "end": null,
-      "status": "todo",
-      "statusName": "할 일",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-11132",
-        "name": "[연출] 성좌 유희 (무대화)"
-      },
-      "jira": "ORVV-11346",
-      "deps": []
-    },
-    {
-      "id": 53,
-      "name": "[클라][대한극장] 성좌유희 Flow Graph 작업 + 지원 작업",
-      "owner": "조익상",
-      "start": "2026-10-12",
-      "end": "2026-10-16",
-      "status": "todo",
-      "statusName": "할 일",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-9112",
-        "name": "[시스템][탐험] 성좌의 유희 시스템"
-      },
-      "jira": "ORVV-11277",
-      "deps": []
-    },
-    {
-      "id": 54,
-      "name": "[라이팅] 성좌의 유희 라이팅 환경 셋팅",
-      "owner": "정재윤",
-      "start": "2026-10-12",
-      "end": "2026-11-20",
-      "status": "todo",
-      "statusName": "할 일",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-9112",
-        "name": "[시스템][탐험] 성좌의 유희 시스템"
-      },
-      "jira": "ORVV-11358",
-      "deps": []
-    },
-    {
-      "id": 55,
-      "name": "[애니] 팔 잘린 불량배가 잘린 팔을 움켜쥐고 쓰러져 괴로워 하는 모션 제작",
-      "owner": "김영욱",
-      "start": "2026-09-28",
-      "end": "2026-09-28",
-      "status": "todo",
-      "statusName": "할 일",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-7820",
-        "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
-      },
-      "jira": "ORVV-8313",
-      "deps": []
-    },
-    {
-      "id": 56,
-      "name": "[캐릭터원화] 시퀀스 용 원화(천인호 금호역 전투 개시)",
-      "owner": "구민구",
-      "start": "2026-10-23",
-      "end": "2026-10-29",
-      "status": "todo",
-      "statusName": "할 일",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-7967",
-        "name": "[컷씬] 천인호에 의해 금호역 전투 개시"
-      },
-      "jira": "ORVV-9509",
-      "deps": []
-    },
-    {
-      "id": 57,
-      "name": "[라이팅] 천인호에 의해 금호역 전투 개시",
-      "owner": "정재윤",
-      "start": null,
-      "end": null,
-      "status": "inprog",
-      "statusName": "대기 중",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-7967",
-        "name": "[컷씬] 천인호에 의해 금호역 전투 개시"
-      },
-      "jira": "ORVV-8325",
-      "deps": []
-    },
-    {
-      "id": 58,
-      "name": "[이펙트] 천인호에 의해 금호역 전투 개시",
-      "owner": "이용곤",
-      "start": null,
-      "end": null,
-      "status": "inprog",
-      "statusName": "대기 중",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-7967",
-        "name": "[컷씬] 천인호에 의해 금호역 전투 개시"
-      },
-      "jira": "ORVV-8324",
-      "deps": []
-    },
-    {
-      "id": 59,
-      "name": "[컷씬] 천인호에 의해 금호역 전투 개시",
-      "owner": "김웅빈",
-      "start": "2026-09-11",
-      "end": "2026-09-23",
-      "status": "todo",
-      "statusName": "할 일",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-7967",
-        "name": "[컷씬] 천인호에 의해 금호역 전투 개시"
-      },
-      "jira": "ORVV-8323",
-      "deps": []
-    },
-    {
-      "id": 60,
-      "name": "[애니] 김독자가 동상 앞에서 합장을 하는 모션",
-      "owner": "이동겸",
-      "start": "2026-09-21",
-      "end": "2026-09-28",
-      "status": "review",
-      "statusName": "검수 요청",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-7822",
-        "name": "[플레이] 동대입구역 장충단 공원 플레이 구현"
-      },
-      "jira": "ORVV-8956",
-      "deps": []
-    },
-    {
-      "id": 61,
-      "name": "[사운드] 장충단공원 플레이 사운드",
-      "owner": "[사운드]이예얼",
-      "start": "2026-09-14",
-      "end": "2026-09-21",
-      "status": "inprog",
-      "statusName": "진행 중",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-7822",
-        "name": "[플레이] 동대입구역 장충단 공원 플레이 구현"
-      },
-      "jira": "ORVV-9384",
-      "deps": []
-    },
-    {
-      "id": 62,
-      "name": "[클라] 장충단 공원 고도화 Part 1",
-      "owner": "이진형",
-      "start": "2026-09-22",
-      "end": "2026-10-16",
-      "status": "inprog",
-      "statusName": "진행 중",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-7822",
-        "name": "[플레이] 동대입구역 장충단 공원 플레이 구현"
-      },
-      "jira": "ORVV-11205",
-      "deps": []
-    },
-    {
-      "id": 63,
-      "name": "[클라] 장충단 공원 고도화 Part 2",
-      "owner": "김기돈",
-      "start": null,
-      "end": "2026-10-16",
-      "status": "todo",
-      "statusName": "할 일",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-7822",
-        "name": "[플레이] 동대입구역 장충단 공원 플레이 구현"
-      },
-      "jira": "ORVV-11206",
-      "deps": []
-    },
-    {
-      "id": 64,
-      "name": "[클라] 장충단 공원 고도화 Part 3",
-      "owner": "이미륵",
-      "start": null,
-      "end": "2026-10-16",
-      "status": "todo",
-      "statusName": "할 일",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-7822",
-        "name": "[플레이] 동대입구역 장충단 공원 플레이 구현"
-      },
-      "jira": "ORVV-11207",
-      "deps": []
-    },
-    {
-      "id": 65,
-      "name": "[클라][사운드] 환영감옥 트리거 이벤트 사운드 바인딩",
-      "owner": "이미륵",
-      "start": null,
-      "end": "2026-10-08",
-      "status": "todo",
-      "statusName": "할 일",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-7824",
-        "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
-      },
-      "jira": "ORVV-11081",
-      "deps": []
-    },
-    {
-      "id": 66,
-      "name": "[배경] 환영감옥_디테일 목업_정희원/이현성",
-      "owner": "임수연",
-      "start": "2026-09-23",
-      "end": "2026-10-23",
-      "status": "todo",
-      "statusName": "할 일",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-7824",
-        "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
-      },
-      "jira": "ORVV-11199",
-      "deps": []
-    },
-    {
-      "id": 67,
-      "name": "[캐릭터원화] 환영감옥_국군 디지털 군복(일병/상병/대위) 원화",
-      "owner": "구민구",
-      "start": "2026-10-07",
-      "end": "2026-10-14",
-      "status": "todo",
-      "statusName": "할 일",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-7824",
-        "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
-      },
-      "jira": "ORVV-11324",
-      "deps": []
-    },
-    {
-      "id": 68,
-      "name": "[캐릭터원화] 환영감옥_이길영 곤충 채집통 원화",
-      "owner": "천서주",
-      "start": "2026-10-16",
-      "end": "2026-10-16",
-      "status": "todo",
-      "statusName": "할 일",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-7824",
-        "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
-      },
-      "jira": "ORVV-11325",
-      "deps": []
-    },
-    {
-      "id": 69,
-      "name": "[캐릭터모델링] 환영감옥_국군 디지털 군복(일병/상병/대위) 모델링",
-      "owner": "김웅",
-      "start": "2026-10-28",
-      "end": "2026-11-17",
-      "status": "todo",
-      "statusName": "할 일",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-7824",
-        "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
-      },
-      "jira": "ORVV-11329",
-      "deps": []
-    },
-    {
-      "id": 70,
-      "name": "[캐릭터모델링] 환영감옥_이길영 곤충 채집 통 모델링",
-      "owner": "김웅",
-      "start": "2026-10-28",
-      "end": "2026-11-17",
-      "status": "todo",
-      "statusName": "할 일",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-7824",
-        "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
-      },
-      "jira": "ORVV-11330",
-      "deps": []
-    },
-    {
-      "id": 71,
-      "name": "[TA] 환영감옥 배경 오브젝트 World Align 기능 추가",
-      "owner": "권상모",
-      "start": "2026-09-11",
-      "end": "2026-09-11",
-      "status": "done",
-      "statusName": "완료",
-      "doneAt": "2026-09-16",
-      "epic": {
-        "key": "ORVV-10143",
-        "name": "[EPIC] [TA] 매테리얼"
-      },
-      "jira": "ORVV-10964",
-      "deps": []
-    },
-    {
-      "id": 72,
+      "id": 24,
       "name": "[TA] 이길영 템플릿 메쉬 리깅",
       "owner": "구본수",
       "start": "2026-09-15",
@@ -1654,7 +897,7 @@
       "deps": []
     },
     {
-      "id": 73,
+      "id": 25,
       "name": "[TA] 이길영 맨 몸 리깅",
       "owner": "구본수",
       "start": "2026-09-17",
@@ -1670,7 +913,7 @@
       "deps": []
     },
     {
-      "id": 74,
+      "id": 26,
       "name": "[TA] 이길영 페이셜 리깅",
       "owner": "양승희",
       "start": "2026-09-15",
@@ -1686,7 +929,7 @@
       "deps": []
     },
     {
-      "id": 75,
+      "id": 27,
       "name": "[TA] 이길영 맨 몸 엔진 등록",
       "owner": "구본수",
       "start": "2026-09-18",
@@ -1702,7 +945,7 @@
       "deps": []
     },
     {
-      "id": 76,
+      "id": 28,
       "name": "[TA] 이길영 베이스 스켈레톤 엔진 등록",
       "owner": "구본수",
       "start": "2026-09-18",
@@ -1718,7 +961,7 @@
       "deps": []
     },
     {
-      "id": 77,
+      "id": 29,
       "name": "[TA] 이길영 애니메이션 리임포트",
       "owner": "구본수",
       "start": "2026-09-21",
@@ -1734,7 +977,7 @@
       "deps": []
     },
     {
-      "id": 78,
+      "id": 30,
       "name": "[TA] 이현성 템플릿 메쉬 리깅",
       "owner": "구본수",
       "start": "2026-12-14",
@@ -1750,7 +993,7 @@
       "deps": []
     },
     {
-      "id": 79,
+      "id": 31,
       "name": "[TA] 이현성 맨 몸 리깅",
       "owner": "구본수",
       "start": "2026-12-23",
@@ -1766,7 +1009,7 @@
       "deps": []
     },
     {
-      "id": 80,
+      "id": 32,
       "name": "[TA] 이현성 베이스 스켈레톤 엔진 등록",
       "owner": "구본수",
       "start": "2026-12-25",
@@ -1782,7 +1025,7 @@
       "deps": []
     },
     {
-      "id": 81,
+      "id": 33,
       "name": "[TA] 이현성 맨 몸 엔진 등록",
       "owner": "구본수",
       "start": "2026-12-29",
@@ -1798,7 +1041,7 @@
       "deps": []
     },
     {
-      "id": 82,
+      "id": 34,
       "name": "[TA] 이현성 케주얼 리깅",
       "owner": "구본수",
       "start": "2026-12-30",
@@ -1814,7 +1057,793 @@
       "deps": []
     },
     {
+      "id": 35,
+      "name": "[기획] 결정타 시스템 - 기획서 작성",
+      "owner": "최미희",
+      "start": null,
+      "end": null,
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-10035",
+        "name": "[시스템] 결정타 시스템 구현"
+      },
+      "jira": "ORVV-10058",
+      "deps": []
+    },
+    {
+      "id": 36,
+      "name": "[기획] 저스트 회피 시스템 - 기획서 작성",
+      "owner": "최미희",
+      "start": "2026-09-07",
+      "end": null,
+      "status": "review",
+      "statusName": "검수 요청",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-10036",
+        "name": "[시스템] 저스트 회피 시스템 구현"
+      },
+      "jira": "ORVV-10059",
+      "deps": []
+    },
+    {
+      "id": 37,
+      "name": "[기획] 격 내구도 연출 개선 - 기획서 작성",
+      "owner": "최미희",
+      "start": "2026-09-28",
+      "end": "2026-09-30",
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-11200",
+        "name": "[시스템] 격 내구도 연출 개선"
+      },
+      "jira": "ORVV-11202",
+      "deps": []
+    },
+    {
+      "id": 38,
+      "name": "[이펙트] 격 내구도 연출 개선",
+      "owner": "유세훈",
+      "start": "2026-10-01",
+      "end": "2026-10-12",
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-11200",
+        "name": "[시스템] 격 내구도 연출 개선"
+      },
+      "jira": "ORVV-11201",
+      "deps": []
+    },
+    {
+      "id": 39,
+      "name": "[UI] 인게임 자코몹 HP,격 게이지바 작업",
+      "owner": "이승민",
+      "start": "2026-09-28",
+      "end": "2026-09-29",
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-11200",
+        "name": "[시스템] 격 내구도 연출 개선"
+      },
+      "jira": "ORVV-11296",
+      "deps": []
+    },
+    {
+      "id": 40,
+      "name": "[기획] 상태이상 시스템 - 기획서 작성",
+      "owner": "장영환",
+      "start": "2026-09-18",
+      "end": "2026-09-21",
+      "status": "inprog",
+      "statusName": "진행 중",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-11193",
+        "name": "[시스템] 상태이상 시스템"
+      },
+      "jira": "ORVV-11194",
+      "deps": []
+    },
+    {
+      "id": 41,
+      "name": "[이펙트] 상태이상 불·번개·혼돈 이펙트 컨셉  작업 (용곤)",
+      "owner": "이용곤",
+      "start": "2026-09-28",
+      "end": "2026-10-07",
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-11193",
+        "name": "[시스템] 상태이상 시스템"
+      },
+      "jira": "ORVV-11196",
+      "deps": []
+    },
+    {
+      "id": 42,
+      "name": "[이펙트] 상태이상 불·번개·혼돈 이펙트 컨셉  작업 (영아)",
+      "owner": "안영아",
+      "start": "2026-09-29",
+      "end": "2026-10-07",
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-11193",
+        "name": "[시스템] 상태이상 시스템"
+      },
+      "jira": "ORVV-11195",
+      "deps": []
+    },
+    {
+      "id": 43,
+      "name": "[클라] 상태이상 시스템 구축",
+      "owner": "정도훈",
+      "start": null,
+      "end": "2026-10-23",
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-11193",
+        "name": "[시스템] 상태이상 시스템"
+      },
+      "jira": "ORVV-11278",
+      "deps": []
+    },
+    {
+      "id": 44,
+      "name": "[클라] 장비 코어 시스템",
+      "owner": "정도훈",
+      "start": null,
+      "end": "2026-10-23",
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-8080",
+        "name": "[시스템] 도깨비방 구현"
+      },
+      "jira": "ORVV-11271",
+      "deps": []
+    },
+    {
+      "id": 45,
+      "name": "[클라] 장비 강화 시스템",
+      "owner": "홍주성",
+      "start": null,
+      "end": "2026-10-23",
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-8080",
+        "name": "[시스템] 도깨비방 구현"
+      },
+      "jira": "ORVV-11272",
+      "deps": []
+    },
+    {
+      "id": 46,
+      "name": "[클라] 장비 UI 시스템",
+      "owner": "홍주성",
+      "start": null,
+      "end": "2026-10-23",
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-8080",
+        "name": "[시스템] 도깨비방 구현"
+      },
+      "jira": "ORVV-11273",
+      "deps": []
+    },
+    {
+      "id": 47,
+      "name": "[클라] 장비 몬스터핵 시스템",
+      "owner": "이미륵",
+      "start": null,
+      "end": "2026-10-23",
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-8080",
+        "name": "[시스템] 도깨비방 구현"
+      },
+      "jira": "ORVV-11274",
+      "deps": []
+    },
+    {
+      "id": 48,
+      "name": "[클라] 장비 설화 시스템",
+      "owner": "홍주성",
+      "start": null,
+      "end": "2026-10-23",
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-8080",
+        "name": "[시스템] 도깨비방 구현"
+      },
+      "jira": "ORVV-11275",
+      "deps": []
+    },
+    {
+      "id": 49,
+      "name": "[클라] 장비 상징체 시스템",
+      "owner": "김기돈",
+      "start": null,
+      "end": "2026-10-23",
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-8080",
+        "name": "[시스템] 도깨비방 구현"
+      },
+      "jira": "ORVV-11276",
+      "deps": []
+    },
+    {
+      "id": 50,
+      "name": "[캐릭터원화] 도깨비방 스타스트림 패널용 원화 제작_화신 2종(2)",
+      "owner": "구민구",
+      "start": "2026-10-07",
+      "end": "2026-10-22",
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-8080",
+        "name": "[시스템] 도깨비방 구현"
+      },
+      "jira": "ORVV-9227",
+      "deps": []
+    },
+    {
+      "id": 51,
+      "name": "[기획] 도깨비방 시스템 검수",
+      "owner": "신동석",
+      "start": "2026-08-28",
+      "end": "2026-09-30",
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-8080",
+        "name": "[시스템] 도깨비방 구현"
+      },
+      "jira": "ORVV-8369",
+      "deps": []
+    },
+    {
+      "id": 52,
+      "name": "[이펙트] 도깨비방 패널 관련 이펙트 제작",
+      "owner": "손석민",
+      "start": "2026-09-01",
+      "end": "2026-10-30",
+      "status": "inprog",
+      "statusName": "진행 중",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-8080",
+        "name": "[시스템] 도깨비방 구현"
+      },
+      "jira": "ORVV-8734",
+      "deps": []
+    },
+    {
+      "id": 53,
+      "name": "[사운드] 도깨비 방 UI 사운드",
+      "owner": "[사운드]이예얼",
+      "start": "2026-09-14",
+      "end": "2026-09-16",
+      "status": "review",
+      "statusName": "검수 요청",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-8080",
+        "name": "[시스템] 도깨비방 구현"
+      },
+      "jira": "ORVV-9387",
+      "deps": []
+    },
+    {
+      "id": 54,
+      "name": "[사운드] 도깨비 방 무드 조성 및 환경 사운드",
+      "owner": "[사운드]이예얼",
+      "start": "2026-09-14",
+      "end": "2026-09-16",
+      "status": "review",
+      "statusName": "검수 요청",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-8080",
+        "name": "[시스템] 도깨비방 구현"
+      },
+      "jira": "ORVV-9386",
+      "deps": []
+    },
+    {
+      "id": 55,
+      "name": "[TA] 일반 상자와 희귀 상자 재임포트",
+      "owner": "구본수",
+      "start": null,
+      "end": null,
+      "status": "inprog",
+      "statusName": "대기 중",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-9165",
+        "name": "[시스템][탐험] 회차공명 시스템 - 땅강아쥐 어둠 자락의 보물창고"
+      },
+      "jira": "ORVV-10965",
+      "deps": []
+    },
+    {
+      "id": 56,
+      "name": "[애니] 김독자·유중혁 상자 여는 모션",
+      "owner": "김영욱",
+      "start": null,
+      "end": null,
+      "status": "inprog",
+      "statusName": "대기 중",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-9165",
+        "name": "[시스템][탐험] 회차공명 시스템 - 땅강아쥐 어둠 자락의 보물창고"
+      },
+      "jira": "ORVV-9145",
+      "deps": [
+        55
+      ]
+    },
+    {
+      "id": 57,
+      "name": "[사운드] 땅강아쥐 어둠자락(회차 공명) 연출 및 무드 조성 및 환경 사운드",
+      "owner": "[사운드]이예얼",
+      "start": "2026-09-16",
+      "end": "2026-09-17",
+      "status": "review",
+      "statusName": "검수 요청",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-9165",
+        "name": "[시스템][탐험] 회차공명 시스템 - 땅강아쥐 어둠 자락의 보물창고"
+      },
+      "jira": "ORVV-9388",
+      "deps": []
+    },
+    {
+      "id": 58,
+      "name": "[연출] 회차 공명 시작/종료 시그니처 연출 시퀀스",
+      "owner": "김웅빈",
+      "start": "2026-09-01",
+      "end": "2026-09-18",
+      "status": "review",
+      "statusName": "검수 요청",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-9165",
+        "name": "[시스템][탐험] 회차공명 시스템 - 땅강아쥐 어둠 자락의 보물창고"
+      },
+      "jira": "ORVV-8354",
+      "deps": []
+    },
+    {
+      "id": 59,
+      "name": "[연출][제작] 근거리 화각 회차 공명 전환 시퀀스 (실내용)",
+      "owner": "김웅빈",
+      "start": "2026-10-07",
+      "end": "2026-10-07",
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-11135",
+        "name": "[연출][보상의방] 회차공명 연출"
+      },
+      "jira": "ORVV-11136",
+      "deps": []
+    },
+    {
+      "id": 60,
+      "name": "[라이팅] 회차공명 연출",
+      "owner": "정재윤",
+      "start": null,
+      "end": null,
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-11135",
+        "name": "[연출][보상의방] 회차공명 연출"
+      },
+      "jira": "ORVV-11347",
+      "deps": []
+    },
+    {
+      "id": 61,
+      "name": "[UI] 회차공명_대한극장 (퍼즐 단서 팝업)",
+      "owner": "강지한",
+      "start": null,
+      "end": null,
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-10034",
+        "name": "[시스템][탐험] 회차공명 시스템 - 대한극장 구현"
+      },
+      "jira": "ORVV-11180",
+      "deps": []
+    },
+    {
+      "id": 62,
+      "name": "[연출][제작] 성좌 유희 (무대화)",
+      "owner": "김웅빈",
+      "start": null,
+      "end": null,
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-11132",
+        "name": "[연출] 성좌 유희 (무대화)"
+      },
+      "jira": "ORVV-11134",
+      "deps": []
+    },
+    {
+      "id": 63,
+      "name": "[연출][프리비즈] 성좌 유희 (무대화)",
+      "owner": "김웅빈",
+      "start": "2026-10-14",
+      "end": "2026-10-15",
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-11132",
+        "name": "[연출] 성좌 유희 (무대화)"
+      },
+      "jira": "ORVV-11133",
+      "deps": []
+    },
+    {
+      "id": 64,
+      "name": "[라이팅] 성좌 유희 (무대화)",
+      "owner": "정재윤",
+      "start": null,
+      "end": null,
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-11132",
+        "name": "[연출] 성좌 유희 (무대화)"
+      },
+      "jira": "ORVV-11346",
+      "deps": []
+    },
+    {
+      "id": 65,
+      "name": "[클라][대한극장] 성좌유희 Flow Graph 작업 + 지원 작업",
+      "owner": "조익상",
+      "start": "2026-10-12",
+      "end": "2026-10-16",
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-9112",
+        "name": "[시스템][탐험] 성좌의 유희 시스템"
+      },
+      "jira": "ORVV-11277",
+      "deps": []
+    },
+    {
+      "id": 66,
+      "name": "[라이팅] 성좌의 유희 라이팅 환경 셋팅",
+      "owner": "정재윤",
+      "start": "2026-10-12",
+      "end": "2026-11-20",
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-9112",
+        "name": "[시스템][탐험] 성좌의 유희 시스템"
+      },
+      "jira": "ORVV-11358",
+      "deps": []
+    },
+    {
+      "id": 67,
+      "name": "[애니] 팔 잘린 불량배가 잘린 팔을 움켜쥐고 쓰러져 괴로워 하는 모션 제작",
+      "owner": "김영욱",
+      "start": "2026-09-28",
+      "end": "2026-09-28",
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-7820",
+        "name": "[플레이] 천인호 전투 - 정희원 각성 플레이 구현"
+      },
+      "jira": "ORVV-8313",
+      "deps": []
+    },
+    {
+      "id": 68,
+      "name": "[캐릭터원화] 시퀀스 용 원화(천인호 금호역 전투 개시)",
+      "owner": "구민구",
+      "start": "2026-10-23",
+      "end": "2026-10-29",
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-7967",
+        "name": "[컷씬] 천인호에 의해 금호역 전투 개시"
+      },
+      "jira": "ORVV-9509",
+      "deps": []
+    },
+    {
+      "id": 69,
+      "name": "[라이팅] 천인호에 의해 금호역 전투 개시",
+      "owner": "정재윤",
+      "start": null,
+      "end": null,
+      "status": "inprog",
+      "statusName": "대기 중",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-7967",
+        "name": "[컷씬] 천인호에 의해 금호역 전투 개시"
+      },
+      "jira": "ORVV-8325",
+      "deps": []
+    },
+    {
+      "id": 70,
+      "name": "[이펙트] 천인호에 의해 금호역 전투 개시",
+      "owner": "이용곤",
+      "start": null,
+      "end": null,
+      "status": "inprog",
+      "statusName": "대기 중",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-7967",
+        "name": "[컷씬] 천인호에 의해 금호역 전투 개시"
+      },
+      "jira": "ORVV-8324",
+      "deps": []
+    },
+    {
+      "id": 71,
+      "name": "[컷씬] 천인호에 의해 금호역 전투 개시",
+      "owner": "김웅빈",
+      "start": "2026-09-11",
+      "end": "2026-09-23",
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-7967",
+        "name": "[컷씬] 천인호에 의해 금호역 전투 개시"
+      },
+      "jira": "ORVV-8323",
+      "deps": []
+    },
+    {
+      "id": 72,
+      "name": "[애니] 김독자가 동상 앞에서 합장을 하는 모션",
+      "owner": "이동겸",
+      "start": "2026-09-21",
+      "end": "2026-09-28",
+      "status": "review",
+      "statusName": "검수 요청",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-7822",
+        "name": "[플레이] 동대입구역 장충단 공원 플레이 구현"
+      },
+      "jira": "ORVV-8956",
+      "deps": []
+    },
+    {
+      "id": 73,
+      "name": "[사운드] 장충단공원 플레이 사운드",
+      "owner": "[사운드]이예얼",
+      "start": "2026-09-14",
+      "end": "2026-09-21",
+      "status": "inprog",
+      "statusName": "진행 중",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-7822",
+        "name": "[플레이] 동대입구역 장충단 공원 플레이 구현"
+      },
+      "jira": "ORVV-9384",
+      "deps": []
+    },
+    {
+      "id": 74,
+      "name": "[클라] 장충단 공원 고도화 Part 1",
+      "owner": "이진형",
+      "start": "2026-09-22",
+      "end": "2026-10-16",
+      "status": "inprog",
+      "statusName": "진행 중",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-7822",
+        "name": "[플레이] 동대입구역 장충단 공원 플레이 구현"
+      },
+      "jira": "ORVV-11205",
+      "deps": []
+    },
+    {
+      "id": 75,
+      "name": "[클라] 장충단 공원 고도화 Part 2",
+      "owner": "김기돈",
+      "start": null,
+      "end": "2026-10-16",
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-7822",
+        "name": "[플레이] 동대입구역 장충단 공원 플레이 구현"
+      },
+      "jira": "ORVV-11206",
+      "deps": []
+    },
+    {
+      "id": 76,
+      "name": "[클라] 장충단 공원 고도화 Part 3",
+      "owner": "이미륵",
+      "start": null,
+      "end": "2026-10-16",
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-7822",
+        "name": "[플레이] 동대입구역 장충단 공원 플레이 구현"
+      },
+      "jira": "ORVV-11207",
+      "deps": []
+    },
+    {
+      "id": 77,
+      "name": "[클라][사운드] 환영감옥 트리거 이벤트 사운드 바인딩",
+      "owner": "이미륵",
+      "start": null,
+      "end": "2026-10-08",
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-7824",
+        "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
+      },
+      "jira": "ORVV-11081",
+      "deps": []
+    },
+    {
+      "id": 78,
+      "name": "[배경] 환영감옥_디테일 목업_정희원/이현성",
+      "owner": "임수연",
+      "start": "2026-09-23",
+      "end": "2026-10-23",
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-7824",
+        "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
+      },
+      "jira": "ORVV-11199",
+      "deps": []
+    },
+    {
+      "id": 79,
+      "name": "[캐릭터원화] 환영감옥_국군 디지털 군복(일병/상병/대위) 원화",
+      "owner": "구민구",
+      "start": "2026-10-07",
+      "end": "2026-10-14",
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-7824",
+        "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
+      },
+      "jira": "ORVV-11324",
+      "deps": []
+    },
+    {
+      "id": 80,
+      "name": "[캐릭터원화] 환영감옥_이길영 곤충 채집통 원화",
+      "owner": "천서주",
+      "start": "2026-10-16",
+      "end": "2026-10-16",
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-7824",
+        "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
+      },
+      "jira": "ORVV-11325",
+      "deps": []
+    },
+    {
+      "id": 81,
+      "name": "[캐릭터모델링] 환영감옥_국군 디지털 군복(일병/상병/대위) 모델링",
+      "owner": "김웅",
+      "start": "2026-10-28",
+      "end": "2026-11-17",
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-7824",
+        "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
+      },
+      "jira": "ORVV-11329",
+      "deps": []
+    },
+    {
+      "id": 82,
+      "name": "[캐릭터모델링] 환영감옥_이길영 곤충 채집 통 모델링",
+      "owner": "김웅",
+      "start": "2026-10-28",
+      "end": "2026-11-17",
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-7824",
+        "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
+      },
+      "jira": "ORVV-11330",
+      "deps": []
+    },
+    {
       "id": 83,
+      "name": "[TA] 환영감옥 배경 오브젝트 World Align 기능 추가",
+      "owner": "권상모",
+      "start": "2026-09-11",
+      "end": "2026-09-11",
+      "status": "done",
+      "statusName": "완료",
+      "doneAt": "2026-09-16",
+      "epic": {
+        "key": "ORVV-10143",
+        "name": "[EPIC] [TA] 매테리얼"
+      },
+      "jira": "ORVV-10964",
+      "deps": []
+    },
+    {
+      "id": 84,
       "name": "[클라] 환영감옥 고도화 Part 1",
       "owner": "이진형",
       "start": null,
@@ -1830,7 +1859,7 @@
       "deps": []
     },
     {
-      "id": 84,
+      "id": 85,
       "name": "[클라] 환영감옥 고도화 Part 2",
       "owner": "김기돈",
       "start": null,
@@ -1846,7 +1875,7 @@
       "deps": []
     },
     {
-      "id": 85,
+      "id": 86,
       "name": "[애니] 환영 감옥 이현성 구역 - 모션 (이현성·남NPC)",
       "owner": "임광수",
       "start": "2026-11-28",
@@ -1862,7 +1891,7 @@
       "deps": []
     },
     {
-      "id": 86,
+      "id": 87,
       "name": "[애니] 환영 감옥 이길영 구역 - 모션",
       "owner": "임광수",
       "start": "2026-12-01",
@@ -1878,7 +1907,7 @@
       "deps": []
     },
     {
-      "id": 87,
+      "id": 88,
       "name": "[컷씬][프리비즈] 환영 감옥 입장 컷씬",
       "owner": "이창석",
       "start": null,
@@ -1894,7 +1923,7 @@
       "deps": []
     },
     {
-      "id": 88,
+      "id": 89,
       "name": "[컷씬][제작] 환영 감옥 입장 컷씬",
       "owner": "이창석",
       "start": null,
@@ -1910,7 +1939,7 @@
       "deps": []
     },
     {
-      "id": 89,
+      "id": 90,
       "name": "[라이팅] 환영 감옥 입장 컷씬",
       "owner": "박장호",
       "start": null,
@@ -1926,7 +1955,7 @@
       "deps": []
     },
     {
-      "id": 90,
+      "id": 91,
       "name": "[컷씬][프리비즈] 환영감옥 정희원 인카운터 컷씬",
       "owner": "이창석",
       "start": "2026-10-22",
@@ -1942,7 +1971,7 @@
       "deps": []
     },
     {
-      "id": 91,
+      "id": 92,
       "name": "[컷씬][제작] 환영감옥 정희원 인카운터 컷씬",
       "owner": "이창석",
       "start": null,
@@ -1958,7 +1987,7 @@
       "deps": []
     },
     {
-      "id": 92,
+      "id": 93,
       "name": "[라이팅] 환영 감옥 정희원 인카운터 컷씬",
       "owner": "박장호",
       "start": null,
@@ -1974,7 +2003,7 @@
       "deps": []
     },
     {
-      "id": 93,
+      "id": 94,
       "name": "[컷씬][프리비즈] 환영 감옥 퇴장 컷씬",
       "owner": "이창석",
       "start": "2026-10-29",
@@ -1990,7 +2019,7 @@
       "deps": []
     },
     {
-      "id": 94,
+      "id": 95,
       "name": "[컷씬][제작] 환영 감옥 퇴장 컷씬",
       "owner": "이창석",
       "start": null,
@@ -2006,7 +2035,7 @@
       "deps": []
     },
     {
-      "id": 95,
+      "id": 96,
       "name": "[라이팅] 환영 감옥 퇴장 컷씬",
       "owner": "박장호",
       "start": null,
@@ -2022,7 +2051,7 @@
       "deps": []
     },
     {
-      "id": 96,
+      "id": 97,
       "name": "[연출][제작] 환영감옥 이현성 구역 도착",
       "owner": "김웅빈",
       "start": "2026-11-04",
@@ -2038,7 +2067,7 @@
       "deps": []
     },
     {
-      "id": 97,
+      "id": 98,
       "name": "[라이팅] 환영 감옥 이현성 구역 도착",
       "owner": "박장호",
       "start": null,
@@ -2054,7 +2083,7 @@
       "deps": []
     },
     {
-      "id": 98,
+      "id": 99,
       "name": "[연출][제작] 환영감옥 이길영 구역 도착",
       "owner": "김웅빈",
       "start": "2026-11-05",
@@ -2070,7 +2099,7 @@
       "deps": []
     },
     {
-      "id": 99,
+      "id": 100,
       "name": "[라이팅] 환영 감옥 이길영 구역 도착",
       "owner": "박장호",
       "start": null,
@@ -2086,7 +2115,7 @@
       "deps": []
     },
     {
-      "id": 100,
+      "id": 101,
       "name": "[연출][제작] 환영감옥 정희원 구역 도착",
       "owner": "김웅빈",
       "start": "2026-11-06",
@@ -2102,7 +2131,7 @@
       "deps": []
     },
     {
-      "id": 101,
+      "id": 102,
       "name": "[라이팅] 환영 감옥 정희원 구역 도착",
       "owner": "박장호",
       "start": null,
@@ -2118,7 +2147,39 @@
       "deps": []
     },
     {
-      "id": 102,
+      "id": 103,
+      "name": "[이펙트] 환영감옥_흡입 함정 및 진행 이펙트",
+      "owner": "유세훈",
+      "start": "2026-10-13",
+      "end": "2026-10-15",
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-7824",
+        "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
+      },
+      "jira": "ORVV-11332",
+      "deps": []
+    },
+    {
+      "id": 104,
+      "name": "[이펙트] 환영감옥_스펙터 분신 터짐 및 경로 이펙트",
+      "owner": "손석민",
+      "start": "2026-10-01",
+      "end": "2026-10-06",
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-7824",
+        "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
+      },
+      "jira": "ORVV-11331",
+      "deps": []
+    },
+    {
+      "id": 105,
       "name": "[배경] 충무로역_블록아웃",
       "owner": "이형근",
       "start": "2026-08-31",
@@ -2134,7 +2195,7 @@
       "deps": []
     },
     {
-      "id": 103,
+      "id": 106,
       "name": "[배경모델링] 충무로역_모듈 설계",
       "owner": "이인환",
       "start": "2026-09-07",
@@ -2150,7 +2211,7 @@
       "deps": []
     },
     {
-      "id": 104,
+      "id": 107,
       "name": "[라이팅] 충무로역 라이팅 환경 셋팅",
       "owner": "정재윤",
       "start": "2026-11-02",
@@ -2166,7 +2227,7 @@
       "deps": []
     },
     {
-      "id": 105,
+      "id": 108,
       "name": "[연출][제작] 충무로역 도착",
       "owner": "김웅빈",
       "start": "2026-11-02",
@@ -2182,7 +2243,7 @@
       "deps": []
     },
     {
-      "id": 106,
+      "id": 109,
       "name": "[라이팅] 충무로역 도착",
       "owner": "정재윤",
       "start": null,
@@ -2198,7 +2259,7 @@
       "deps": []
     },
     {
-      "id": 107,
+      "id": 110,
       "name": "[애니] 충무로역 NPC·캐릭터 모션 제작(현석)",
       "owner": "김현석",
       "start": "2026-09-21",
@@ -2214,7 +2275,7 @@
       "deps": []
     },
     {
-      "id": 108,
+      "id": 111,
       "name": "[애니] 충무로역 NPC·캐릭터 모션 제작(지원)",
       "owner": "남지원",
       "start": "2026-09-21",
@@ -2230,7 +2291,7 @@
       "deps": []
     },
     {
-      "id": 109,
+      "id": 112,
       "name": "[애니] 충무로역 NPC·캐릭터 모션 제작(지현)",
       "owner": "최지현",
       "start": "2026-09-18",
@@ -2246,7 +2307,7 @@
       "deps": []
     },
     {
-      "id": 110,
+      "id": 113,
       "name": "[애니] 충무로역 NPC·캐릭터 모션 제작(은정)",
       "owner": "김은정",
       "start": "2026-09-18",
@@ -2262,7 +2323,7 @@
       "deps": []
     },
     {
-      "id": 111,
+      "id": 114,
       "name": "[애니] 충무로역 NPC·캐릭터 모션 제작(영욱)",
       "owner": "김영욱",
       "start": "2026-09-18",
@@ -2278,7 +2339,7 @@
       "deps": []
     },
     {
-      "id": 112,
+      "id": 115,
       "name": "[애니] 충무로역 NPC·캐릭터 모션 제작(광수)",
       "owner": "임광수",
       "start": "2026-09-18",
@@ -2294,7 +2355,7 @@
       "deps": []
     },
     {
-      "id": 113,
+      "id": 116,
       "name": "[클라] 충무로역 플레이 - 기본 스크립팅",
       "owner": "이진형",
       "start": "2026-09-02",
@@ -2310,7 +2371,7 @@
       "deps": []
     },
     {
-      "id": 114,
+      "id": 117,
       "name": "[연출][제작] 공필두 무장지대 (무대화)",
       "owner": "김웅빈",
       "start": null,
@@ -2326,7 +2387,7 @@
       "deps": []
     },
     {
-      "id": 115,
+      "id": 118,
       "name": "[연출][프리비즈] 공필두 무장지대 (무대화)",
       "owner": "김웅빈",
       "start": "2026-10-08",
@@ -2342,7 +2403,7 @@
       "deps": []
     },
     {
-      "id": 116,
+      "id": 119,
       "name": "[라이팅] 공필두 무장지대 (무대화)",
       "owner": "정재윤",
       "start": null,
@@ -2358,7 +2419,7 @@
       "deps": []
     },
     {
-      "id": 117,
+      "id": 120,
       "name": "[컷씬][제작] 무장지대 지역을 이현성이 태산부수기로 파괴",
       "owner": "김정근",
       "start": null,
@@ -2374,7 +2435,7 @@
       "deps": []
     },
     {
-      "id": 118,
+      "id": 121,
       "name": "[컷씬][프리비즈] 무장지대 지역을 이현성이 태산부수기로 파괴",
       "owner": "김정근",
       "start": "2026-09-09",
@@ -2390,7 +2451,7 @@
       "deps": []
     },
     {
-      "id": 119,
+      "id": 122,
       "name": "[라이팅] 무장지대 지역을 이현성이 태산부수기로 파괴",
       "owner": "정재윤",
       "start": null,
@@ -2406,7 +2467,7 @@
       "deps": []
     },
     {
-      "id": 120,
+      "id": 123,
       "name": "[컷씬][제작] 스펙터 영석을 먹고 김독자가 유령종이 되어 안나 크로프트와 조우",
       "owner": "김웅빈",
       "start": null,
@@ -2422,7 +2483,7 @@
       "deps": []
     },
     {
-      "id": 121,
+      "id": 124,
       "name": "[컷씬][프리비즈] 스펙터 영석을 먹고 김독자가 유령종이 되어 안나 크로프트와 조우",
       "owner": "김웅빈",
       "start": "2026-09-09",
@@ -2438,7 +2499,7 @@
       "deps": []
     },
     {
-      "id": 122,
+      "id": 125,
       "name": "[라이팅] 스펙터 영석을 먹고 김독자가 유령종이 되어 안나 크로프트와 조우",
       "owner": "박장호",
       "start": null,
@@ -2454,7 +2515,7 @@
       "deps": []
     },
     {
-      "id": 123,
+      "id": 126,
       "name": "[클라][충무로역] 플레이 프로세스 관리",
       "owner": "이진형",
       "start": null,
@@ -2470,7 +2531,7 @@
       "deps": []
     },
     {
-      "id": 124,
+      "id": 127,
       "name": "[캐릭터모델링] 김독자 외장 강화 수트-레플리카",
       "owner": "김현종",
       "start": "2026-10-21",
@@ -2486,7 +2547,7 @@
       "deps": []
     },
     {
-      "id": 125,
+      "id": 128,
       "name": "[배경원화] 대한극장 컨셉",
       "owner": "임재훈",
       "start": "2026-09-11",
@@ -2502,7 +2563,7 @@
       "deps": []
     },
     {
-      "id": 126,
+      "id": 129,
       "name": "[라이팅] 대한극장 라이팅 환경 셋팅",
       "owner": "정재윤",
       "start": "2026-10-05",
@@ -2518,7 +2579,7 @@
       "deps": []
     },
     {
-      "id": 127,
+      "id": 130,
       "name": "[연출][제작] 대한극장 도착",
       "owner": "김웅빈",
       "start": "2026-11-03",
@@ -2534,7 +2595,7 @@
       "deps": []
     },
     {
-      "id": 128,
+      "id": 131,
       "name": "[라이팅] 대한극장 도착",
       "owner": "정재윤",
       "start": null,
@@ -2550,7 +2611,7 @@
       "deps": []
     },
     {
-      "id": 129,
+      "id": 132,
       "name": "[클라][대한극장] 플레이 프로세스 관리",
       "owner": "이진형",
       "start": null,
@@ -2566,7 +2627,7 @@
       "deps": []
     },
     {
-      "id": 130,
+      "id": 133,
       "name": "[클라][보상의방] 플레이 프로세스 관리",
       "owner": "김기돈",
       "start": null,
@@ -2582,7 +2643,7 @@
       "deps": []
     },
     {
-      "id": 131,
+      "id": 134,
       "name": "[캐릭터모델링] 충무공 모델링",
       "owner": "이락원",
       "start": "2026-10-16",
@@ -2598,7 +2659,7 @@
       "deps": []
     },
     {
-      "id": 132,
+      "id": 135,
       "name": "[배경] 대한극장_명량해전 블록아웃",
       "owner": "이형근",
       "start": null,
@@ -2614,7 +2675,7 @@
       "deps": []
     },
     {
-      "id": 133,
+      "id": 136,
       "name": "[배경 모델링] 대한극장_명량해전_군함 디테일 목업",
       "owner": "이민수",
       "start": "2026-09-11",
@@ -2630,7 +2691,7 @@
       "deps": []
     },
     {
-      "id": 134,
+      "id": 137,
       "name": "[라이팅] 대한극장 명량 라이팅 환경 셋팅",
       "owner": "박장호",
       "start": "2026-09-28",
@@ -2646,7 +2707,7 @@
       "deps": []
     },
     {
-      "id": 135,
+      "id": 138,
       "name": "[컷씬][제작] 명량_오프닝 연출",
       "owner": "이창석",
       "start": null,
@@ -2662,7 +2723,7 @@
       "deps": []
     },
     {
-      "id": 136,
+      "id": 139,
       "name": "[컷씬][프리비즈] 명량_오프닝 연출",
       "owner": "이창석",
       "start": "2026-10-01",
@@ -2678,7 +2739,7 @@
       "deps": []
     },
     {
-      "id": 137,
+      "id": 140,
       "name": "[라이팅] 명량_오프닝 연출",
       "owner": "박장호",
       "start": null,
@@ -2694,7 +2755,7 @@
       "deps": []
     },
     {
-      "id": 138,
+      "id": 141,
       "name": "[컷씬][제작] 명량_이지혜 각성 및 칼의노래 성흔 획득",
       "owner": "이창석",
       "start": null,
@@ -2710,7 +2771,7 @@
       "deps": []
     },
     {
-      "id": 139,
+      "id": 142,
       "name": "[컷씬][프리비즈] 명량_이지혜 각성 및 칼의노래 성흔 획득",
       "owner": "이창석",
       "start": "2026-09-09",
@@ -2726,7 +2787,7 @@
       "deps": []
     },
     {
-      "id": 140,
+      "id": 143,
       "name": "[라이팅] 명량_이지혜 각성 및 칼의노래 성흔 획득",
       "owner": "박장호",
       "start": null,
@@ -2742,7 +2803,7 @@
       "deps": []
     },
     {
-      "id": 141,
+      "id": 144,
       "name": "[컷씬][제작] 명량_대장선 전투 및 보스 연출",
       "owner": "이창석",
       "start": null,
@@ -2758,7 +2819,7 @@
       "deps": []
     },
     {
-      "id": 142,
+      "id": 145,
       "name": "[컷씬][프리비즈] 명량_대장선 전투 및 보스 연출",
       "owner": "이창석",
       "start": "2026-09-22",
@@ -2774,7 +2835,7 @@
       "deps": []
     },
     {
-      "id": 143,
+      "id": 146,
       "name": "[라이팅] 명량_대장선 전투 및 보스 연출",
       "owner": "박장호",
       "start": null,
@@ -2790,7 +2851,7 @@
       "deps": []
     },
     {
-      "id": 144,
+      "id": 147,
       "name": "[컷씬][제작] 명량_대장선 접현 연출",
       "owner": "이창석",
       "start": null,
@@ -2806,7 +2867,7 @@
       "deps": []
     },
     {
-      "id": 145,
+      "id": 148,
       "name": "[컷씬][프리비즈] 명량_대장선 접현 연출",
       "owner": "이창석",
       "start": "2026-10-08",
@@ -2822,7 +2883,7 @@
       "deps": []
     },
     {
-      "id": 146,
+      "id": 149,
       "name": "[라이팅] 명량_대장선 접현 연출",
       "owner": "박장호",
       "start": null,
@@ -2838,7 +2899,7 @@
       "deps": []
     },
     {
-      "id": 147,
+      "id": 150,
       "name": "[클라][명량] 플레이 프로세스 관리",
       "owner": "정도훈",
       "start": null,
@@ -2854,7 +2915,7 @@
       "deps": []
     },
     {
-      "id": 148,
+      "id": 151,
       "name": "[캐릭터모델링] 이지혜 타이타닉 복장 모델링",
       "owner": "이기해",
       "start": "2026-11-11",
@@ -2870,7 +2931,7 @@
       "deps": []
     },
     {
-      "id": 149,
+      "id": 152,
       "name": "[라이팅] 대한극장 타이타닉 라이팅 환경 셋팅",
       "owner": "박장호",
       "start": "2026-10-12",
@@ -2886,7 +2947,7 @@
       "deps": []
     },
     {
-      "id": 150,
+      "id": 153,
       "name": "[컷씬][제작] 타이타닉_씨써펜트 등장",
       "owner": "김웅빈",
       "start": null,
@@ -2902,7 +2963,7 @@
       "deps": []
     },
     {
-      "id": 151,
+      "id": 154,
       "name": "[컷씬][프리비즈] 타이타닉_씨써펜트 등장",
       "owner": "김웅빈",
       "start": "2026-09-22",
@@ -2918,7 +2979,7 @@
       "deps": []
     },
     {
-      "id": 152,
+      "id": 155,
       "name": "[라이팅] 타이타닉_씨써펜트 등장",
       "owner": "박장호",
       "start": null,
@@ -2934,7 +2995,7 @@
       "deps": []
     },
     {
-      "id": 153,
+      "id": 156,
       "name": "[클라][타이타닉] 플레이 프로세스 관리",
       "owner": "이진형",
       "start": null,
@@ -2950,7 +3011,7 @@
       "deps": []
     },
     {
-      "id": 154,
+      "id": 157,
       "name": "[배경원화] 대한극장_쥬라기 공원 (정글 스테이지) 컨셉 원화",
       "owner": "임재훈",
       "start": "2026-08-25",
@@ -2966,7 +3027,7 @@
       "deps": []
     },
     {
-      "id": 155,
+      "id": 158,
       "name": "[배경] 대한극장_쥬라기공원 블록아웃",
       "owner": "양희승",
       "start": "2026-08-27",
@@ -2982,7 +3043,7 @@
       "deps": []
     },
     {
-      "id": 156,
+      "id": 159,
       "name": "[라이팅] 대한극장 쥬라기공원 라이팅 환경 셋팅",
       "owner": "박장호",
       "start": "2026-10-05",
@@ -2998,7 +3059,7 @@
       "deps": []
     },
     {
-      "id": 157,
+      "id": 160,
       "name": "[컷씬][제작] 쥬라기_티렉스 처치",
       "owner": "김정근",
       "start": null,
@@ -3014,7 +3075,7 @@
       "deps": []
     },
     {
-      "id": 158,
+      "id": 161,
       "name": "[컷씬][프리비즈] 쥬라기_티렉스 처치",
       "owner": "김정근",
       "start": "2026-10-06",
@@ -3030,7 +3091,7 @@
       "deps": []
     },
     {
-      "id": 159,
+      "id": 162,
       "name": "[라이팅] 쥬라기_티렉스 처치",
       "owner": "박장호",
       "start": null,
@@ -3046,7 +3107,7 @@
       "deps": []
     },
     {
-      "id": 160,
+      "id": 163,
       "name": "[컷씬][제작] 쥬라기_티렉스 인카운터",
       "owner": "김정근",
       "start": null,
@@ -3062,7 +3123,7 @@
       "deps": []
     },
     {
-      "id": 161,
+      "id": 164,
       "name": "[컷씬][프리비즈] 쥬라기_티렉스 인카운터",
       "owner": "김정근",
       "start": "2026-09-22",
@@ -3078,7 +3139,7 @@
       "deps": []
     },
     {
-      "id": 162,
+      "id": 165,
       "name": "[라이팅] 쥬라기_티렉스 인카운터",
       "owner": "박장호",
       "start": null,
@@ -3094,7 +3155,7 @@
       "deps": []
     },
     {
-      "id": 163,
+      "id": 166,
       "name": "[클라][쥬라기공원] 플레이 프로세스 관리",
       "owner": "황준기",
       "start": null,
@@ -3110,7 +3171,7 @@
       "deps": []
     },
     {
-      "id": 164,
+      "id": 167,
       "name": "[TA] 스펙터 정식 리깅",
       "owner": "양승희",
       "start": "2026-11-05",
@@ -3126,7 +3187,7 @@
       "deps": []
     },
     {
-      "id": 165,
+      "id": 168,
       "name": "[TA] 스펙터 고도화 리깅",
       "owner": "양승희",
       "start": "2026-11-13",
@@ -3142,7 +3203,7 @@
       "deps": []
     },
     {
-      "id": 166,
+      "id": 169,
       "name": "[이펙트] 스펙터 스킬 2차 (2번, 3번, 4번)",
       "owner": "손석민",
       "start": "2026-09-21",
@@ -3158,7 +3219,7 @@
       "deps": []
     },
     {
-      "id": 167,
+      "id": 170,
       "name": "[이펙트] 환영 몬스터 - 환영의 망령 (바디,피격)",
       "owner": "이용곤",
       "start": "2026-09-01",
@@ -3174,7 +3235,7 @@
       "deps": []
     },
     {
-      "id": 168,
+      "id": 171,
       "name": "[기획] 탐식의 망령 검수",
       "owner": "장영환",
       "start": null,
@@ -3190,7 +3251,7 @@
       "deps": []
     },
     {
-      "id": 169,
+      "id": 172,
       "name": "[이펙트] 탐식의 망령 이펙트 (사망, 피격)",
       "owner": "유세훈",
       "start": "2026-09-28",
@@ -3206,7 +3267,7 @@
       "deps": []
     },
     {
-      "id": 170,
+      "id": 173,
       "name": "[이펙트] 탐식의 망령 스킬 1·2번",
       "owner": "유세훈",
       "start": "2026-09-22",
@@ -3222,7 +3283,7 @@
       "deps": []
     },
     {
-      "id": 171,
+      "id": 174,
       "name": "[클라] 보스 정희원 - 전투 구현",
       "owner": "정도훈",
       "start": null,
@@ -3238,7 +3299,7 @@
       "deps": []
     },
     {
-      "id": 172,
+      "id": 175,
       "name": "[클라] 보스 정희원 - 로코 모션 구현",
       "owner": "이주식",
       "start": null,
@@ -3254,7 +3315,7 @@
       "deps": []
     },
     {
-      "id": 173,
+      "id": 176,
       "name": "[애니] 보스 정희원 - 스킬 모션 제작",
       "owner": "박찬용",
       "start": "2026-09-02",
@@ -3270,7 +3331,7 @@
       "deps": []
     },
     {
-      "id": 174,
+      "id": 177,
       "name": "[애니] 보스 정희원 - 로코 및 기본 모션",
       "owner": "박찬용",
       "start": "2026-09-02",
@@ -3286,7 +3347,7 @@
       "deps": []
     },
     {
-      "id": 175,
+      "id": 178,
       "name": "[이펙트] 보스 정희원 이펙트",
       "owner": "손석민",
       "start": "2026-10-07",
@@ -3302,7 +3363,7 @@
       "deps": []
     },
     {
-      "id": 176,
+      "id": 179,
       "name": "[카메라] 보스 정희원 - 전투 카메라 작업",
       "owner": "김웅빈",
       "start": null,
@@ -3318,7 +3379,7 @@
       "deps": []
     },
     {
-      "id": 177,
+      "id": 180,
       "name": "[기획] 보스 정희원 - 몽타주·스크립트 작업",
       "owner": "최미희",
       "start": null,
@@ -3334,7 +3395,7 @@
       "deps": []
     },
     {
-      "id": 178,
+      "id": 181,
       "name": "[캐릭터모델링] 구루시마 미치후사 모델링",
       "owner": "김현종",
       "start": "2026-09-07",
@@ -3350,7 +3411,7 @@
       "deps": []
     },
     {
-      "id": 179,
+      "id": 182,
       "name": "[캐릭터모델링] 명량해전_구루시마 검 2종 모델링",
       "owner": "이기해",
       "start": "2026-10-20",
@@ -3366,7 +3427,7 @@
       "deps": []
     },
     {
-      "id": 180,
+      "id": 183,
       "name": "[TA] 구루시마 미치후사 러프 리깅",
       "owner": "구본수",
       "start": "2026-09-22",
@@ -3382,7 +3443,7 @@
       "deps": []
     },
     {
-      "id": 181,
+      "id": 184,
       "name": "[애니] 구루시마 - 카타나폼 로코 및 기본 모션",
       "owner": "박찬용",
       "start": "2026-09-30",
@@ -3398,7 +3459,7 @@
       "deps": []
     },
     {
-      "id": 182,
+      "id": 185,
       "name": "[클라] 구루시마 - 카타나폼 로코 모션 구현",
       "owner": "이주식",
       "start": null,
@@ -3414,7 +3475,7 @@
       "deps": []
     },
     {
-      "id": 183,
+      "id": 186,
       "name": "[클라] 구루시마 - 카타나폼 전투 구현",
       "owner": "조익상",
       "start": null,
@@ -3430,7 +3491,7 @@
       "deps": []
     },
     {
-      "id": 184,
+      "id": 187,
       "name": "[애니] 구루시마 - 카타나폼_스킬 1차 (1·3·5·7번)",
       "owner": "박찬용",
       "start": "2026-10-15",
@@ -3446,7 +3507,7 @@
       "deps": []
     },
     {
-      "id": 185,
+      "id": 188,
       "name": "[애니] 구루시마 - 카타나폼_스킬 2차 (2·4·4V·6번)",
       "owner": "박찬용",
       "start": "2026-10-30",
@@ -3462,7 +3523,7 @@
       "deps": []
     },
     {
-      "id": 186,
+      "id": 189,
       "name": "[애니] 구루시마 - 이도류폼 로코 및 기본 모션",
       "owner": "박찬용",
       "start": "2026-10-20",
@@ -3478,7 +3539,7 @@
       "deps": []
     },
     {
-      "id": 187,
+      "id": 190,
       "name": "[클라] 구루시마 - 이도류폼 로코 모션 구현",
       "owner": "이주식",
       "start": null,
@@ -3494,7 +3555,7 @@
       "deps": []
     },
     {
-      "id": 188,
+      "id": 191,
       "name": "[클라] 구루시마 - 이도류폼 전투 구현",
       "owner": "조익상",
       "start": null,
@@ -3510,7 +3571,7 @@
       "deps": []
     },
     {
-      "id": 189,
+      "id": 192,
       "name": "[애니] 구루시마 - 이도류폼_스킬 1차 (1·3·5번)",
       "owner": "박찬용",
       "start": "2026-10-27",
@@ -3526,7 +3587,7 @@
       "deps": []
     },
     {
-      "id": 190,
+      "id": 193,
       "name": "[애니] 구루시마 - 이도류폼_스킬 2차 (2·2V1·2V2·4번)",
       "owner": "박찬용",
       "start": "2026-11-04",
@@ -3542,7 +3603,7 @@
       "deps": []
     },
     {
-      "id": 191,
+      "id": 194,
       "name": "[카메라] 구루시마 - 전투 카메라 작업",
       "owner": "김웅빈",
       "start": null,
@@ -3558,7 +3619,7 @@
       "deps": []
     },
     {
-      "id": 192,
+      "id": 195,
       "name": "[기획] 구루시마 - 몽타주·스크립트 작업",
       "owner": "최미희",
       "start": null,
@@ -3574,7 +3635,7 @@
       "deps": []
     },
     {
-      "id": 193,
+      "id": 196,
       "name": "[캐릭터모델링] 명량해전_왜군 간부 병사 1종 모델링",
       "owner": "김나영",
       "start": "2026-09-08",
@@ -3590,7 +3651,7 @@
       "deps": []
     },
     {
-      "id": 194,
+      "id": 197,
       "name": "[TA] 왜군 간부 병 러프 리깅",
       "owner": "",
       "start": "2026-09-11",
@@ -3606,7 +3667,7 @@
       "deps": []
     },
     {
-      "id": 195,
+      "id": 198,
       "name": "[TA] 왜군 간부 병 정식 리깅",
       "owner": "",
       "start": "2026-10-16",
@@ -3622,7 +3683,7 @@
       "deps": []
     },
     {
-      "id": 196,
+      "id": 199,
       "name": "[TA] 왜군 간부 병 고도화 리깅",
       "owner": "",
       "start": "2026-10-28",
@@ -3638,7 +3699,7 @@
       "deps": []
     },
     {
-      "id": 197,
+      "id": 200,
       "name": "[애니] 왜군 - 지휘병_로코 및 기본 모션",
       "owner": "김영욱",
       "start": "2026-11-06",
@@ -3654,7 +3715,7 @@
       "deps": []
     },
     {
-      "id": 198,
+      "id": 201,
       "name": "[클라] 왜군 - 지휘병_로코 모션 구현",
       "owner": "이주식",
       "start": null,
@@ -3670,7 +3731,7 @@
       "deps": []
     },
     {
-      "id": 199,
+      "id": 202,
       "name": "[클라] 왜군 - 지휘병_전투 구현",
       "owner": "조익상",
       "start": null,
@@ -3686,7 +3747,7 @@
       "deps": []
     },
     {
-      "id": 200,
+      "id": 203,
       "name": "[애니] 왜군 - 지휘병_스킬 모션 제작",
       "owner": "김영욱",
       "start": "2026-11-20",
@@ -3702,7 +3763,7 @@
       "deps": []
     },
     {
-      "id": 201,
+      "id": 204,
       "name": "[카메라] 왜군 - 지휘병_전투 카메라 작업",
       "owner": "김웅빈",
       "start": null,
@@ -3718,7 +3779,7 @@
       "deps": []
     },
     {
-      "id": 202,
+      "id": 205,
       "name": "[기획] 왜군 - 지휘병_몽타주·스크립트 작업",
       "owner": "김찬수",
       "start": null,
@@ -3734,7 +3795,7 @@
       "deps": []
     },
     {
-      "id": 203,
+      "id": 206,
       "name": "[캐릭터모델링] 명량해전_왜군 일반 병사 방패병 모델링",
       "owner": "이락원",
       "start": "2026-10-07",
@@ -3750,7 +3811,7 @@
       "deps": []
     },
     {
-      "id": 204,
+      "id": 207,
       "name": "[캐릭터모델링] 명량해전_왜군 방패 모델링",
       "owner": "이기해",
       "start": "2026-10-12",
@@ -3766,7 +3827,7 @@
       "deps": []
     },
     {
-      "id": 205,
+      "id": 208,
       "name": "[TA] 왜군 일반 방패병 러프 리깅",
       "owner": "",
       "start": "2026-09-29",
@@ -3782,7 +3843,7 @@
       "deps": []
     },
     {
-      "id": 206,
+      "id": 209,
       "name": "[TA] 왜군 일반 방패병 정식 리깅",
       "owner": "",
       "start": "2026-12-07",
@@ -3798,7 +3859,7 @@
       "deps": []
     },
     {
-      "id": 207,
+      "id": 210,
       "name": "[TA] 왜군 일반 방패병 고도화 리깅",
       "owner": "",
       "start": "2026-12-17",
@@ -3814,7 +3875,7 @@
       "deps": []
     },
     {
-      "id": 208,
+      "id": 211,
       "name": "[애니] 왜군 - 방패병_로코 및 기본 모션",
       "owner": "박찬용",
       "start": "2026-11-06",
@@ -3830,7 +3891,7 @@
       "deps": []
     },
     {
-      "id": 209,
+      "id": 212,
       "name": "[클라] 왜군 - 방패병_로코 모션 구현",
       "owner": "이주식",
       "start": null,
@@ -3846,7 +3907,7 @@
       "deps": []
     },
     {
-      "id": 210,
+      "id": 213,
       "name": "[클라] 왜군 - 방패병_전투 구현",
       "owner": "조익상",
       "start": null,
@@ -3862,7 +3923,7 @@
       "deps": []
     },
     {
-      "id": 211,
+      "id": 214,
       "name": "[애니] 왜군 - 방패병_스킬 모션 제작",
       "owner": "박찬용",
       "start": "2026-11-20",
@@ -3878,7 +3939,7 @@
       "deps": []
     },
     {
-      "id": 212,
+      "id": 215,
       "name": "[카메라] 왜군 - 방패병_전투 카메라 작업",
       "owner": "김웅빈",
       "start": null,
@@ -3894,7 +3955,7 @@
       "deps": []
     },
     {
-      "id": 213,
+      "id": 216,
       "name": "[기획] 왜군 - 방패병_몽타주·스크립트 작업",
       "owner": "김찬수",
       "start": null,
@@ -3910,7 +3971,7 @@
       "deps": []
     },
     {
-      "id": 214,
+      "id": 217,
       "name": "[캐릭터모델링] 명량해전_왜군 일반 병사 검병 모델링",
       "owner": "이락원",
       "start": "2026-09-15",
@@ -3926,7 +3987,7 @@
       "deps": []
     },
     {
-      "id": 215,
+      "id": 218,
       "name": "[캐릭터모델링] 명량해전_왜군 검 모델링",
       "owner": "이기해",
       "start": "2026-10-06",
@@ -3942,7 +4003,7 @@
       "deps": []
     },
     {
-      "id": 216,
+      "id": 219,
       "name": "[TA] 왜군 일반 검병 러프 리깅",
       "owner": "",
       "start": "2026-09-17",
@@ -3958,7 +4019,7 @@
       "deps": []
     },
     {
-      "id": 217,
+      "id": 220,
       "name": "[TA] 왜군 일반 검병 정식 리깅",
       "owner": "",
       "start": "2026-11-03",
@@ -3974,7 +4035,7 @@
       "deps": []
     },
     {
-      "id": 218,
+      "id": 221,
       "name": "[TA] 왜군 일반 검병 고도화 리깅",
       "owner": "",
       "start": "2026-11-13",
@@ -3990,7 +4051,7 @@
       "deps": []
     },
     {
-      "id": 219,
+      "id": 222,
       "name": "[애니] 왜군 - 검병_로코 및 기본 모션",
       "owner": "임광수",
       "start": "2026-11-06",
@@ -4006,7 +4067,7 @@
       "deps": []
     },
     {
-      "id": 220,
+      "id": 223,
       "name": "[클라] 왜군 - 검병_로코 모션 구현",
       "owner": "이주식",
       "start": null,
@@ -4022,7 +4083,7 @@
       "deps": []
     },
     {
-      "id": 221,
+      "id": 224,
       "name": "[클라] 왜군 - 검병_전투 구현",
       "owner": "조익상",
       "start": null,
@@ -4038,7 +4099,7 @@
       "deps": []
     },
     {
-      "id": 222,
+      "id": 225,
       "name": "[애니] 왜군 - 검병_스킬 모션 제작",
       "owner": "임광수",
       "start": "2026-11-20",
@@ -4054,7 +4115,7 @@
       "deps": []
     },
     {
-      "id": 223,
+      "id": 226,
       "name": "[카메라] 왜군 - 검병_전투 카메라 작업",
       "owner": "김웅빈",
       "start": null,
@@ -4070,7 +4131,7 @@
       "deps": []
     },
     {
-      "id": 224,
+      "id": 227,
       "name": "[기획] 왜군 - 검병_몽타주·스크립트 작업",
       "owner": "김찬수",
       "start": null,
@@ -4086,7 +4147,7 @@
       "deps": []
     },
     {
-      "id": 225,
+      "id": 228,
       "name": "[캐릭터모델링] 명량해전_왜군 일반 병사 조총병 모델링",
       "owner": "이락원",
       "start": "2026-10-13",
@@ -4102,7 +4163,7 @@
       "deps": []
     },
     {
-      "id": 226,
+      "id": 229,
       "name": "[캐릭터모델링] 명량해전_왜군 조총 모델링",
       "owner": "이기해",
       "start": "2026-10-15",
@@ -4118,7 +4179,7 @@
       "deps": []
     },
     {
-      "id": 227,
+      "id": 230,
       "name": "[TA] 왜군 일반 조총병 러프 리깅",
       "owner": "",
       "start": "2026-09-23",
@@ -4134,7 +4195,7 @@
       "deps": []
     },
     {
-      "id": 228,
+      "id": 231,
       "name": "[TA] 왜군 일반 조총병 정식 리깅",
       "owner": "",
       "start": "2026-11-19",
@@ -4150,7 +4211,7 @@
       "deps": []
     },
     {
-      "id": 229,
+      "id": 232,
       "name": "[TA] 왜군 일반 조총병 고도화 리깅",
       "owner": "",
       "start": "2026-12-01",
@@ -4166,7 +4227,7 @@
       "deps": []
     },
     {
-      "id": 230,
+      "id": 233,
       "name": "[애니] 왜군 - 조총병_로코 및 기본 모션",
       "owner": "최지현",
       "start": "2026-11-06",
@@ -4182,7 +4243,7 @@
       "deps": []
     },
     {
-      "id": 231,
+      "id": 234,
       "name": "[클라] 왜군 - 조총병_로코 모션 구현",
       "owner": "이주식",
       "start": null,
@@ -4198,7 +4259,7 @@
       "deps": []
     },
     {
-      "id": 232,
+      "id": 235,
       "name": "[클라] 왜군 - 조총병_전투 구현",
       "owner": "조익상",
       "start": null,
@@ -4214,7 +4275,7 @@
       "deps": []
     },
     {
-      "id": 233,
+      "id": 236,
       "name": "[애니] 왜군 - 조총병_스킬 모션 제작",
       "owner": "최지현",
       "start": "2026-11-20",
@@ -4230,7 +4291,7 @@
       "deps": []
     },
     {
-      "id": 234,
+      "id": 237,
       "name": "[카메라] 왜군 - 조총병_전투 카메라 작업",
       "owner": "김웅빈",
       "start": null,
@@ -4246,7 +4307,7 @@
       "deps": []
     },
     {
-      "id": 235,
+      "id": 238,
       "name": "[기획] 왜군 - 조총병_몽타주·스크립트 작업",
       "owner": "김찬수",
       "start": null,
@@ -4262,7 +4323,7 @@
       "deps": []
     },
     {
-      "id": 236,
+      "id": 239,
       "name": "[캐릭터모델링] 명량해전_조선군 모델링 (1)",
       "owner": "김웅",
       "start": "2026-09-23",
@@ -4278,7 +4339,7 @@
       "deps": []
     },
     {
-      "id": 237,
+      "id": 240,
       "name": "[캐릭터모델링] 명량해전_조선군 모델링 (2) (외주)",
       "owner": "김웅",
       "start": "2026-10-06",
@@ -4294,7 +4355,7 @@
       "deps": []
     },
     {
-      "id": 238,
+      "id": 241,
       "name": "[캐릭터모델링] 명량해전_조선군 검 모델링",
       "owner": "이기해",
       "start": "2026-10-21",
@@ -4310,7 +4371,7 @@
       "deps": []
     },
     {
-      "id": 239,
+      "id": 242,
       "name": "[캐릭터모델링] 명량해전_조선군 활 모델링",
       "owner": "이기해",
       "start": "2026-10-22",
@@ -4326,7 +4387,7 @@
       "deps": []
     },
     {
-      "id": 240,
+      "id": 243,
       "name": "[TA] 조선군 모델링 1 러프 리깅",
       "owner": "",
       "start": "2026-10-05",
@@ -4342,7 +4403,7 @@
       "deps": []
     },
     {
-      "id": 241,
+      "id": 244,
       "name": "[TA] 조선군 모델링 1 정식 리깅",
       "owner": "",
       "start": "2026-12-23",
@@ -4358,7 +4419,7 @@
       "deps": []
     },
     {
-      "id": 242,
+      "id": 245,
       "name": "[TA] 조선군 모델링 1 고도화 리깅",
       "owner": "",
       "start": "2027-01-04",
@@ -4374,7 +4435,7 @@
       "deps": []
     },
     {
-      "id": 243,
+      "id": 246,
       "name": "[TA] 조선군 모델링 2 러프 리깅",
       "owner": "",
       "start": "2026-10-09",
@@ -4390,7 +4451,7 @@
       "deps": []
     },
     {
-      "id": 244,
+      "id": 247,
       "name": "[TA] 조선군 모델링 2 정식 리깅",
       "owner": "",
       "start": "2027-01-08",
@@ -4406,7 +4467,7 @@
       "deps": []
     },
     {
-      "id": 245,
+      "id": 248,
       "name": "[TA] 조선군 모델링 2 고도화 리깅",
       "owner": "",
       "start": "2027-01-20",
@@ -4422,7 +4483,7 @@
       "deps": []
     },
     {
-      "id": 246,
+      "id": 249,
       "name": "[TA] 티라노사우르스 렉스 러프 리깅",
       "owner": "김동석",
       "start": "2026-09-21",
@@ -4438,7 +4499,7 @@
       "deps": []
     },
     {
-      "id": 247,
+      "id": 250,
       "name": "[TA] 티라노사우르스 렉스 정식 리깅",
       "owner": "김동석",
       "start": "2026-09-28",
@@ -4454,7 +4515,7 @@
       "deps": []
     },
     {
-      "id": 248,
+      "id": 251,
       "name": "[TA] 티라노사우르스 렉스 고도화 리깅",
       "owner": "김동석",
       "start": "2026-10-08",
@@ -4470,7 +4531,7 @@
       "deps": []
     },
     {
-      "id": 249,
+      "id": 252,
       "name": "[애니] 티라노사우르스 렉스 - 로코 및 기본 모션",
       "owner": "이동겸",
       "start": "2026-09-29",
@@ -4486,7 +4547,7 @@
       "deps": []
     },
     {
-      "id": 250,
+      "id": 253,
       "name": "[클라] 티라노사우르스 렉스 - 로코 모션 구현",
       "owner": "이주식",
       "start": null,
@@ -4502,7 +4563,7 @@
       "deps": []
     },
     {
-      "id": 251,
+      "id": 254,
       "name": "[애니] 티라노사우르스 렉스 - 스킬 모션 제작",
       "owner": "이동겸",
       "start": "2026-10-19",
@@ -4518,7 +4579,7 @@
       "deps": []
     },
     {
-      "id": 252,
+      "id": 255,
       "name": "[클라] 티라노사우르스 렉스 - 전투 구현",
       "owner": "이미륵",
       "start": null,
@@ -4534,7 +4595,7 @@
       "deps": []
     },
     {
-      "id": 253,
+      "id": 256,
       "name": "[카메라] 티라노사우르스 렉스 - 전투 카메라 작업",
       "owner": "김웅빈",
       "start": null,
@@ -4550,7 +4611,7 @@
       "deps": []
     },
     {
-      "id": 254,
+      "id": 257,
       "name": "[기획] 티라노사우르스 렉스 - 몽타주·스크립트 작업",
       "owner": "소원태",
       "start": null,
@@ -4566,7 +4627,7 @@
       "deps": []
     },
     {
-      "id": 255,
+      "id": 258,
       "name": "[캐릭터모델링] 벨로시랩터 모델링 수정",
       "owner": "김웅",
       "start": "2026-09-11",
@@ -4582,7 +4643,7 @@
       "deps": []
     },
     {
-      "id": 256,
+      "id": 259,
       "name": "[TA] 랩터 러프 리깅",
       "owner": "",
       "start": "2026-09-24",
@@ -4598,7 +4659,7 @@
       "deps": []
     },
     {
-      "id": 257,
+      "id": 260,
       "name": "[TA] 랩터 정식 리깅",
       "owner": "",
       "start": "2026-09-30",
@@ -4614,7 +4675,7 @@
       "deps": []
     },
     {
-      "id": 258,
+      "id": 261,
       "name": "[TA] 랩터 고도화 리깅",
       "owner": "",
       "start": "2026-10-12",
@@ -4630,7 +4691,7 @@
       "deps": []
     },
     {
-      "id": 259,
+      "id": 262,
       "name": "[애니] 벨로시티랩터 - 로코 및 기본 모션",
       "owner": "이동겸",
       "start": "2026-11-05",
@@ -4646,7 +4707,7 @@
       "deps": []
     },
     {
-      "id": 260,
+      "id": 263,
       "name": "[클라] 벨로시티랩터 - 로코 모션 구현",
       "owner": "이주식",
       "start": null,
@@ -4662,7 +4723,7 @@
       "deps": []
     },
     {
-      "id": 261,
+      "id": 264,
       "name": "[애니] 벨로시티랩터 - 스킬 모션 제작",
       "owner": "이동겸",
       "start": "2026-11-17",
@@ -4678,7 +4739,7 @@
       "deps": []
     },
     {
-      "id": 262,
+      "id": 265,
       "name": "[클라] 벨로시티랩터 - 전투 구현",
       "owner": "이미륵",
       "start": null,
@@ -4694,7 +4755,7 @@
       "deps": []
     },
     {
-      "id": 263,
+      "id": 266,
       "name": "[카메라] 벨로시티랩터 - 전투 카메라 작업",
       "owner": "김웅빈",
       "start": null,
@@ -4710,7 +4771,7 @@
       "deps": []
     },
     {
-      "id": 264,
+      "id": 267,
       "name": "[기획] 벨로시티랩터 - 몽타주·스크립트 작업",
       "owner": "주완호",
       "start": null,
@@ -4726,7 +4787,7 @@
       "deps": []
     },
     {
-      "id": 265,
+      "id": 268,
       "name": "[TA] 씨서펜트 러프 리깅",
       "owner": "양승희",
       "start": "2026-09-21",
@@ -4742,7 +4803,7 @@
       "deps": []
     },
     {
-      "id": 266,
+      "id": 269,
       "name": "[TA] 씨서펜트 정식 리깅",
       "owner": "양승희",
       "start": "2026-09-22",
@@ -4758,7 +4819,7 @@
       "deps": []
     },
     {
-      "id": 267,
+      "id": 270,
       "name": "[TA] 씨서펜트 고도화 리깅",
       "owner": "양승희",
       "start": "2026-10-02",
@@ -4774,7 +4835,7 @@
       "deps": []
     },
     {
-      "id": 268,
+      "id": 271,
       "name": "[애니] 씨서펜트 - 로코 및 기본 모션",
       "owner": "김영욱",
       "start": "2026-09-29",
@@ -4790,7 +4851,7 @@
       "deps": []
     },
     {
-      "id": 269,
+      "id": 272,
       "name": "[클라] 씨서펜트 - 로코 모션 구현",
       "owner": "이주식",
       "start": null,
@@ -4806,7 +4867,7 @@
       "deps": []
     },
     {
-      "id": 270,
+      "id": 273,
       "name": "[애니] 씨서펜트_스킬 1차 (2·4·5·6번)",
       "owner": "김영욱",
       "start": "2026-10-12",
@@ -4822,7 +4883,7 @@
       "deps": []
     },
     {
-      "id": 271,
+      "id": 274,
       "name": "[애니] 씨서펜트_스킬 2차 (1·3번)",
       "owner": "김영욱",
       "start": "2026-10-22",
@@ -4838,7 +4899,7 @@
       "deps": []
     },
     {
-      "id": 272,
+      "id": 275,
       "name": "[클라] 씨서펜트 - 전투 구현",
       "owner": "이미륵",
       "start": null,
@@ -4854,7 +4915,7 @@
       "deps": []
     },
     {
-      "id": 273,
+      "id": 276,
       "name": "[카메라] 씨서펜트 - 전투 카메라 작업",
       "owner": "김웅빈",
       "start": null,
@@ -4870,7 +4931,7 @@
       "deps": []
     },
     {
-      "id": 274,
+      "id": 277,
       "name": "[기획] 씨서펜트 - 몽타주·스크립트 작업",
       "owner": "장영환",
       "start": null,
@@ -4886,7 +4947,7 @@
       "deps": []
     },
     {
-      "id": 275,
+      "id": 278,
       "name": "[캐릭터원화] 공필두_거대 포탑 원화",
       "owner": "천서주",
       "start": "2026-10-13",
@@ -4902,7 +4963,7 @@
       "deps": []
     },
     {
-      "id": 276,
+      "id": 279,
       "name": "[캐릭터원화] 공필두_섹터 차단벽 원화",
       "owner": "천서주",
       "start": "2026-10-07",
@@ -4918,7 +4979,7 @@
       "deps": []
     },
     {
-      "id": 277,
+      "id": 280,
       "name": "[캐릭터원화] 공필두_차단벽 원화",
       "owner": "천서주",
       "start": "2026-10-01",
@@ -4934,7 +4995,7 @@
       "deps": []
     },
     {
-      "id": 278,
+      "id": 281,
       "name": "[캐릭터원화] 공필두_미니 드론 원화",
       "owner": "천서주",
       "start": "2026-09-28",
@@ -4950,7 +5011,7 @@
       "deps": []
     },
     {
-      "id": 279,
+      "id": 282,
       "name": "[캐릭터원화] 공필두_중계기 원화",
       "owner": "천서주",
       "start": "2026-09-21",
@@ -4966,7 +5027,7 @@
       "deps": []
     },
     {
-      "id": 280,
+      "id": 283,
       "name": "[캐릭터모델링] 공필두 무기 미니포탑 II / 미니포탑 III 모델링",
       "owner": "이기해",
       "start": "2026-09-14",
@@ -4982,7 +5043,7 @@
       "deps": []
     },
     {
-      "id": 281,
+      "id": 284,
       "name": "[캐릭터모델링] 공필두_거대 포탑 모델링",
       "owner": "김웅",
       "start": "2026-10-20",
@@ -4998,7 +5059,7 @@
       "deps": []
     },
     {
-      "id": 282,
+      "id": 285,
       "name": "[캐릭터모델링] 공필두_차단벽 모델링",
       "owner": "이기해",
       "start": "2026-10-28",
@@ -5014,7 +5075,7 @@
       "deps": []
     },
     {
-      "id": 283,
+      "id": 286,
       "name": "[캐릭터모델링] 공필두_섹터 차단벽 모델링",
       "owner": "이기해",
       "start": "2026-11-04",
@@ -5030,7 +5091,7 @@
       "deps": []
     },
     {
-      "id": 284,
+      "id": 287,
       "name": "[캐릭터모델링] 공필두_미니 드론 모델링 (외주)",
       "owner": "김웅",
       "start": "2026-10-06",
@@ -5046,7 +5107,7 @@
       "deps": []
     },
     {
-      "id": 285,
+      "id": 288,
       "name": "[캐릭터모델링] 공필두_중계기 모델링 (외주)",
       "owner": "김웅",
       "start": "2026-10-06",
@@ -5062,7 +5123,7 @@
       "deps": []
     },
     {
-      "id": 286,
+      "id": 289,
       "name": "[TA] 보스 공필두 템플릿 메쉬 리깅",
       "owner": "김동석",
       "start": "2026-09-23",
@@ -5078,7 +5139,7 @@
       "deps": []
     },
     {
-      "id": 287,
+      "id": 290,
       "name": "[TA] 보스 공필두 맨 몸 리깅",
       "owner": "김동석",
       "start": "2026-10-05",
@@ -5094,7 +5155,7 @@
       "deps": []
     },
     {
-      "id": 288,
+      "id": 291,
       "name": "[TA] 보스 공필두 베이스 스켈레톤 엔진 등록",
       "owner": "김동석",
       "start": "2026-10-09",
@@ -5110,7 +5171,7 @@
       "deps": []
     },
     {
-      "id": 289,
+      "id": 292,
       "name": "[TA] 보스 공필두 맨 몸 엔진 등록",
       "owner": "김동석",
       "start": "2026-10-15",
@@ -5126,7 +5187,7 @@
       "deps": []
     },
     {
-      "id": 290,
+      "id": 293,
       "name": "[TA] 보스 공필두 템플릿 페이셜 리깅",
       "owner": "김동석",
       "start": "2026-09-23",
@@ -5142,7 +5203,7 @@
       "deps": []
     },
     {
-      "id": 291,
+      "id": 294,
       "name": "[TA] 보스 공필두 페이셜 베이스 스켈레톤 엔진 등록",
       "owner": "김동석",
       "start": "2026-10-09",
@@ -5158,7 +5219,7 @@
       "deps": []
     },
     {
-      "id": 292,
+      "id": 295,
       "name": "[TA] 보스 공필두 페이셜 리깅",
       "owner": "김동석",
       "start": "2026-10-13",
@@ -5174,7 +5235,7 @@
       "deps": []
     },
     {
-      "id": 293,
+      "id": 296,
       "name": "[애니] 공필두 - 아이들 모션 제작",
       "owner": "김영욱",
       "start": "2026-10-29",
@@ -5190,7 +5251,7 @@
       "deps": []
     },
     {
-      "id": 294,
+      "id": 297,
       "name": "[클라] 공필두 - 로코 모션 구현",
       "owner": "이주식",
       "start": null,
@@ -5206,7 +5267,7 @@
       "deps": []
     },
     {
-      "id": 295,
+      "id": 298,
       "name": "[클라] 공필두 - 전투 오브젝트 스킬 구현",
       "owner": "이미륵",
       "start": null,
@@ -5222,7 +5283,7 @@
       "deps": []
     },
     {
-      "id": 296,
+      "id": 299,
       "name": "[애니] 공필두 - 전투 오브젝트 모션 제작",
       "owner": "김영욱",
       "start": "2026-10-30",
@@ -5238,7 +5299,7 @@
       "deps": []
     },
     {
-      "id": 297,
+      "id": 300,
       "name": "[카메라] 공필두 - 전투 카메라 작업",
       "owner": "김웅빈",
       "start": null,
@@ -5254,7 +5315,7 @@
       "deps": []
     },
     {
-      "id": 298,
+      "id": 301,
       "name": "[기획] 공필두 - 몽타주·스크립트 작업",
       "owner": "장영환",
       "start": null,
