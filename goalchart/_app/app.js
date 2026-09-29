@@ -265,8 +265,7 @@ function initResizer(){
 // loose·subs 가 없는 레인(테스트 픽스처·옛 호출)은 tasks 를 그대로 쌓는다.
 function layoutRows(gs){
   let y=0; const lay=[]; const taskY={};
-  // 서브 레인 작업 행에는 소속(g·s)을 싣는다. 좌측 줄이 그걸 보고 들여쓰기와 선 색을 달리한다.
-  const put=(t,g,s)=>{ const r={type:"task", t:t, y:y}; if(s){ r.g=g; r.s=s; } lay.push(r); taskY[t.id]=y; y+=ROW_H; };
+  const put=t=>{ lay.push({type:"task", t:t, y:y}); taskY[t.id]=y; y+=ROW_H; };
   gs.forEach((g,gi)=>{
     const col=isCollapsed(g.gkey);
     lay.push({type:"epic", g:g, gi:gi, y:y, collapsed:col}); y+=EPIC_H;
@@ -274,9 +273,9 @@ function layoutRows(gs){
     (g.subs || []).forEach((s,si)=>{
       const sc=isCollapsed(s.skey);
       lay.push({type:"sub", g:g, s:s, gi:gi, si:si, y:y, collapsed:sc}); y+=SUB_H;
-      if(!sc) s.tasks.forEach(t=>put(t,g,s));
+      if(!sc) s.tasks.forEach(put);
     });
-    (g.loose || g.tasks).forEach(t=>put(t));
+    (g.loose || g.tasks).forEach(put);
   });
   return {lay:lay, taskY:taskY, H:y};
 }
@@ -339,10 +338,7 @@ function labelsHtml(lay, gs, f){
       const jk = t.jira ? '<a class="jkey" href="'+jiraUrl(t.jira)+'" target="_blank" rel="noopener" onclick="event.stopPropagation()">'+esc(t.jira)+'</a> · ' : '';
       let mv = "", dnd = "";
       
-      // 서브 레인 작업은 한 단계 더 들여 쓰고 세로선을 레인 색으로 칠한다 — 그래야 마지막
-      // 서브 레인 아래에 오는 서브레인 빈 작업이 그 서브 레인 소속으로 보이지 않는다.
-      const insub = it.s ? ' insub" style="border-left-color:'+it.g.color : '';
-      lh += '<div class="lrow'+insub+'"'+dnd+' onclick="openEdit('+t.id+')">'+
+      lh += '<div class="lrow"'+dnd+' onclick="openEdit('+t.id+')">'+
         '<div class="nm"><span class="sdot" style="background:'+STVAR[t.status]+'"></span>'+esc(t.name)+(blk?' <span class="lock" title="선행 작업이 완료되지 않아 대기 중">⏳</span>':'')+'</div>'+
         '<div class="meta">'+jk+esc(ownerParts(t.owner).name)+' · '+mmdd(t.start)+'~'+mmdd(t.end)+flagsHtml(t,f)+'</div>'+mv+'</div>';
     }
@@ -638,37 +634,6 @@ function holdDateOf(chart){
   return (chart && chart.deadline) || "";
 }
 
-// 날짜가 비면 오늘에 붙이고 사유(miss)를 돌려준다. 호출하는 쪽이 담당자 칸에 덧붙인다.
-// 날짜가 아예 없을 때만 자리를 정해 준다. '대기 중'은 맨 끝, 나머지는 오늘.
-// '대기 중'은 꼬리표도 Jira 상태 이름을 쓴다. 착수 시점이 안 정해진 이유가 상태에 있다.
-// applyJiraIssues 와 fillStoredDates 가 함께 쓴다. Worker 성공 여부에 따라 같은 작업이
-// 다른 날에 놓이지 않게 규칙을 한 벌로 둔다.
-function fillDates(start, end, statusName, today, holdAt){
-  let miss="";
-  if(!start && !end){
-    const hold=!!HOLD_STATUS[statusName];
-    start=end=(holdAt && hold) ? holdAt : today;
-    miss=hold ? "대기 중" : "일정 미정";
-  }
-  else if(!start){ start=end; miss="시작일 미정"; }
-  else if(!end){ end=start; miss="마감 미정"; }
-  if(end<start){ const x=start; start=end; end=x; }
-  return {start:start, end:end, miss:miss};
-}
-
-// Worker 응답 없이 그릴 때 저장된 값에 같은 날짜 규칙을 적용한다. GAS 는 Worker 값을
-// 그대로 베껴 마감 없는 이슈의 start/end 가 null 로 실리는데, 그대로 그리면 pd(null) 에서
-// 예외가 나 차트가 뜨지 않는다. 날짜가 있는 작업은 건드리지 않는다.
-// 상태(기한 초과)는 다시 판정하지 않는다. 날짜를 메운 작업은 진짜 마감이 없어 기한 초과가 될 수 없다.
-function fillStoredDates(tasks, today, holdAt){
-  tasks.forEach(function(t){
-    if(t.start && t.end) return;
-    const d=fillDates(t.start, t.end, t.statusName, today, holdAt);
-    t.start=d.start; t.end=d.end;
-    t.owner=[(t.owner||""), d.miss].filter(Boolean).join(" · ");
-  });
-}
-
 function applyJiraIssues(tasks, issues, today, holdAt){
   const by={}; issues.forEach(function(x){ by[x.key]=x; });
   // 의존관계를 Jira 기준으로 맞추려면 '이슈 키 → 차트 id' 표가 필요하다.
@@ -678,9 +643,20 @@ function applyJiraIssues(tasks, issues, today, holdAt){
     const j=by[t.jira]; if(!j) return;
     n++;
     if(j.name) t.name=j.name;
-    const d=fillDates(j.start, j.end, j.statusName, today, holdAt);
-    t.start=d.start; t.end=d.end;
-    t.owner=[(j.owner||""), d.miss].filter(Boolean).join(" · ");
+    let start=j.start, end=j.end, miss="";
+    // 날짜가 비면 오늘에 붙이고 사유를 담당자 칸에 덧붙인다 (data 생성 규칙과 같다).
+    // 날짜가 아예 없을 때만 자리를 정해 준다. '대기 중'은 맨 끝, 나머지는 오늘.
+    // '대기 중'은 꼬리표도 Jira 상태 이름을 쓴다. 착수 시점이 안 정해진 이유가 상태에 있다.
+    if(!start && !end){
+      const hold=!!HOLD_STATUS[j.statusName];
+      start=end=(holdAt && hold) ? holdAt : today;
+      miss=hold ? "대기 중" : "일정 미정";
+    }
+    else if(!start){ start=end; miss="시작일 미정"; }
+    else if(!end){ end=start; miss="마감 미정"; }
+    if(end<start){ const x=start; start=end; end=x; }
+    t.start=start; t.end=end;
+    t.owner=[(j.owner||""), miss].filter(Boolean).join(" · ");
     // 기한 초과 판정은 '지금' 기준으로 다시 한다 — 저장된 값은 빌드 시점에 굳은 것이다.
     // done 과 review 는 덮지 않는다. 검수 요청은 작업이 끝나고 확인만 남은 상태라,
     // 마감이 지났다고 '기한 초과'로 바꾸면 정작 누가 확인해야 하는지가 보이지 않는다.
@@ -744,10 +720,6 @@ async function syncFromJira(){
   // 쓰지 않기로 한 정상 설정이라 알릴 것이 없고, chartId 가 없으면 설정이 깨진 것이라
   // 그대로 알린다. 여기서 조용히 물러나면 둘이 화면상 구별되지 않아, 갱신이 꺼진 줄
   // 모른 채 차트가 며칠 낡는다.
-  //
-  // 그리기 전에 저장된 값의 빈 날짜부터 메운다. 갱신을 못 하거나 실패하면 이 값으로 그린다.
-  // 성공하면 applyJiraIssues 가 같은 규칙으로 다시 덮는다.
-  fillStoredDates(state.tasks, iso(todayMid()), holdDateOf(state));
   const cantSync = !state.syncEndpoint ? ""
     : (!state.chartId ? "Jira 갱신 불가 — data.json 에 chartId 가 없습니다" : null);
   if(cantSync!==null){ setLoading(false); render(); syncPanes(); showSyncNote(cantSync, !!cantSync); return; }
