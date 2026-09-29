@@ -9,7 +9,7 @@
   },
   "jiraBase": "https://offbeatplay.atlassian.net/browse/",
   "syncEndpoint": "https://orv-goalchart-jira.offbeat-696.workers.dev",
-  "syncedAt": "2026-09-29T05:32:47.077Z",
+  "syncedAt": "2026-09-29T06:19:52.314Z",
   "epicGroups": [
     {
       "key": "G1",
@@ -210,6 +210,15 @@
         "ORVV-11356",
         "ORVV-11099",
         "ORVV-11334",
+        "ORVV-11130",
+        "ORVV-11131",
+        "ORVV-11345",
+        "ORVV-11104",
+        "ORVV-11105",
+        "ORVV-11336",
+        "ORVV-11101",
+        "ORVV-11102",
+        "ORVV-11335",
         "ORVV-11149",
         "ORVV-11148",
         "ORVV-11157",
@@ -217,15 +226,6 @@
         "ORVV-11151",
         "ORVV-11150",
         "ORVV-10129",
-        "ORVV-11131",
-        "ORVV-11130",
-        "ORVV-11345",
-        "ORVV-11105",
-        "ORVV-11104",
-        "ORVV-11336",
-        "ORVV-11102",
-        "ORVV-11101",
-        "ORVV-11335",
         "ORVV-11290"
       ]
     },
@@ -233,12 +233,12 @@
       "key": "G15",
       "name": "[플레이] 대한극장",
       "issues": [
-        "ORVV-11016",
         "ORVV-11029",
         "ORVV-11357",
         "ORVV-11107",
         "ORVV-11337",
         "ORVV-11291",
+        "ORVV-11016",
         "ORVV-11294"
       ]
     },
@@ -246,22 +246,22 @@
       "key": "G16",
       "name": "[플레이] 대한극장 - 명량",
       "issues": [
-        "ORVV-10763",
         "ORVV-10012",
         "ORVV-11028",
         "ORVV-11354",
-        "ORVV-11128",
         "ORVV-11127",
+        "ORVV-11128",
         "ORVV-11344",
-        "ORVV-11125",
-        "ORVV-11124",
-        "ORVV-11343",
-        "ORVV-11122",
-        "ORVV-11121",
-        "ORVV-11342",
-        "ORVV-11119",
         "ORVV-11118",
+        "ORVV-11119",
         "ORVV-11341",
+        "ORVV-11124",
+        "ORVV-10763",
+        "ORVV-11125",
+        "ORVV-11343",
+        "ORVV-11121",
+        "ORVV-11122",
+        "ORVV-11342",
         "ORVV-11295"
       ]
     },
@@ -696,9 +696,9 @@
       "owner": "[사운드]이예얼",
       "start": "2026-09-14",
       "end": "2026-09-16",
-      "status": "review",
-      "statusName": "검수 요청",
-      "doneAt": null,
+      "status": "done",
+      "statusName": "완료",
+      "doneAt": "2026-09-29",
       "epic": {
         "key": "ORVV-7686",
         "name": "[캐릭터] 김독자"
@@ -1942,7 +1942,9 @@
         "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
       },
       "jira": "ORVV-11329",
-      "deps": []
+      "deps": [
+        87
+      ]
     },
     {
       "id": 89,
@@ -1974,7 +1976,9 @@
         "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
       },
       "jira": "ORVV-11330",
-      "deps": []
+      "deps": [
+        89
+      ]
     },
     {
       "id": 91,
@@ -2006,7 +2010,9 @@
         "name": "[컷씬][환영감옥] 환영 감옥 입장 컷씬"
       },
       "jira": "ORVV-11303",
-      "deps": []
+      "deps": [
+        91
+      ]
     },
     {
       "id": 93,
@@ -2320,7 +2326,7 @@
       "name": "[클라] 환영감옥 고도화 Part 2",
       "owner": "김기돈",
       "start": null,
-      "end": "2026-10-08",
+      "end": "2026-10-30",
       "status": "todo",
       "statusName": "할 일",
       "doneAt": null,
@@ -2379,7 +2385,9 @@
         "name": "[베타] 충무로역"
       },
       "jira": "ORVV-10740",
-      "deps": []
+      "deps": [
+        113
+      ]
     },
     {
       "id": 115,
@@ -2395,7 +2403,9 @@
         "name": "[플레이] 충무로역 플레이 구현"
       },
       "jira": "ORVV-11356",
-      "deps": []
+      "deps": [
+        114
+      ]
     },
     {
       "id": 116,
@@ -2427,138 +2437,12 @@
         "name": "[연출][충무로역] 충무로역 도착"
       },
       "jira": "ORVV-11334",
-      "deps": []
+      "deps": [
+        116
+      ]
     },
     {
       "id": 118,
-      "name": "[애니] 충무로역 NPC·캐릭터 모션 제작(현석)",
-      "owner": "김현석",
-      "start": "2026-09-21",
-      "end": "2026-09-29",
-      "status": "inprog",
-      "statusName": "진행 중",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-9113",
-        "name": "[플레이] 충무로역 플레이 구현"
-      },
-      "jira": "ORVV-11149",
-      "deps": []
-    },
-    {
-      "id": 119,
-      "name": "[애니] 충무로역 NPC·캐릭터 모션 제작(지원)",
-      "owner": "남지원",
-      "start": "2026-09-21",
-      "end": "2026-09-22",
-      "status": "done",
-      "statusName": "완료",
-      "doneAt": "2026-09-29",
-      "epic": {
-        "key": "ORVV-9113",
-        "name": "[플레이] 충무로역 플레이 구현"
-      },
-      "jira": "ORVV-11148",
-      "deps": []
-    },
-    {
-      "id": 120,
-      "name": "[애니] 충무로역 NPC·캐릭터 모션 제작(지현)",
-      "owner": "최지현",
-      "start": "2026-09-18",
-      "end": "2026-09-28",
-      "status": "done",
-      "statusName": "완료",
-      "doneAt": "2026-09-29",
-      "epic": {
-        "key": "ORVV-9113",
-        "name": "[플레이] 충무로역 플레이 구현"
-      },
-      "jira": "ORVV-11157",
-      "deps": []
-    },
-    {
-      "id": 121,
-      "name": "[애니] 충무로역 NPC·캐릭터 모션 제작(은정)",
-      "owner": "김은정",
-      "start": "2026-09-18",
-      "end": "2026-09-29",
-      "status": "done",
-      "statusName": "완료",
-      "doneAt": "2026-09-29",
-      "epic": {
-        "key": "ORVV-9113",
-        "name": "[플레이] 충무로역 플레이 구현"
-      },
-      "jira": "ORVV-11152",
-      "deps": []
-    },
-    {
-      "id": 122,
-      "name": "[애니] 충무로역 NPC·캐릭터 모션 제작(영욱)",
-      "owner": "김영욱",
-      "start": "2026-09-18",
-      "end": "2026-09-23",
-      "status": "review",
-      "statusName": "검수 요청",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-9113",
-        "name": "[플레이] 충무로역 플레이 구현"
-      },
-      "jira": "ORVV-11151",
-      "deps": []
-    },
-    {
-      "id": 123,
-      "name": "[애니] 충무로역 NPC·캐릭터 모션 제작(광수)",
-      "owner": "임광수",
-      "start": "2026-09-18",
-      "end": "2026-09-30",
-      "status": "done",
-      "statusName": "완료",
-      "doneAt": "2026-09-29",
-      "epic": {
-        "key": "ORVV-9113",
-        "name": "[플레이] 충무로역 플레이 구현"
-      },
-      "jira": "ORVV-11150",
-      "deps": []
-    },
-    {
-      "id": 124,
-      "name": "[클라] 충무로역 플레이 - 기본 스크립팅",
-      "owner": "이진형",
-      "start": "2026-09-02",
-      "end": "2026-09-30",
-      "status": "inprog",
-      "statusName": "진행 중",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-9113",
-        "name": "[플레이] 충무로역 플레이 구현"
-      },
-      "jira": "ORVV-10129",
-      "deps": []
-    },
-    {
-      "id": 125,
-      "name": "[연출][제작] 공필두 무장지대 (무대화)",
-      "owner": "김웅빈",
-      "start": null,
-      "end": null,
-      "status": "todo",
-      "statusName": "할 일",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-11129",
-        "name": "[연출][충무로역] 공필두 무장지대 (무대화)"
-      },
-      "jira": "ORVV-11131",
-      "deps": []
-    },
-    {
-      "id": 126,
       "name": "[연출][프리비즈] 공필두 무장지대 (무대화)",
       "owner": "김웅빈",
       "start": "2026-10-08",
@@ -2574,7 +2458,23 @@
       "deps": []
     },
     {
-      "id": 127,
+      "id": 119,
+      "name": "[연출][제작] 공필두 무장지대 (무대화)",
+      "owner": "김웅빈",
+      "start": null,
+      "end": null,
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-11129",
+        "name": "[연출][충무로역] 공필두 무장지대 (무대화)"
+      },
+      "jira": "ORVV-11131",
+      "deps": []
+    },
+    {
+      "id": 120,
       "name": "[라이팅] 공필두 무장지대 (무대화)",
       "owner": "정재윤",
       "start": null,
@@ -2587,26 +2487,12 @@
         "name": "[연출][충무로역] 공필두 무장지대 (무대화)"
       },
       "jira": "ORVV-11345",
-      "deps": []
+      "deps": [
+        119
+      ]
     },
     {
-      "id": 128,
-      "name": "[컷씬][제작] 무장지대 지역을 이현성이 태산부수기로 파괴",
-      "owner": "김정근",
-      "start": null,
-      "end": null,
-      "status": "todo",
-      "statusName": "할 일",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-11103",
-        "name": "[컷씬][충무로역] 무장지대 지역을 이현성이 태산부수기로 파괴"
-      },
-      "jira": "ORVV-11105",
-      "deps": []
-    },
-    {
-      "id": 129,
+      "id": 121,
       "name": "[컷씬][프리비즈] 무장지대 지역을 이현성이 태산부수기로 파괴",
       "owner": "김정근",
       "start": "2026-09-09",
@@ -2622,7 +2508,25 @@
       "deps": []
     },
     {
-      "id": 130,
+      "id": 122,
+      "name": "[컷씬][제작] 무장지대 지역을 이현성이 태산부수기로 파괴",
+      "owner": "김정근",
+      "start": null,
+      "end": null,
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-11103",
+        "name": "[컷씬][충무로역] 무장지대 지역을 이현성이 태산부수기로 파괴"
+      },
+      "jira": "ORVV-11105",
+      "deps": [
+        121
+      ]
+    },
+    {
+      "id": 123,
       "name": "[라이팅] 무장지대 지역을 이현성이 태산부수기로 파괴",
       "owner": "정재윤",
       "start": null,
@@ -2635,26 +2539,12 @@
         "name": "[컷씬][충무로역] 무장지대 지역을 이현성이 태산부수기로 파괴"
       },
       "jira": "ORVV-11336",
-      "deps": []
+      "deps": [
+        122
+      ]
     },
     {
-      "id": 131,
-      "name": "[컷씬][제작] 스펙터 영석을 먹고 김독자가 유령종이 되어 안나 크로프트와 조우",
-      "owner": "김웅빈",
-      "start": null,
-      "end": null,
-      "status": "todo",
-      "statusName": "할 일",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-11100",
-        "name": "[컷씬][충무로역] 스펙터 영석을 먹고 김독자가 유령종이 되어 안나 크로프트와 조우"
-      },
-      "jira": "ORVV-11102",
-      "deps": []
-    },
-    {
-      "id": 132,
+      "id": 124,
       "name": "[컷씬][프리비즈] 스펙터 영석을 먹고 김독자가 유령종이 되어 안나 크로프트와 조우",
       "owner": "김웅빈",
       "start": "2026-09-09",
@@ -2670,7 +2560,25 @@
       "deps": []
     },
     {
-      "id": 133,
+      "id": 125,
+      "name": "[컷씬][제작] 스펙터 영석을 먹고 김독자가 유령종이 되어 안나 크로프트와 조우",
+      "owner": "김웅빈",
+      "start": null,
+      "end": null,
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-11100",
+        "name": "[컷씬][충무로역] 스펙터 영석을 먹고 김독자가 유령종이 되어 안나 크로프트와 조우"
+      },
+      "jira": "ORVV-11102",
+      "deps": [
+        124
+      ]
+    },
+    {
+      "id": 126,
       "name": "[라이팅] 스펙터 영석을 먹고 김독자가 유령종이 되어 안나 크로프트와 조우",
       "owner": "박장호",
       "start": null,
@@ -2683,6 +2591,120 @@
         "name": "[컷씬][충무로역] 스펙터 영석을 먹고 김독자가 유령종이 되어 안나 크로프트와 조우"
       },
       "jira": "ORVV-11335",
+      "deps": [
+        125
+      ]
+    },
+    {
+      "id": 127,
+      "name": "[애니] 충무로역 NPC·캐릭터 모션 제작(현석)",
+      "owner": "김현석",
+      "start": "2026-09-21",
+      "end": "2026-09-29",
+      "status": "inprog",
+      "statusName": "진행 중",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-9113",
+        "name": "[플레이] 충무로역 플레이 구현"
+      },
+      "jira": "ORVV-11149",
+      "deps": []
+    },
+    {
+      "id": 128,
+      "name": "[애니] 충무로역 NPC·캐릭터 모션 제작(지원)",
+      "owner": "남지원",
+      "start": "2026-09-21",
+      "end": "2026-09-22",
+      "status": "done",
+      "statusName": "완료",
+      "doneAt": "2026-09-29",
+      "epic": {
+        "key": "ORVV-9113",
+        "name": "[플레이] 충무로역 플레이 구현"
+      },
+      "jira": "ORVV-11148",
+      "deps": []
+    },
+    {
+      "id": 129,
+      "name": "[애니] 충무로역 NPC·캐릭터 모션 제작(지현)",
+      "owner": "최지현",
+      "start": "2026-09-18",
+      "end": "2026-09-28",
+      "status": "done",
+      "statusName": "완료",
+      "doneAt": "2026-09-29",
+      "epic": {
+        "key": "ORVV-9113",
+        "name": "[플레이] 충무로역 플레이 구현"
+      },
+      "jira": "ORVV-11157",
+      "deps": []
+    },
+    {
+      "id": 130,
+      "name": "[애니] 충무로역 NPC·캐릭터 모션 제작(은정)",
+      "owner": "김은정",
+      "start": "2026-09-18",
+      "end": "2026-09-29",
+      "status": "done",
+      "statusName": "완료",
+      "doneAt": "2026-09-29",
+      "epic": {
+        "key": "ORVV-9113",
+        "name": "[플레이] 충무로역 플레이 구현"
+      },
+      "jira": "ORVV-11152",
+      "deps": []
+    },
+    {
+      "id": 131,
+      "name": "[애니] 충무로역 NPC·캐릭터 모션 제작(영욱)",
+      "owner": "김영욱",
+      "start": "2026-09-18",
+      "end": "2026-09-23",
+      "status": "review",
+      "statusName": "검수 요청",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-9113",
+        "name": "[플레이] 충무로역 플레이 구현"
+      },
+      "jira": "ORVV-11151",
+      "deps": []
+    },
+    {
+      "id": 132,
+      "name": "[애니] 충무로역 NPC·캐릭터 모션 제작(광수)",
+      "owner": "임광수",
+      "start": "2026-09-18",
+      "end": "2026-09-30",
+      "status": "done",
+      "statusName": "완료",
+      "doneAt": "2026-09-29",
+      "epic": {
+        "key": "ORVV-9113",
+        "name": "[플레이] 충무로역 플레이 구현"
+      },
+      "jira": "ORVV-11150",
+      "deps": []
+    },
+    {
+      "id": 133,
+      "name": "[클라] 충무로역 플레이 - 기본 스크립팅",
+      "owner": "이진형",
+      "start": "2026-09-02",
+      "end": "2026-09-30",
+      "status": "inprog",
+      "statusName": "진행 중",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-9113",
+        "name": "[플레이] 충무로역 플레이 구현"
+      },
+      "jira": "ORVV-10129",
       "deps": []
     },
     {
@@ -2703,22 +2725,6 @@
     },
     {
       "id": 135,
-      "name": "[캐릭터모델링] 김독자 외장 강화 수트-레플리카",
-      "owner": "김현종",
-      "start": "2026-10-22",
-      "end": "2026-11-11",
-      "status": "todo",
-      "statusName": "할 일",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-10041",
-        "name": "[플레이] 극장던전 - 보상의방 플레이 구현"
-      },
-      "jira": "ORVV-11016",
-      "deps": []
-    },
-    {
-      "id": 136,
       "name": "[배경원화] 대한극장 컨셉",
       "owner": "임재훈",
       "start": "2026-09-11",
@@ -2734,7 +2740,7 @@
       "deps": []
     },
     {
-      "id": 137,
+      "id": 136,
       "name": "[라이팅] 대한극장 라이팅 환경 셋팅",
       "owner": "정재윤",
       "start": "2026-10-05",
@@ -2750,7 +2756,7 @@
       "deps": []
     },
     {
-      "id": 138,
+      "id": 137,
       "name": "[연출][제작] 대한극장 도착",
       "owner": "김웅빈",
       "start": "2026-11-03",
@@ -2766,7 +2772,7 @@
       "deps": []
     },
     {
-      "id": 139,
+      "id": 138,
       "name": "[라이팅] 대한극장 도착",
       "owner": "정재윤",
       "start": null,
@@ -2779,10 +2785,12 @@
         "name": "[연출][대한극장] 대한극장 도착"
       },
       "jira": "ORVV-11337",
-      "deps": []
+      "deps": [
+        137
+      ]
     },
     {
-      "id": 140,
+      "id": 139,
       "name": "[클라][대한극장] 플레이 프로세스 관리",
       "owner": "이진형",
       "start": null,
@@ -2795,6 +2803,22 @@
         "name": "[플레이] 극장 던전 플레이 구현"
       },
       "jira": "ORVV-11291",
+      "deps": []
+    },
+    {
+      "id": 140,
+      "name": "[캐릭터모델링] 김독자 외장 강화 수트-레플리카",
+      "owner": "김현종",
+      "start": "2026-10-22",
+      "end": "2026-11-11",
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-10041",
+        "name": "[플레이] 극장던전 - 보상의방 플레이 구현"
+      },
+      "jira": "ORVV-11016",
       "deps": []
     },
     {
@@ -2811,26 +2835,12 @@
         "name": "[플레이] 극장던전 - 보상의방 플레이 구현"
       },
       "jira": "ORVV-11294",
-      "deps": []
+      "deps": [
+        140
+      ]
     },
     {
       "id": 142,
-      "name": "[캐릭터모델링] 충무공 모델링",
-      "owner": "이락원",
-      "start": "2026-10-16",
-      "end": "2026-11-12",
-      "status": "todo",
-      "statusName": "할 일",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-10042",
-        "name": "[플레이] 극장던전 - 명량 플레이 구현"
-      },
-      "jira": "ORVV-10763",
-      "deps": []
-    },
-    {
-      "id": 143,
       "name": "[배경] 대한극장_명량해전 블록아웃",
       "owner": "이형근",
       "start": null,
@@ -2846,7 +2856,7 @@
       "deps": []
     },
     {
-      "id": 144,
+      "id": 143,
       "name": "[배경 모델링] 대한극장_명량해전_군함 디테일 목업",
       "owner": "이민수",
       "start": "2026-09-11",
@@ -2862,7 +2872,7 @@
       "deps": []
     },
     {
-      "id": 145,
+      "id": 144,
       "name": "[라이팅] 대한극장 명량 라이팅 환경 셋팅",
       "owner": "박장호",
       "start": "2026-09-28",
@@ -2875,6 +2885,22 @@
         "name": "[플레이] 극장던전 - 명량 플레이 구현"
       },
       "jira": "ORVV-11354",
+      "deps": []
+    },
+    {
+      "id": 145,
+      "name": "[컷씬][프리비즈] 명량_오프닝 연출",
+      "owner": "이창석",
+      "start": "2026-10-01",
+      "end": "2026-10-08",
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-11126",
+        "name": "[컷씬][대한극장] 명량_오프닝 연출"
+      },
+      "jira": "ORVV-11127",
       "deps": []
     },
     {
@@ -2891,26 +2917,12 @@
         "name": "[컷씬][대한극장] 명량_오프닝 연출"
       },
       "jira": "ORVV-11128",
-      "deps": []
+      "deps": [
+        145
+      ]
     },
     {
       "id": 147,
-      "name": "[컷씬][프리비즈] 명량_오프닝 연출",
-      "owner": "이창석",
-      "start": "2026-10-01",
-      "end": "2026-10-08",
-      "status": "todo",
-      "statusName": "할 일",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-11126",
-        "name": "[컷씬][대한극장] 명량_오프닝 연출"
-      },
-      "jira": "ORVV-11127",
-      "deps": []
-    },
-    {
-      "id": 148,
       "name": "[라이팅] 명량_오프닝 연출",
       "owner": "박장호",
       "start": null,
@@ -2923,122 +2935,12 @@
         "name": "[컷씬][대한극장] 명량_오프닝 연출"
       },
       "jira": "ORVV-11344",
-      "deps": []
+      "deps": [
+        146
+      ]
     },
     {
-      "id": 149,
-      "name": "[컷씬][제작] 명량_이지혜 각성 및 칼의노래 성흔 획득",
-      "owner": "이창석",
-      "start": null,
-      "end": null,
-      "status": "todo",
-      "statusName": "할 일",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-11123",
-        "name": "[컷씬][대한극장] 명량_이지혜 각성 및 칼의노래 성흔 획득"
-      },
-      "jira": "ORVV-11125",
-      "deps": []
-    },
-    {
-      "id": 150,
-      "name": "[컷씬][프리비즈] 명량_이지혜 각성 및 칼의노래 성흔 획득",
-      "owner": "이창석",
-      "start": "2026-09-09",
-      "end": "2026-09-30",
-      "status": "inprog",
-      "statusName": "진행 중",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-11123",
-        "name": "[컷씬][대한극장] 명량_이지혜 각성 및 칼의노래 성흔 획득"
-      },
-      "jira": "ORVV-11124",
-      "deps": []
-    },
-    {
-      "id": 151,
-      "name": "[라이팅] 명량_이지혜 각성 및 칼의노래 성흔 획득",
-      "owner": "박장호",
-      "start": null,
-      "end": null,
-      "status": "todo",
-      "statusName": "할 일",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-11123",
-        "name": "[컷씬][대한극장] 명량_이지혜 각성 및 칼의노래 성흔 획득"
-      },
-      "jira": "ORVV-11343",
-      "deps": []
-    },
-    {
-      "id": 152,
-      "name": "[컷씬][제작] 명량_대장선 전투 및 보스 연출",
-      "owner": "이창석",
-      "start": null,
-      "end": null,
-      "status": "todo",
-      "statusName": "할 일",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-11120",
-        "name": "[컷씬][대한극장] 명량_대장선 전투 및 보스 연출"
-      },
-      "jira": "ORVV-11122",
-      "deps": []
-    },
-    {
-      "id": 153,
-      "name": "[컷씬][프리비즈] 명량_대장선 전투 및 보스 연출",
-      "owner": "이창석",
-      "start": "2026-09-22",
-      "end": "2026-10-07",
-      "status": "todo",
-      "statusName": "할 일",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-11120",
-        "name": "[컷씬][대한극장] 명량_대장선 전투 및 보스 연출"
-      },
-      "jira": "ORVV-11121",
-      "deps": []
-    },
-    {
-      "id": 154,
-      "name": "[라이팅] 명량_대장선 전투 및 보스 연출",
-      "owner": "박장호",
-      "start": null,
-      "end": null,
-      "status": "todo",
-      "statusName": "할 일",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-11120",
-        "name": "[컷씬][대한극장] 명량_대장선 전투 및 보스 연출"
-      },
-      "jira": "ORVV-11342",
-      "deps": []
-    },
-    {
-      "id": 155,
-      "name": "[컷씬][제작] 명량_대장선 접현 연출",
-      "owner": "이창석",
-      "start": null,
-      "end": null,
-      "status": "todo",
-      "statusName": "할 일",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-11117",
-        "name": "[컷씬][대한극장] 명량_대장선 접현 연출"
-      },
-      "jira": "ORVV-11119",
-      "deps": []
-    },
-    {
-      "id": 156,
+      "id": 148,
       "name": "[컷씬][프리비즈] 명량_대장선 접현 연출",
       "owner": "이창석",
       "start": "2026-10-08",
@@ -3054,7 +2956,25 @@
       "deps": []
     },
     {
-      "id": 157,
+      "id": 149,
+      "name": "[컷씬][제작] 명량_대장선 접현 연출",
+      "owner": "이창석",
+      "start": null,
+      "end": null,
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-11117",
+        "name": "[컷씬][대한극장] 명량_대장선 접현 연출"
+      },
+      "jira": "ORVV-11119",
+      "deps": [
+        148
+      ]
+    },
+    {
+      "id": 150,
       "name": "[라이팅] 명량_대장선 접현 연출",
       "owner": "박장호",
       "start": null,
@@ -3067,6 +2987,124 @@
         "name": "[컷씬][대한극장] 명량_대장선 접현 연출"
       },
       "jira": "ORVV-11341",
+      "deps": [
+        149
+      ]
+    },
+    {
+      "id": 151,
+      "name": "[컷씬][프리비즈] 명량_이지혜 각성 및 칼의노래 성흔 획득",
+      "owner": "이창석",
+      "start": "2026-09-09",
+      "end": "2026-09-30",
+      "status": "inprog",
+      "statusName": "진행 중",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-11123",
+        "name": "[컷씬][대한극장] 명량_이지혜 각성 및 칼의노래 성흔 획득"
+      },
+      "jira": "ORVV-11124",
+      "deps": []
+    },
+    {
+      "id": 152,
+      "name": "[캐릭터모델링] 충무공 모델링",
+      "owner": "이락원",
+      "start": "2026-10-16",
+      "end": "2026-11-12",
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-10042",
+        "name": "[플레이] 극장던전 - 명량 플레이 구현"
+      },
+      "jira": "ORVV-10763",
+      "deps": []
+    },
+    {
+      "id": 153,
+      "name": "[컷씬][제작] 명량_이지혜 각성 및 칼의노래 성흔 획득",
+      "owner": "이창석",
+      "start": null,
+      "end": null,
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-11123",
+        "name": "[컷씬][대한극장] 명량_이지혜 각성 및 칼의노래 성흔 획득"
+      },
+      "jira": "ORVV-11125",
+      "deps": [
+        151
+      ]
+    },
+    {
+      "id": 154,
+      "name": "[라이팅] 명량_이지혜 각성 및 칼의노래 성흔 획득",
+      "owner": "박장호",
+      "start": null,
+      "end": null,
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-11123",
+        "name": "[컷씬][대한극장] 명량_이지혜 각성 및 칼의노래 성흔 획득"
+      },
+      "jira": "ORVV-11343",
+      "deps": [
+        153
+      ]
+    },
+    {
+      "id": 155,
+      "name": "[컷씬][프리비즈] 명량_대장선 전투 및 보스 연출",
+      "owner": "이창석",
+      "start": "2026-09-22",
+      "end": "2026-10-07",
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-11120",
+        "name": "[컷씬][대한극장] 명량_대장선 전투 및 보스 연출"
+      },
+      "jira": "ORVV-11121",
+      "deps": []
+    },
+    {
+      "id": 156,
+      "name": "[컷씬][제작] 명량_대장선 전투 및 보스 연출",
+      "owner": "이창석",
+      "start": null,
+      "end": null,
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-11120",
+        "name": "[컷씬][대한극장] 명량_대장선 전투 및 보스 연출"
+      },
+      "jira": "ORVV-11122",
+      "deps": []
+    },
+    {
+      "id": 157,
+      "name": "[라이팅] 명량_대장선 전투 및 보스 연출",
+      "owner": "박장호",
+      "start": null,
+      "end": null,
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-11120",
+        "name": "[컷씬][대한극장] 명량_대장선 전투 및 보스 연출"
+      },
+      "jira": "ORVV-11342",
       "deps": []
     },
     {
