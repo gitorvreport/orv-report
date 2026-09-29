@@ -590,7 +590,12 @@ function applyJiraIssues(tasks, issues, today, holdAt){
     let start=j.start, end=j.end, miss="";
     // 날짜가 비면 오늘에 붙이고 사유를 담당자 칸에 덧붙인다 (data 생성 규칙과 같다).
     // 날짜가 아예 없을 때만 자리를 정해 준다. '대기 중'은 맨 끝, 나머지는 오늘.
-    if(!start && !end){ start=end=(holdAt && HOLD_STATUS[j.statusName]) ? holdAt : today; miss="일정 미정"; }
+    // '대기 중'은 꼬리표도 Jira 상태 이름을 쓴다. 착수 시점이 안 정해진 이유가 상태에 있다.
+    if(!start && !end){
+      const hold=!!HOLD_STATUS[j.statusName];
+      start=end=(holdAt && hold) ? holdAt : today;
+      miss=hold ? "대기 중" : "일정 미정";
+    }
     else if(!start){ start=end; miss="시작일 미정"; }
     else if(!end){ end=start; miss="마감 미정"; }
     if(end<start){ const x=start; start=end; end=x; }
@@ -720,7 +725,7 @@ function doneDate(t){ return t.doneAt || t.end; }
 function vsDueText(t){
   if(!t.doneAt) return "완료일 미기록";
   const miss=ownerParts(t.owner).miss;
-  if(miss==="일정 미정" || miss==="마감 미정") return "마감 없음";
+  if(miss==="일정 미정" || miss==="대기 중" || miss==="마감 미정") return "마감 없음";
   const d=diffD(pd(t.doneAt), pd(t.end));      // 마감 − 완료
   if(d>0) return d+"일 빠름";
   if(d<0) return (-d)+"일 늦음";
