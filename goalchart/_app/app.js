@@ -261,7 +261,7 @@ function initResizer(){
 // **같은 lay 를 쓰는 것**이 이 구조의 핵심이다 — 두 곳이 따로 계산하면 어긋난다.
 // 접힌 에픽의 작업은 taskY 에 들어가지 않는다 → 막대·화살표 루프의 기존 가드가
 // 알아서 걸러낸다(양 끝점이 있어야 그린다). 접기 전용 분기를 새로 만들지 말 것.
-// 레인 머리 행 → 서브레인이 빈 작업 → 서브 레인 머리 행 → 그 작업 순으로 쌓는다.
+// 레인 머리 행 → 서브 레인 머리 행 → 그 작업 → 서브레인이 빈 작업 순으로 쌓는다.
 // loose·subs 가 없는 레인(테스트 픽스처·옛 호출)은 tasks 를 그대로 쌓는다.
 function layoutRows(gs){
   let y=0; const lay=[]; const taskY={};
@@ -270,12 +270,12 @@ function layoutRows(gs){
     const col=isCollapsed(g.gkey);
     lay.push({type:"epic", g:g, gi:gi, y:y, collapsed:col}); y+=EPIC_H;
     if(col) return;
-    (g.loose || g.tasks).forEach(put);
     (g.subs || []).forEach((s,si)=>{
       const sc=isCollapsed(s.skey);
       lay.push({type:"sub", g:g, s:s, gi:gi, si:si, y:y, collapsed:sc}); y+=SUB_H;
       if(!sc) s.tasks.forEach(put);
     });
+    (g.loose || g.tasks).forEach(put);
   });
   return {lay:lay, taskY:taskY, H:y};
 }
