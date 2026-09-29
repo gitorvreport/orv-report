@@ -256,7 +256,7 @@ function flagsOf(t, f){
   if(t.status==="risk") out.push({k:"risk", s:"기한 초과"});
   else if(isWaiting(t)) out.push({k:"wait", s:"선행 대기"});
   const miss=ownerParts(t.owner).miss;
-  if(miss) out.push({k:"miss", s:miss});
+  if(miss) out.push({k: miss==="대기 중" ? "hold" : "miss", s:miss});
   if(f && outOfWindow(f,t)) out.push({k:"oow", s:"기간 밖"});
   return out;
 }

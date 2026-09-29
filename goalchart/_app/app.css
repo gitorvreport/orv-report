@@ -6,6 +6,7 @@
   --weekend:rgba(137,135,129,.10); --today:#eb6834; --dep:#a9a8a2; --dep-block:#d03b3b;
   --chip:rgba(11,11,11,.05);
   --wait:#c2410c; --flag-risk-bg:rgba(208,59,59,.13); --flag-wait-bg:rgba(194,65,12,.13);
+  --flag-hold-bg:rgba(42,120,214,.13);
   color-scheme:light;
 }
 html[data-theme="dark"]{
@@ -16,6 +17,7 @@ html[data-theme="dark"]{
   --weekend:rgba(137,135,129,.14); --today:#eb6834; --dep:#6b6a66; --dep-block:#e66767;
   --chip:rgba(255,255,255,.07);
   --wait:#fb923c; --flag-risk-bg:rgba(208,59,59,.20); --flag-wait-bg:rgba(251,146,60,.18);
+  --flag-hold-bg:rgba(57,135,229,.20);
   color-scheme:dark;
 }
 *{box-sizing:border-box;}
@@ -108,6 +110,7 @@ button.ghost{background:transparent;}
 .flag.risk{background:var(--flag-risk-bg); color:var(--risk);}
 .flag.wait{background:var(--flag-wait-bg); color:var(--wait);}
 .flag.miss{background:var(--chip); color:var(--muted);}
+.flag.hold{background:var(--flag-hold-bg); color:var(--inprog);}
 .flag.oow{background:var(--chip); color:var(--muted);}
 .erow{height:34px; display:flex; align-items:center; gap:8px; padding:0 12px; background:var(--chip); border-bottom:1px solid var(--grid); font-weight:700; font-size:12.5px; color:var(--ink);}
 .erow .edot{width:9px; height:9px; border-radius:50%; flex:0 0 auto;}
