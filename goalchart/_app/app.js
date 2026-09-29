@@ -265,7 +265,8 @@ function initResizer(){
 // loose·subs 가 없는 레인(테스트 픽스처·옛 호출)은 tasks 를 그대로 쌓는다.
 function layoutRows(gs){
   let y=0; const lay=[]; const taskY={};
-  const put=t=>{ lay.push({type:"task", t:t, y:y}); taskY[t.id]=y; y+=ROW_H; };
+  // 서브 레인 작업 행에는 소속(g·s)을 싣는다. 좌측 줄이 그걸 보고 들여쓰기와 선 색을 달리한다.
+  const put=(t,g,s)=>{ const r={type:"task", t:t, y:y}; if(s){ r.g=g; r.s=s; } lay.push(r); taskY[t.id]=y; y+=ROW_H; };
   gs.forEach((g,gi)=>{
     const col=isCollapsed(g.gkey);
     lay.push({type:"epic", g:g, gi:gi, y:y, collapsed:col}); y+=EPIC_H;
@@ -273,9 +274,9 @@ function layoutRows(gs){
     (g.subs || []).forEach((s,si)=>{
       const sc=isCollapsed(s.skey);
       lay.push({type:"sub", g:g, s:s, gi:gi, si:si, y:y, collapsed:sc}); y+=SUB_H;
-      if(!sc) s.tasks.forEach(put);
+      if(!sc) s.tasks.forEach(t=>put(t,g,s));
     });
-    (g.loose || g.tasks).forEach(put);
+    (g.loose || g.tasks).forEach(t=>put(t));
   });
   return {lay:lay, taskY:taskY, H:y};
 }
@@ -338,7 +339,10 @@ function labelsHtml(lay, gs, f){
       const jk = t.jira ? '<a class="jkey" href="'+jiraUrl(t.jira)+'" target="_blank" rel="noopener" onclick="event.stopPropagation()">'+esc(t.jira)+'</a> · ' : '';
       let mv = "", dnd = "";
       
-      lh += '<div class="lrow"'+dnd+' onclick="openEdit('+t.id+')">'+
+      // 서브 레인 작업은 한 단계 더 들여 쓰고 세로선을 레인 색으로 칠한다 — 그래야 마지막
+      // 서브 레인 아래에 오는 서브레인 빈 작업이 그 서브 레인 소속으로 보이지 않는다.
+      const insub = it.s ? ' insub" style="border-left-color:'+it.g.color : '';
+      lh += '<div class="lrow'+insub+'"'+dnd+' onclick="openEdit('+t.id+')">'+
         '<div class="nm"><span class="sdot" style="background:'+STVAR[t.status]+'"></span>'+esc(t.name)+(blk?' <span class="lock" title="선행 작업이 완료되지 않아 대기 중">⏳</span>':'')+'</div>'+
         '<div class="meta">'+jk+esc(ownerParts(t.owner).name)+' · '+mmdd(t.start)+'~'+mmdd(t.end)+flagsHtml(t,f)+'</div>'+mv+'</div>';
     }
