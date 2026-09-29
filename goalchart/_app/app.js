@@ -1,5 +1,5 @@
 /* ---------- data model ---------- */
-const DAY_W = 46, ROW_H = 46, HEAD_H = 54, BAR_H = 26, EPIC_H = 34, SUB_H = 28;
+const DAY_W = 46, ROW_H = 46, HEAD_H = 54, BAR_H = 26, EPIC_H = 34, SUB_H = 32;
 const EPIC_COLORS = ["#2a78d6","#eb6834","#1baf7a","#eda100","#e87ba4","#008300","#4a3aa7","#e34948"];
 function hexA(h,a){const n=parseInt(h.slice(1),16); return "rgba("+((n>>16)&255)+","+((n>>8)&255)+","+(n&255)+","+a+")";}
 const STLABEL = {done:"완료", inprog:"진행중", review:"검수 요청", todo:"예정", risk:"기한 초과"};
@@ -328,9 +328,10 @@ function labelsHtml(lay, gs, f){
       // 서브 레인은 자기 작업만으로 요약·완료를 낸다. 상위 레인 줄이 전체 합산을 맡는다.
       const g=it.g, s=it.s, fin=epicAllDone(s), ssum=epicSummary(s);
       const stip=esc(g.name+' › '+s.name+' — '+ssum+(fin?' · 서브 레인 완료':''))+'&#10;클릭해서 접기/펼치기';
-      lh += '<div class="srow'+(fin?' done':'')+'" style="border-left:3px solid '+hexA(g.color,0.45)+'" onclick="toggleSubAt('+it.gi+','+it.si+')" title="'+stip+'">'+
+      // 레인 색을 온전히 쓴다 — 옅게만 쓰면 회색 글씨와 함께 묻혀 서브 레인이 보이지 않았다.
+      lh += '<div class="srow'+(fin?' done':'')+'" style="border-left:3px solid '+g.color+'; background:'+hexA(g.color,0.08)+'" onclick="toggleSubAt('+it.gi+','+it.si+')" title="'+stip+'">'+
         '<span class="ecar">'+(it.collapsed?'+':'−')+'</span>'+
-        '<span class="enm">'+esc(s.name)+'</span>'+(fin?'<span class="edone">✅ 완료</span>':'')+
+        '<span class="edot" style="background:'+g.color+'"></span><span class="enm">'+esc(s.name)+'</span>'+(fin?'<span class="edone">✅ 완료</span>':'')+
         '<span class="esum">'+esc(ssum)+'</span></div>';
     }else if(it.type==="task"){
       const t=it.t, blk=isBlocked(t);
@@ -392,8 +393,8 @@ function gridBackgroundHtml(f, lay, W, H){
       // 롤업 막대: 하위 작업 전체 기간. 접힘 여부와 무관하게 항상 그린다.
       grid+=rollupHtml(f, it.g.tasks, it.y, EPIC_H, it.g.color, it.g.name+' · '+epicSummary(it.g));
     }else if(it.type==="sub"){
-      grid+='<div class="eband" style="top:'+it.y+'px; height:'+SUB_H+'px; width:'+W+'px; background:'+hexA(it.g.color,0.06)+'; border-left:3px solid '+hexA(it.g.color,0.45)+'"></div>';
-      grid+=rollupHtml(f, it.s.tasks, it.y, SUB_H, hexA(it.g.color,0.6), it.g.name+' › '+it.s.name+' · '+epicSummary(it.s));
+      grid+='<div class="eband" style="top:'+it.y+'px; height:'+SUB_H+'px; width:'+W+'px; background:'+hexA(it.g.color,0.10)+'; border-left:3px solid '+it.g.color+'"></div>';
+      grid+=rollupHtml(f, it.s.tasks, it.y, SUB_H, hexA(it.g.color,0.85), it.g.name+' › '+it.s.name+' · '+epicSummary(it.s));
     }
   });
   // today
