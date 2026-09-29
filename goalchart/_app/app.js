@@ -1,5 +1,5 @@
 /* ---------- data model ---------- */
-const DAY_W = 46, ROW_H = 46, HEAD_H = 54, BAR_H = 26, EPIC_H = 34;
+const DAY_W = 46, ROW_H = 46, HEAD_H = 54, BAR_H = 26, EPIC_H = 34, SUB_H = 28;
 const EPIC_COLORS = ["#2a78d6","#eb6834","#1baf7a","#eda100","#e87ba4","#008300","#4a3aa7","#e34948"];
 function hexA(h,a){const n=parseInt(h.slice(1),16); return "rgba("+((n>>16)&255)+","+((n>>8)&255)+","+(n&255)+","+a+")";}
 const STLABEL = {done:"완료", inprog:"진행중", review:"검수 요청", todo:"예정", risk:"기한 초과"};
@@ -121,7 +121,19 @@ function groups(){
     map.get(key).tasks.push(t);
   });
   const arr=[...map.values()];
-  arr.forEach((g,i)=>g.color=EPIC_COLORS[i%EPIC_COLORS.length]);
+  // 서브 레인은 **레인 안에서만** 이름으로 묶는다. 같은 이름이라도 레인이 다르면 따로다.
+  // g.tasks 는 줄이지 않는다 — 상위 레인의 롤업·요약·완료 배지가 서브 레인 전부를 합산한다.
+  arr.forEach((g,i)=>{
+    g.color=EPIC_COLORS[i%EPIC_COLORS.length];
+    const by=new Map(); g.loose=[];
+    g.tasks.forEach(t=>{
+      const name=String(t.sub||"").trim();
+      if(!name){ g.loose.push(t); return; }
+      if(!by.has(name)) by.set(name,{skey:g.gkey+"/"+name, name:name, tasks:[]});
+      by.get(name).tasks.push(t);
+    });
+    g.subs=[...by.values()];
+  });
   return arr;
 }
 
@@ -201,12 +213,30 @@ function toggleEpicAt(i){
 // 에픽이 하나도 없으면 "전부 펼쳐짐"으로 보지 않는다 — 빈 차트에서 버튼이
 // "전체 접기"로 뜨면 누를 게 없는데 접겠다고 말하는 꼴이 된다.
 function allEpicsExpanded(){
-  const gs = groups();
-  return gs.length > 0 && gs.every(function(g){ return !isCollapsed(g.gkey); });
+  const ks = laneKeys(groups());
+  return ks.length > 0 && ks.every(function(k){ return !isCollapsed(k); });
 }
 function toggleAllEpics(){
-  ui.expanded = allEpicsExpanded() ? [] : groups().map(function(g){ return g.gkey; });
+  ui.expanded = allEpicsExpanded() ? [] : laneKeys(groups());
   saveUI(); render();
+}
+// 서브 레인 접기. 인라인 onclick 에 이름을 넣지 않고 인덱스만 넘긴다 —
+// 이름에 따옴표가 들어가면 핸들러 문자열이 깨지고 클릭이 부모 행으로 샌다.
+function toggleSubAt(gi, si){
+  if(afterDrag()) return;
+  const g = groups()[gi]; const s = g && g.subs && g.subs[si]; if(!s) return;
+  const at = ui.expanded.indexOf(s.skey);
+  if(at === -1) ui.expanded.push(s.skey); else ui.expanded.splice(at,1);
+  saveUI(); render();
+}
+// 전체 펼치기·접기가 다루는 키. 레인 키와 서브 레인 키를 함께 모은다.
+function laneKeys(gs){
+  const out=[];
+  gs.forEach(function(g){
+    out.push(g.gkey);
+    (g.subs||[]).forEach(function(s){ out.push(s.skey); });
+  });
+  return out;
 }
 
 function applyLabelWidth(){ document.getElementById("labels").style.width = ui.labelW + "px"; }
@@ -231,12 +261,21 @@ function initResizer(){
 // **같은 lay 를 쓰는 것**이 이 구조의 핵심이다 — 두 곳이 따로 계산하면 어긋난다.
 // 접힌 에픽의 작업은 taskY 에 들어가지 않는다 → 막대·화살표 루프의 기존 가드가
 // 알아서 걸러낸다(양 끝점이 있어야 그린다). 접기 전용 분기를 새로 만들지 말 것.
+// 레인 머리 행 → 서브레인이 빈 작업 → 서브 레인 머리 행 → 그 작업 순으로 쌓는다.
+// loose·subs 가 없는 레인(테스트 픽스처·옛 호출)은 tasks 를 그대로 쌓는다.
 function layoutRows(gs){
   let y=0; const lay=[]; const taskY={};
+  const put=t=>{ lay.push({type:"task", t:t, y:y}); taskY[t.id]=y; y+=ROW_H; };
   gs.forEach((g,gi)=>{
     const col=isCollapsed(g.gkey);
     lay.push({type:"epic", g:g, gi:gi, y:y, collapsed:col}); y+=EPIC_H;
-    if(!col) g.tasks.forEach(t=>{ lay.push({type:"task", t:t, y:y}); taskY[t.id]=y; y+=ROW_H; });
+    if(col) return;
+    (g.loose || g.tasks).forEach(put);
+    (g.subs || []).forEach((s,si)=>{
+      const sc=isCollapsed(s.skey);
+      lay.push({type:"sub", g:g, s:s, gi:gi, si:si, y:y, collapsed:sc}); y+=SUB_H;
+      if(!sc) s.tasks.forEach(put);
+    });
   });
   return {lay:lay, taskY:taskY, H:y};
 }
@@ -285,7 +324,15 @@ function labelsHtml(lay, gs, f){
       lh += '<div class="erow'+(fin?' done':'')+'"'+dnd+' style="border-left:3px solid '+g.color+'" onclick="toggleEpicAt('+it.gi+')" title="'+etip+'">'+
         '<span class="ecar">'+(it.collapsed?'+':'−')+'</span>'+
         '<span class="edot" style="background:'+g.color+'"></span><span class="enm">'+esc(g.name)+'</span>'+done+sum+chip+mv+'</div>';
-    }else{
+    }else if(it.type==="sub"){
+      // 서브 레인은 자기 작업만으로 요약·완료를 낸다. 상위 레인 줄이 전체 합산을 맡는다.
+      const g=it.g, s=it.s, fin=epicAllDone(s), ssum=epicSummary(s);
+      const stip=esc(g.name+' › '+s.name+' — '+ssum+(fin?' · 서브 레인 완료':''))+'&#10;클릭해서 접기/펼치기';
+      lh += '<div class="srow'+(fin?' done':'')+'" style="border-left:3px solid '+hexA(g.color,0.45)+'" onclick="toggleSubAt('+it.gi+','+it.si+')" title="'+stip+'">'+
+        '<span class="ecar">'+(it.collapsed?'+':'−')+'</span>'+
+        '<span class="enm">'+esc(s.name)+'</span>'+(fin?'<span class="edone">✅ 완료</span>':'')+
+        '<span class="esum">'+esc(ssum)+'</span></div>';
+    }else if(it.type==="task"){
       const t=it.t, blk=isBlocked(t);
       const jk = t.jira ? '<a class="jkey" href="'+jiraUrl(t.jira)+'" target="_blank" rel="noopener" onclick="event.stopPropagation()">'+esc(t.jira)+'</a> · ' : '';
       let mv = "", dnd = "";
@@ -317,6 +364,20 @@ function timelineHeadHtml(f, W){
   return head;
 }
 
+// 롤업 막대 = 작업들의 전체 기간. 레인 줄과 서브 레인 줄이 함께 쓴다.
+function rollupHtml(f, tasks, y, h, color, title){
+  const sp=epicSpan(tasks);
+  if(!sp) return "";
+  const sIdx=diffD(f.start,pd(sp.start)), eIdx=diffD(f.start,pd(sp.end));
+  if(eIdx<0 || sIdx>f.days-1) return "";
+  const cs=Math.max(sIdx,0), ce=Math.min(eIdx,f.days-1);
+  const clipL=sIdx<0, clipR=eIdx>f.days-1;
+  const left=cs*DAY_W+4, width=Math.max((ce-cs+1)*DAY_W-8,10);
+  return '<div class="ebar'+(clipL?' clipL':'')+(clipR?' clipR':'')+'" style="left:'+left+'px; top:'+
+         (y+(h-11)/2)+'px; width:'+width+'px; background:'+color+'" title="'+
+         esc(title)+' · '+mmdd(sp.start)+'~'+mmdd(sp.end)+'"></div>';
+}
+
 // 배경 격자 · 에픽 스윔레인 밴드와 롤업 막대 · 오늘 선 · 마감 깃발.
 function gridBackgroundHtml(f, lay, W, H){
   let grid='<div class="grid" style="width:'+W+'px; height:'+H+'px">';
@@ -325,22 +386,16 @@ function gridBackgroundHtml(f, lay, W, H){
     grid+='<div class="col'+(wknd?' wknd':'')+'" style="left:'+(i*DAY_W)+'px; width:'+DAY_W+'px"></div>';
   }
   // epic swimlane bands
-  lay.forEach(it=>{ if(it.type==="epic"){
-    grid+='<div class="eband" style="top:'+it.y+'px; height:'+EPIC_H+'px; width:'+W+'px; background:'+hexA(it.g.color,0.12)+'; border-left:3px solid '+it.g.color+'"></div>';
-    // 롤업 막대: 하위 작업 전체 기간. 접힘 여부와 무관하게 항상 그린다.
-    const sp=epicSpan(it.g.tasks);
-    if(sp){
-      const sIdx=diffD(f.start,pd(sp.start)), eIdx=diffD(f.start,pd(sp.end));
-      if(!(eIdx<0 || sIdx>f.days-1)){
-        const cs=Math.max(sIdx,0), ce=Math.min(eIdx,f.days-1);
-        const clipL=sIdx<0, clipR=eIdx>f.days-1;
-        const left=cs*DAY_W+4, width=Math.max((ce-cs+1)*DAY_W-8,10);
-        grid+='<div class="ebar'+(clipL?' clipL':'')+(clipR?' clipR':'')+'" style="left:'+left+'px; top:'+
-              (it.y+(EPIC_H-11)/2)+'px; width:'+width+'px; background:'+it.g.color+'" title="'+
-              esc(it.g.name)+' · '+mmdd(sp.start)+'~'+mmdd(sp.end)+' · '+esc(epicSummary(it.g))+'"></div>';
-      }
+  lay.forEach(it=>{
+    if(it.type==="epic"){
+      grid+='<div class="eband" style="top:'+it.y+'px; height:'+EPIC_H+'px; width:'+W+'px; background:'+hexA(it.g.color,0.12)+'; border-left:3px solid '+it.g.color+'"></div>';
+      // 롤업 막대: 하위 작업 전체 기간. 접힘 여부와 무관하게 항상 그린다.
+      grid+=rollupHtml(f, it.g.tasks, it.y, EPIC_H, it.g.color, it.g.name+' · '+epicSummary(it.g));
+    }else if(it.type==="sub"){
+      grid+='<div class="eband" style="top:'+it.y+'px; height:'+SUB_H+'px; width:'+W+'px; background:'+hexA(it.g.color,0.06)+'; border-left:3px solid '+hexA(it.g.color,0.45)+'"></div>';
+      grid+=rollupHtml(f, it.s.tasks, it.y, SUB_H, hexA(it.g.color,0.6), it.g.name+' › '+it.s.name+' · '+epicSummary(it.s));
     }
-  }});
+  });
   // today
   const ti=diffD(f.start,todayMid());
   if(ti>=0 && ti<f.days){
