@@ -544,12 +544,16 @@ function focusToday(f){
   if(focusedToday) return;
   const run=function(){
     if(focusedToday) return;
-    const sc=document.querySelector(".tl-scroll");
+    // 차트 본문이 가로로 스크롤한다. 좌측 묶음(.lpane)이 왼쪽에 고정돼 그 폭만큼을 가리므로
+    // 타임라인이 실제로 보이는 폭은 본문 폭에서 그만큼 뺀 값이다.
+    const sc=document.querySelector("#chartBody");
     if(!sc || !sc.clientWidth) return;
     focusedToday=true;
     const ti=diffD(f.start, todayMid());
     if(ti<0 || ti>=f.days) return;
-    sc.scrollLeft=Math.max(0, ti*DAY_W - Math.max(0,(sc.clientWidth-DAY_W)/2));
+    const lp=document.querySelector(".lpane");
+    const vis=sc.clientWidth - (lp ? lp.offsetWidth : 0);
+    sc.scrollLeft=Math.max(0, ti*DAY_W - Math.max(0,(vis-DAY_W)/2));
   };
   if(typeof requestAnimationFrame==="function") requestAnimationFrame(run); else run();
 }

@@ -79,18 +79,28 @@ button.ghost{background:transparent;}
 /* Chart */
 .card{background:var(--surface-1); border:1px solid var(--border); border-radius:16px; overflow:hidden;}
 /* 넓은 화면에서 차트가 왼쪽에 몰려 보이지 않게 가운데로 모은다. 타임라인은 표시 창
-   길이만큼(일수 × DAY_W)만 그려지므로, 스크롤러가 남는 폭을 다 먹으면 그만큼이
-   오른쪽 빈 공간이 된다 — 아래 .tl-scroll 의 flex 와 한 쌍이다.
+   길이만큼(일수 × DAY_W)만 그려지므로, 늘어나게 두면 그만큼이 오른쪽 빈 공간이 된다 —
+   아래 .timeline 의 flex:0 0 auto 와 한 쌍이다.
    **safe 를 떼지 말 것**: 좁은 화면에서 좌측 라벨(최대 560px)만으로도 폭을 넘길 수 있는데,
-   그냥 center 면 넘친 만큼이 왼쪽으로 잘려 나가고 카드가 overflow:hidden 이라
-   스크롤로 되돌릴 수도 없다. safe 를 모르는 브라우저는 이 줄을 통째로 버려
+   그냥 center 면 넘친 만큼이 스크롤 시작점보다 왼쪽으로 밀려 나가 스크롤로 되돌릴 수 없다. safe 를 모르는 브라우저는 이 줄을 통째로 버려
    예전처럼 왼쪽 정렬이 된다 — 잘리는 쪽으로는 물러나지 않는다. */
-.chart-body{display:flex; justify-content:safe center;}
+/* **차트 본문 하나가 가로·세로를 모두 스크롤한다** — 엑셀의 틀 고정처럼 날짜 헤더는 위,
+   좌측 목록은 왼쪽에 붙이기 위해서다. 페이지가 세로로, 타임라인만 가로로 스크롤하던 때는
+   sticky 가 가로 스크롤 상자 기준이 돼 헤더가 위에 붙지 않았다. 높이는 화면에 묶는다 —
+   안 묶으면 본문이 내용만큼 길어져 안쪽 세로 스크롤이 생기지 않는다. */
+.chart-body{display:flex; justify-content:safe center; align-items:flex-start;
+  overflow:auto; max-height:calc(100vh - 24px); overscroll-behavior:contain;}
+/* 좌측 목록 + 폭 조절 막대. 가로로 스크롤해도 왼쪽에 남고, 그 아래로 지나가는 막대를 가린다. */
+.lpane{position:sticky; left:0; z-index:30; flex:0 0 auto; display:flex; background:var(--surface-1);}
+/* 좁은 화면에서는 좌측 목록(기본 460px)이 화면보다 넓다. 왼쪽에 고정하면 타임라인을 영영
+   가리므로 고정을 풀어, 가로로 밀면 목록이 지나가고 타임라인이 나오게 한다. 날짜 헤더의
+   위쪽 고정은 그대로다. */
+@media(max-width:760px){ .lpane{position:static;} }
 .labels{flex:0 0 auto; width:320px; border-right:1px solid var(--grid); min-width:0;}
 .resizer{flex:0 0 7px; cursor:col-resize; position:relative; touch-action:none;}
 .resizer::after{content:""; position:absolute; left:2px; top:0; bottom:0; width:3px; border-radius:2px; background:transparent;}
 .resizer:hover::after,.resizer.drag::after{background:var(--inprog);}
-.lhead{height:54px; display:flex; align-items:flex-end; padding:0 14px 8px; font-size:12px; color:var(--muted); border-bottom:1px solid var(--grid);}
+.lhead{position:sticky; top:0; z-index:31; background:var(--surface-1); height:54px; display:flex; align-items:flex-end; padding:0 14px 8px; font-size:12px; color:var(--muted); border-bottom:1px solid var(--grid);}
 /* 하위 행은 에픽에서 한 칸 들여쓰고 그 경계에 세로 라인을 세운다 — 훑을 때 어느
    에픽에 물린 작업인지 바로 잡힌다. **높이(46px)는 건드리지 말 것**: ROW_H 가
    타임라인 막대 좌표의 근거라 여기서 어긋나면 좌우가 세로로 밀린다.
@@ -172,12 +182,13 @@ button.ghost{background:transparent;}
 .ebar.clipL{border-top-left-radius:0; border-bottom-left-radius:0;}
 .ebar.clipR{border-top-right-radius:0; border-bottom-right-radius:0;}
 
-/* 늘어나지 않고(0) 줄어들기만 한다(1) — 내용보다 화면이 넓으면 타임라인 폭 그대로
-   남아 .chart-body 의 가운데 정렬이 먹고, 좁으면 줄어들며 안에서 가로 스크롤한다.
-   overflow 가 visible 이 아니라 min-width:auto 가 0 으로 풀려서 줄어들 수 있다. */
-.tl-scroll{overflow-x:auto; flex:0 1 auto;}
-.timeline{position:relative;}
-.thead{position:relative; height:54px; border-bottom:1px solid var(--grid);}
+/* 줄지도 늘지도 않는다 — 폭은 render() 가 일수 × DAY_W 로 박는다. 화면이 넓으면
+   .chart-body 의 가운데 정렬이 먹고, 좁으면 .chart-body 가 가로로 스크롤한다. */
+.timeline{position:relative; flex:0 0 auto;}
+/* 날짜 헤더는 세로로 스크롤해도 위에 남는다. 막대(z 5)·오늘 선(z 6~7) 위에 와야 가려지지
+   않고, 배경이 있어야 아래로 지나가는 행이 비치지 않는다. 좌측 묶음(z 30)보다는 아래다 —
+   가로로 밀리면 좌측 목록 뒤로 들어가야 한다. */
+.thead{position:sticky; top:0; z-index:20; background:var(--surface-1); height:54px; border-bottom:1px solid var(--grid);}
 .wk{position:absolute; top:0; height:26px; display:flex; align-items:center; padding-left:10px; font-size:11.5px; font-weight:700; color:var(--ink-2); border-left:1px solid var(--grid); background:var(--chip);}
 .dcell{position:absolute; top:26px; height:28px; display:flex; flex-direction:column; align-items:center; justify-content:center; font-size:11px; color:var(--muted); border-left:1px solid var(--grid);}
 .dcell .dn{font-weight:600; color:var(--ink-2); font-variant-numeric:tabular-nums;}
