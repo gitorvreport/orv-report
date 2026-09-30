@@ -544,18 +544,44 @@ function focusToday(f){
   if(focusedToday) return;
   const run=function(){
     if(focusedToday) return;
-    // 차트 본문이 가로로 스크롤한다. 좌측 묶음(.lpane)이 왼쪽에 고정돼 그 폭만큼을 가리므로
-    // 타임라인이 실제로 보이는 폭은 본문 폭에서 그만큼 뺀 값이다.
-    const sc=document.querySelector("#chartBody");
+    const sc=document.querySelector(".tl-scroll");
     if(!sc || !sc.clientWidth) return;
     focusedToday=true;
     const ti=diffD(f.start, todayMid());
     if(ti<0 || ti>=f.days) return;
-    const lp=document.querySelector(".lpane");
-    const vis=sc.clientWidth - (lp ? lp.offsetWidth : 0);
-    sc.scrollLeft=Math.max(0, ti*DAY_W - Math.max(0,(vis-DAY_W)/2));
+    sc.scrollLeft=Math.max(0, ti*DAY_W - Math.max(0,(sc.clientWidth-DAY_W)/2));
   };
   if(typeof requestAnimationFrame==="function") requestAnimationFrame(run); else run();
+}
+
+/* ---------- 따라 내려오는 머리 ---------- */
+// 페이지를 내려도 날짜 헤더·좌측 머리가 화면 위에 남게, 내린 만큼 아래로 옮긴다.
+// CSS sticky 는 못 쓴다 — 날짜 헤더가 타임라인의 가로 스크롤 상자(.tl-scroll) 안에 있어
+// 그 상자 기준으로만 붙는다. 차트 안쪽을 스크롤하게 바꾼 틀 고정 방식은 써 보니
+// 불편했다(2026-09-30). 대신 날짜 헤더가 그 상자 안에 있으니 가로 위치는 저절로 맞는다.
+// 옮기는 거리 = 차트 위쪽이 화면 위를 지난 만큼. 차트 끝을 넘으면 머리가 빠져나가므로 막는다.
+function stickOffset(top, height, headH){
+  return Math.max(0, Math.min(-top, height - headH));
+}
+function syncStickyHeads(){
+  const body=document.getElementById("chartBody");
+  if(!body) return;
+  const r=body.getBoundingClientRect();
+  if(!r.height) return;              // 표·드릴다운 보기에서 차트가 숨어 있다
+  const off=stickOffset(r.top, r.height, HEAD_H);
+  [".thead", ".lhead"].forEach(function(sel){
+    const el=document.querySelector(sel);
+    if(!el) return;
+    el.style.transform = off ? "translateY("+off+"px)" : "";
+    el.classList.toggle("stuck", off>0);
+  });
+}
+// 스크롤 이벤트는 프레임보다 자주 온다. 한 프레임에 한 번만 맞춘다.
+let stickyQueued=false;
+function queueStickyHeads(){
+  if(stickyQueued) return;
+  stickyQueued=true;
+  requestAnimationFrame(function(){ stickyQueued=false; syncStickyHeads(); });
 }
 
 // 조립만 한다. 각 조각이 문자열을 만들고 여기서 두 번의 innerHTML 로 끝난다 —
@@ -578,6 +604,8 @@ function render(){
                + arrowsHtml(f, taskY, W, H)
                + barsHtml(f, taskY)
                + '</div>';
+  // innerHTML 이 머리를 새로 만들어 옮겨 둔 위치가 사라졌다. 지금 스크롤 위치에 다시 맞춘다.
+  syncStickyHeads();
 
   focusToday(f);
 
@@ -1130,6 +1158,8 @@ async function boot(){
   buildTop();
   applyLabelWidth();
   initResizer();
+  window.addEventListener("scroll", queueStickyHeads, {passive:true});
+  window.addEventListener("resize", queueStickyHeads);
   // 뷰어의 첫 그리기는 syncFromJira 안에서만 일어난다 — 저장된 값이 잠깐 보였다 바뀌면
   // 그게 진짜 값인 줄 안다. 실패해도 finally 에서 반드시 그린다.
   syncFromJira();
