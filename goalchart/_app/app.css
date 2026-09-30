@@ -34,15 +34,12 @@ body{
 
 /* Header / toolbar */
 .top{display:flex; flex-wrap:wrap; gap:14px 18px; align-items:flex-end; justify-content:space-between; margin-bottom:16px;}
-.title-in{font-size:22px; font-weight:700; color:var(--ink); border:none; background:transparent; padding:2px 4px; border-radius:6px; width:min(440px,60vw);}
 .title-txt{font-size:22px; font-weight:700; color:var(--ink); padding:2px 4px;}
-.title-in:focus{outline:2px solid var(--inprog); background:var(--surface-1);}
 .dl-field{display:flex; align-items:center; gap:8px; color:var(--ink-2); font-size:13px;}
 .dl-field input{font:inherit; color:var(--ink); background:var(--surface-1); border:1px solid var(--border); border-radius:8px; padding:5px 8px;}
 .btns{display:flex; flex-wrap:wrap; gap:8px;}
 button{font:inherit; cursor:pointer; border:1px solid var(--border); background:var(--surface-1); color:var(--ink); border-radius:9px; padding:7px 12px; transition:background .12s,border-color .12s;}
 button:hover{border-color:var(--axis);}
-button.primary{background:var(--inprog); color:#fff; border-color:transparent;}
 button.ghost{background:transparent;}
 
 /* Stats */
@@ -58,9 +55,6 @@ button.ghost{background:transparent;}
 /* Legend */
 .sync-note{min-height:16px; margin:8px 2px 0; font-size:12px; color:var(--muted);}
 .sync-note.bad{color:var(--risk);}
-.lookup-note{min-height:15px; font-size:12px; color:var(--muted); line-height:1.5;}
-.lookup-note.bad{color:var(--risk);}
-.lookup-note.ok{color:var(--done);}
 /* 값이 확정되기 전에는 아예 그리지 않는다. 저장된 값(배포 시점에 굳은 것)을
    잠깐 보여줬다 바꾸면, 흐리게 하더라도 값이 튀는 게 보인다. */
 .loading{padding:64px 20px; text-align:center; color:var(--muted); font-size:14px;}
@@ -146,23 +140,7 @@ button.ghost{background:transparent;}
 .srow.done .enm,.srow.done .esum,.srow.done .ecar,.srow.done .edot{opacity:.45;}
 .srow.done .edone{flex:0 0 auto; font-size:10px; font-weight:700; color:var(--done);
   background:var(--chip); border:1px solid var(--done); border-radius:999px; padding:0 6px; white-space:nowrap;}
-.mv{display:none; flex:0 0 auto; gap:2px; margin-left:6px;}
-.lrow:hover .mv,.erow:hover .mv{display:flex;}
-.mvb{font:inherit; font-size:9px; line-height:1; padding:2px 4px; cursor:pointer;
-     color:var(--ink-2); background:var(--surface-1); border:1px solid var(--border); border-radius:4px;}
-.mvb:hover{color:var(--inprog); border-color:var(--inprog);}
 .lrow{position:relative;}
-.lrow .mv{position:absolute; right:8px; top:50%; transform:translateY(-50%);}
-/* 드래그로 순서 바꾸기. **표시선은 반드시 inset box-shadow 로 긋는다** — border 나
-   padding 을 쓰면 행 높이가 변해 ROW_H/EPIC_H 로 계산한 타임라인 막대와 세로로
-   어긋난다(끌 때만 어긋나서 더 알아채기 어렵다). */
-/* 속성 '값'이 아니라 '존재'로 고른다. 스타일은 양쪽 산출물에 남는데, 값까지 적으면
-   뷰어 파일에 그 문구가 들어가 '뷰어 행은 끌리지 않는다'는 검사가 무의미해진다
-   (실제로 이 주석에 값을 적었다가 검사에 걸렸다). */
-.lrow[draggable],.erow[draggable]{cursor:grab;}
-.lrow.dragging,.erow.dragging{opacity:.4; cursor:grabbing;}
-.lrow.drop-top,.erow.drop-top{box-shadow:inset 0 2px 0 0 var(--inprog);}
-.lrow.drop-bot,.erow.drop-bot{box-shadow:inset 0 -2px 0 0 var(--inprog);}
 .jkey{color:var(--inprog); text-decoration:none; font-weight:600;}
 .jkey:hover{text-decoration:underline;}
 .eband{position:absolute; left:0; z-index:1; pointer-events:none;}
@@ -257,10 +235,6 @@ td.why{color:var(--ink-2); line-height:1.5; overflow-wrap:anywhere;}
 .ov.on{display:flex;}
 .modal{background:var(--surface-1); border:1px solid var(--border); border-radius:16px; width:min(560px,100%); max-height:90vh; overflow:auto; padding:20px;}
 .modal h3{margin:0 0 14px; font-size:16px;}
-.fld{margin-bottom:12px;}
-.fld label{display:block; font-size:12px; color:var(--muted); margin-bottom:4px;}
-.fld input,.fld select{width:100%; font:inherit; color:var(--ink); background:var(--page); border:1px solid var(--border); border-radius:9px; padding:8px 10px;}
-.row2{display:flex; gap:10px;} .row2>.fld{flex:1;}
 .drow{display:flex; gap:12px; padding:7px 0; border-bottom:1px solid var(--border); font-size:13.5px;}
 .drow:last-child{border-bottom:none;}
 .dk{flex:0 0 84px; color:var(--muted);}
@@ -280,11 +254,5 @@ td.why{color:var(--ink-2); line-height:1.5; overflow-wrap:anywhere;}
 .deps input{width:auto;}
 .modal-actions{display:flex; justify-content:space-between; gap:8px; margin-top:16px;}
 
-/* Tips */
-details.tips{margin-top:18px; background:var(--surface-1); border:1px solid var(--border); border-radius:14px; padding:4px 16px;}
-details.tips summary{cursor:pointer; font-weight:600; padding:12px 0; list-style:none;}
-details.tips summary::-webkit-details-marker{display:none;}
-details.tips[open] summary{border-bottom:1px solid var(--grid); margin-bottom:10px;}
-.tips ol{margin:0 0 12px; padding-left:20px;} .tips li{margin:5px 0;}
-.tips .h{font-weight:700; margin:12px 0 4px;}
+/* Footer */
 .foot{margin-top:14px; font-size:12px; color:var(--muted); text-align:center;}

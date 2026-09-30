@@ -195,16 +195,8 @@ function toggleBarText(){ ui.barText = barTextIsFull() ? "clip" : "full"; saveUI
 
 // 기본은 접힘. "접힌 목록"이 아니라 "펼친 목록"을 저장하는 이유는, 나중에 데이터에
 // 에픽이 추가돼도 목록에 없으니 자동으로 접힌 채로 나오기 때문이다.
-// 드래그를 마치면 브라우저가 click 을 안 보내는 게 보통이지만 항상 그렇지는 않다.
-// 한 번이라도 새면 끌어놓을 때마다 편집 모달이 열려 성가시다. **마커 밖에 둔다** —
-// 행의 onclick 문자열은 뷰어·편집본이 함께 쓰는데, 여기가 편집 전용이면 뷰어가
-// ReferenceError 로 죽고 인라인 핸들러라 예외도 안 보인다(TOP_*_EDIT 로 겪은 유형).
-let dragEndedAt = 0;
-function afterDrag(){ return Date.now() - dragEndedAt < 250; }
-
 function isCollapsed(gkey){ return ui.expanded.indexOf(gkey) === -1; }
 function toggleEpicAt(i){
-  if(afterDrag()) return;
   const g = groups()[i]; if(!g) return;
   const at = ui.expanded.indexOf(g.gkey);
   if(at === -1) ui.expanded.push(g.gkey); else ui.expanded.splice(at,1);
@@ -229,7 +221,6 @@ function toggleAllEpics(){
 // 서브 레인 접기. 인라인 onclick 에 이름을 넣지 않고 인덱스만 넘긴다 —
 // 이름에 따옴표가 들어가면 핸들러 문자열이 깨지고 클릭이 부모 행으로 샌다.
 function toggleSubAt(gi, si){
-  if(afterDrag()) return;
   const g = groups()[gi]; const s = g && g.subs && g.subs[si]; if(!s) return;
   const at = ui.expanded.indexOf(s.skey);
   if(at === -1) ui.expanded.push(s.skey); else ui.expanded.splice(at,1);
@@ -323,14 +314,12 @@ function labelsHtml(lay, gs, f){
       // 남긴다 — 남은 일을 찾는 화면이라 완료가 눈을 가져가면 안 된다.
       const fin = epicAllDone(g);
       const done = fin ? '<span class="edone">✅ 완료</span>' : '';
-      let mv = "", dnd = "";
-      
       // 좌측 폭이 좁으면 이름이 잘린다(요약·키가 자리를 먼저 가져간다). 잘린 채로 두면
       // 어느 에픽인지 알 수 없으므로 전체 이름과 현황을 툴팁에 담는다.
       const etip=esc(g.name+' — '+epicSummary(g)+(fin?' · 레인 완료':'')+(g.key?' ('+g.key+')':''))+'&#10;클릭해서 접기/펼치기';
-      lh += '<div class="erow'+(fin?' done':'')+'"'+dnd+' style="border-left:3px solid '+g.color+'" onclick="toggleEpicAt('+it.gi+')" title="'+etip+'">'+
+      lh += '<div class="erow'+(fin?' done':'')+'" style="border-left:3px solid '+g.color+'" onclick="toggleEpicAt('+it.gi+')" title="'+etip+'">'+
         '<span class="ecar">'+(it.collapsed?'+':'−')+'</span>'+
-        '<span class="edot" style="background:'+g.color+'"></span><span class="enm">'+esc(g.name)+'</span>'+done+sum+chip+mv+'</div>';
+        '<span class="edot" style="background:'+g.color+'"></span><span class="enm">'+esc(g.name)+'</span>'+done+sum+chip+'</div>';
     }else if(it.type==="sub"){
       // 서브 레인은 자기 작업만으로 요약·완료를 낸다. 상위 레인 줄이 전체 합산을 맡는다.
       const g=it.g, s=it.s, fin=epicAllDone(s), ssum=epicSummary(s);
@@ -343,14 +332,12 @@ function labelsHtml(lay, gs, f){
     }else if(it.type==="task"){
       const t=it.t, blk=isBlocked(t);
       const jk = t.jira ? '<a class="jkey" href="'+jiraUrl(t.jira)+'" target="_blank" rel="noopener" onclick="event.stopPropagation()">'+esc(t.jira)+'</a> · ' : '';
-      let mv = "", dnd = "";
-      
       // 서브 레인 작업은 한 단계 더 들여 쓰고 세로선을 레인 색으로 칠한다 — 그래야 마지막
       // 서브 레인 아래에 오는 서브레인 빈 작업이 그 서브 레인 소속으로 보이지 않는다.
       const insub = it.s ? ' insub" style="border-left-color:'+it.g.color : '';
-      lh += '<div class="lrow'+insub+'"'+dnd+' onclick="openEdit('+t.id+')">'+
+      lh += '<div class="lrow'+insub+'" onclick="openEdit('+t.id+')">'+
         '<div class="nm"><span class="sdot" style="background:'+STVAR[t.status]+'"></span>'+esc(t.name)+(blk?' <span class="lock" title="선행 작업이 완료되지 않아 대기 중">⏳</span>':'')+'</div>'+
-        '<div class="meta">'+jk+esc(ownerParts(t.owner).name)+' · '+mmdd(t.start)+'~'+mmdd(t.end)+flagsHtml(t,f)+'</div>'+mv+'</div>';
+        '<div class="meta">'+jk+esc(ownerParts(t.owner).name)+' · '+mmdd(t.start)+'~'+mmdd(t.end)+flagsHtml(t,f)+'</div></div>';
     }
   });
   return lh;
