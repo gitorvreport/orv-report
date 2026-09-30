@@ -212,6 +212,12 @@ function toggleEpicAt(i){
 }
 // 에픽이 하나도 없으면 "전부 펼쳐짐"으로 보지 않는다 — 빈 차트에서 버튼이
 // "전체 접기"로 뜨면 누를 게 없는데 접겠다고 말하는 꼴이 된다.
+// 펼침 기록에서 지금 없는 레인·서브 레인 키를 뺀다. 서브 레인 이름을 바꾸거나 지우면
+// 옛 키가 localStorage 에 계속 쌓이기 때문이다. 순서는 그대로 둔다.
+function pruneExpanded(expanded, keys){
+  const has=new Set(keys);
+  return expanded.filter(function(k){ return has.has(k); });
+}
 function allEpicsExpanded(){
   const ks = laneKeys(groups());
   return ks.length > 0 && ks.every(function(k){ return !isCollapsed(k); });
@@ -812,6 +818,13 @@ async function syncFromJira(){
     showSyncNote("Jira 갱신 실패 — 저장된 데이터를 표시합니다 ("+why+")", true);
   }finally{
     if(timer) clearTimeout(timer);
+    // 레인은 Jira 값(에픽)으로 정해지므로 갱신을 마친 지금이 기록을 정리할 때다.
+    // 레인이 하나도 없으면(빈 차트) 정리하지 않는다 — 기록이 통째로 날아간다.
+    const ks=laneKeys(groups());
+    if(ks.length){
+      const kept=pruneExpanded(ui.expanded, ks);
+      if(kept.length!==ui.expanded.length){ ui.expanded=kept; saveUI(); }
+    }
     // 실패해도 반드시 그린다. 안 그리면 로딩 화면에 갇힌다.
     setLoading(false);
     render();
@@ -957,6 +970,8 @@ function syncPanes(){
   document.getElementById("drillview").style.display=d?"block":"none";
   const lg=document.querySelector(".legend");
   if(lg) lg.style.display=d?"none":"";
+  // 숨어 있던 동안에는 머리 위치를 못 맞췄다(높이 0). 다시 보이게 한 지금 맞춘다.
+  syncStickyHeads();
 }
 
 function renderDrill(){
