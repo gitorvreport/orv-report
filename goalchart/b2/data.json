@@ -9,7 +9,7 @@
   },
   "jiraBase": "https://offbeatplay.atlassian.net/browse/",
   "syncEndpoint": "https://orv-goalchart-jira.offbeat-696.workers.dev",
-  "syncedAt": "2026-10-12T09:25:53.933Z",
+  "syncedAt": "2026-10-12T09:26:10.342Z",
   "epicGroups": [
     {
       "key": "G1",
@@ -188,6 +188,7 @@
         "ORVV-11329",
         "ORVV-11325",
         "ORVV-11330",
+        "ORVV-11594",
         "ORVV-11591",
         "ORVV-11332",
         "ORVV-11331",
@@ -2711,7 +2712,8 @@
         "name": "[EPIC] [TA] 매테리얼"
       },
       "jira": "ORVV-11594",
-      "deps": []
+      "deps": [],
+      "sub": "[캐릭터] 환영감옥 전용 캐릭터"
     },
     {
       "id": 127,
