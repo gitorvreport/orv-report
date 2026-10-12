@@ -9,7 +9,7 @@
   },
   "jiraBase": "https://offbeatplay.atlassian.net/browse/",
   "syncEndpoint": "https://orv-goalchart-jira.offbeat-696.workers.dev",
-  "syncedAt": "2026-10-12T09:26:10.342Z",
+  "syncedAt": "2026-10-12T11:40:00.355Z",
   "epicGroups": [
     {
       "key": "G1",
@@ -130,11 +130,11 @@
       "name": "[탐험] 성좌유희",
       "issues": [
         "ORVV-11529",
+        "ORVV-11358",
         "ORVV-11133",
         "ORVV-11134",
         "ORVV-11346",
         "ORVV-11376",
-        "ORVV-11358",
         "ORVV-11277",
         "ORVV-11433"
       ]
@@ -783,12 +783,12 @@
     },
     {
       "id": 16,
-      "name": "[기획] (김독자 초월·각성·스킬2종)· - 몽타주·스크립트 작업",
+      "name": "[기획] (김독자 초월·각성·스킬2종) - 몽타주·스크립트 작업",
       "owner": "장영환",
-      "start": null,
-      "end": null,
-      "status": "todo",
-      "statusName": "할 일",
+      "start": "2026-10-12",
+      "end": "2026-10-29",
+      "status": "inprog",
+      "statusName": "진행 중",
       "doneAt": null,
       "epic": {
         "key": "ORVV-7686",
@@ -2009,6 +2009,23 @@
     },
     {
       "id": 86,
+      "name": "[라이팅] 성좌의 유희 라이팅 환경 셋팅",
+      "owner": "정재윤",
+      "start": "2026-10-12",
+      "end": "2026-11-20",
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-9112",
+        "name": "[시스템][탐험] 성좌의 유희 시스템"
+      },
+      "jira": "ORVV-11358",
+      "deps": [],
+      "sub": "[배경] 성좌의 유희 배경"
+    },
+    {
+      "id": 87,
       "name": "[연출][프리비즈] 성좌 유희 (무대화)",
       "owner": "김웅빈",
       "start": "2026-10-12",
@@ -2025,7 +2042,7 @@
       "sub": "[연출] 성좌 유희 (무대화)"
     },
     {
-      "id": 87,
+      "id": 88,
       "name": "[연출][제작] 성좌 유희 (무대화)",
       "owner": "김웅빈",
       "start": "2026-11-09",
@@ -2039,12 +2056,12 @@
       },
       "jira": "ORVV-11134",
       "deps": [
-        86
+        87
       ],
       "sub": "[연출] 성좌 유희 (무대화)"
     },
     {
-      "id": 88,
+      "id": 89,
       "name": "[라이팅] 성좌 유희 (무대화)",
       "owner": "정재윤",
       "start": "2026-11-09",
@@ -2058,12 +2075,12 @@
       },
       "jira": "ORVV-11346",
       "deps": [
-        87
+        88
       ],
       "sub": "[연출] 성좌 유희 (무대화)"
     },
     {
-      "id": 89,
+      "id": 90,
       "name": "[이펙트] 성좌 유희 (무대화)",
       "owner": "안영아",
       "start": "2026-10-27",
@@ -2078,22 +2095,6 @@
       "jira": "ORVV-11376",
       "deps": [],
       "sub": "[연출] 성좌 유희 (무대화)"
-    },
-    {
-      "id": 90,
-      "name": "[라이팅] 성좌의 유희 라이팅 환경 셋팅",
-      "owner": "정재윤",
-      "start": "2026-10-12",
-      "end": "2026-11-20",
-      "status": "todo",
-      "statusName": "할 일",
-      "doneAt": null,
-      "epic": {
-        "key": "ORVV-9112",
-        "name": "[시스템][탐험] 성좌의 유희 시스템"
-      },
-      "jira": "ORVV-11358",
-      "deps": []
     },
     {
       "id": 91,
@@ -2519,9 +2520,7 @@
         "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
       },
       "jira": "ORVV-11573",
-      "deps": [
-        116
-      ],
+      "deps": [],
       "sub": "[배경] 환영감옥 배경"
     },
     {
@@ -2538,7 +2537,9 @@
         "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
       },
       "jira": "ORVV-11562",
-      "deps": [],
+      "deps": [
+        115
+      ],
       "sub": "[배경] 환영감옥 배경"
     },
     {
@@ -2838,9 +2839,7 @@
         "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
       },
       "jira": "ORVV-11298",
-      "deps": [
-        132
-      ],
+      "deps": [],
       "sub": "[플레이] 환영감옥 플레이"
     },
     {
@@ -3060,9 +3059,9 @@
     {
       "id": 146,
       "name": "[컷씬][제작] 환영감옥 정희원 인카운터 컷씬",
-      "owner": "이창석",
-      "start": null,
-      "end": null,
+      "owner": "김웅빈",
+      "start": "2026-12-16",
+      "end": "2026-12-21",
       "status": "todo",
       "statusName": "할 일",
       "doneAt": null,
@@ -3275,8 +3274,8 @@
       "id": 158,
       "name": "[카메라] 보스 정희원 - 전투 카메라 작업",
       "owner": "김웅빈",
-      "start": null,
-      "end": null,
+      "start": "2026-10-26",
+      "end": "2026-10-27",
       "status": "todo",
       "statusName": "할 일",
       "doneAt": null,
@@ -3532,7 +3531,7 @@
       "doneAt": null,
       "epic": {
         "key": "ORVV-11129",
-        "name": "[연출][충무로역] 공필두 무장지대 (무대화)"
+        "name": "[연출][충무로역] 공필두 무장지대 입장 연출"
       },
       "jira": "ORVV-11130",
       "deps": [],
@@ -3549,7 +3548,7 @@
       "doneAt": null,
       "epic": {
         "key": "ORVV-11129",
-        "name": "[연출][충무로역] 공필두 무장지대 (무대화)"
+        "name": "[연출][충무로역] 공필두 무장지대 입장 연출"
       },
       "jira": "ORVV-11131",
       "deps": [],
@@ -3566,7 +3565,7 @@
       "doneAt": null,
       "epic": {
         "key": "ORVV-11129",
-        "name": "[연출][충무로역] 공필두 무장지대 (무대화)"
+        "name": "[연출][충무로역] 공필두 무장지대 입장 연출"
       },
       "jira": "ORVV-11345",
       "deps": [
@@ -3585,7 +3584,7 @@
       "doneAt": null,
       "epic": {
         "key": "ORVV-11129",
-        "name": "[연출][충무로역] 공필두 무장지대 (무대화)"
+        "name": "[연출][충무로역] 공필두 무장지대 입장 연출"
       },
       "jira": "ORVV-11375",
       "deps": [],
@@ -4715,8 +4714,8 @@
       "id": 241,
       "name": "[기획] 공필두 - 몽타주·스크립트 작업",
       "owner": "장영환",
-      "start": null,
-      "end": null,
+      "start": "2026-11-26",
+      "end": "2026-12-10",
       "status": "todo",
       "statusName": "할 일",
       "doneAt": null,
@@ -5736,8 +5735,8 @@
       "id": 299,
       "name": "[기획] 구루시마 - 몽타주·스크립트 작업",
       "owner": "최미희",
-      "start": null,
-      "end": null,
+      "start": "2026-10-26",
+      "end": "2026-11-04",
       "status": "todo",
       "statusName": "할 일",
       "doneAt": null,
@@ -5948,8 +5947,8 @@
       "id": 311,
       "name": "[기획] 왜군 - 지휘병_몽타주·스크립트 작업",
       "owner": "김찬수",
-      "start": null,
-      "end": null,
+      "start": "2026-11-26",
+      "end": "2026-11-30",
       "status": "todo",
       "statusName": "할 일",
       "doneAt": null,
@@ -6130,8 +6129,8 @@
       "id": 321,
       "name": "[기획] 왜군 - 방패병_몽타주·스크립트 작업",
       "owner": "김찬수",
-      "start": null,
-      "end": null,
+      "start": "2026-11-25",
+      "end": "2026-11-30",
       "status": "todo",
       "statusName": "할 일",
       "doneAt": null,
@@ -6308,8 +6307,8 @@
       "id": 331,
       "name": "[기획] 왜군 - 검병_몽타주·스크립트 작업",
       "owner": "김찬수",
-      "start": null,
-      "end": null,
+      "start": "2026-11-02",
+      "end": "2026-11-16",
       "status": "todo",
       "statusName": "할 일",
       "doneAt": null,
@@ -6486,8 +6485,8 @@
       "id": 341,
       "name": "[기획] 왜군 - 조총병_몽타주·스크립트 작업",
       "owner": "김찬수",
-      "start": null,
-      "end": null,
+      "start": "2026-11-25",
+      "end": "2026-11-30",
       "status": "todo",
       "statusName": "할 일",
       "doneAt": null,
@@ -6876,8 +6875,8 @@
       "owner": "김기돈",
       "start": null,
       "end": "2026-11-27",
-      "status": "todo",
-      "statusName": "할 일",
+      "status": "inprog",
+      "statusName": "진행 중",
       "doneAt": null,
       "epic": {
         "key": "ORVV-10040",
@@ -7050,8 +7049,8 @@
       "id": 373,
       "name": "[기획] 씨서펜트 - 몽타주·스크립트 작업",
       "owner": "장영환",
-      "start": null,
-      "end": null,
+      "start": "2026-11-04",
+      "end": "2026-11-16",
       "status": "todo",
       "statusName": "할 일",
       "doneAt": null,
@@ -7460,8 +7459,8 @@
       "owner": "황준기",
       "start": null,
       "end": "2026-11-27",
-      "status": "todo",
-      "statusName": "할 일",
+      "status": "inprog",
+      "statusName": "진행 중",
       "doneAt": null,
       "epic": {
         "key": "ORVV-10039",
@@ -7560,8 +7559,8 @@
       "id": 402,
       "name": "[기획] 티라노사우르스 렉스 - 몽타주·스크립트 작업",
       "owner": "소원태",
-      "start": null,
-      "end": null,
+      "start": "2026-10-23",
+      "end": "2026-11-06",
       "status": "todo",
       "statusName": "할 일",
       "doneAt": null,
