@@ -256,3 +256,17 @@ footer .wrap { padding-top: 18px; padding-bottom: 24px; }
 .due ul.dots { align-self: center; }
 .steps .chev, .due .chev { align-self: center; }
 .closing { margin-top: 80px; }
+
+/* 설치 파일 내려받기 */
+.btn-dl { display: inline-flex; align-items: center; gap: 10px; margin-top: 22px; padding: 12px 22px; border-radius: 999px; background: var(--lime); color: var(--lime-ink); font-weight: 800; text-decoration: none; }
+.btn-dl img { width: 18px; height: 18px; filter: invert(1); }
+.btn-dl:hover { filter: brightness(.95); }
+.btn-dl.sm { margin-top: 14px; padding: 9px 16px; font-size: 14px; background: var(--a1); color: #fff; align-self: flex-start; }
+.btn-dl.sm img { filter: none; }
+.cover-meta + .btn-dl { margin-top: 18px; }
+
+/* 넛지 마무리: 다섯 가지 + 알림 그림 */
+.ends .end-notice { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; background: var(--soft); border-color: var(--soft); box-shadow: none; }
+.ends .end-notice img { max-width: 300px; width: 100%; }
+.ends .end-notice figcaption { font-size: 13px; color: var(--muted); text-align: center; }
+@media (max-width: 600px) { .cards.ends { grid-template-columns: 1fr; } }
