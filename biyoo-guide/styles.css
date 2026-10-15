@@ -232,7 +232,9 @@ footer .wrap { padding-top: 18px; padding-bottom: 24px; }
   .chapter img { width: 150px; }
 }
 @media (max-width: 600px) {
-  .wrap { padding: 0 16px; }
+  .wrap { padding-left: 16px; padding-right: 16px; }
+  .cover-in { padding-top: 36px; padding-bottom: 44px; }
+  .chapter-in { padding-top: 32px; padding-bottom: 36px; }
   .brand span { display: none; }
   .cards.c2, .cards.c3, .cards.c4 { grid-template-columns: 1fr; }
   .steps, .due { grid-template-columns: 1fr; }
