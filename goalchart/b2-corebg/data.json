@@ -1,0 +1,553 @@
+{
+  "chartId": "b2-corebg",
+  "title": "B2 핵심구역 현황",
+  "deadline": "2026-12-18",
+  "window": {
+    "on": true,
+    "start": "2026-10-05",
+    "end": "2026-12-18"
+  },
+  "jiraBase": "https://offbeatplay.atlassian.net/browse/",
+  "syncEndpoint": "https://orv-goalchart-jira.offbeat-696.workers.dev",
+  "syncedAt": "2026-10-29T08:35:30.947Z",
+  "epicGroups": [
+    {
+      "key": "G1",
+      "name": "쥬라기공원⭐",
+      "issues": [
+        "ORVV-10010",
+        "ORVV-9523",
+        "ORVV-11525",
+        "ORVV-11870",
+        "ORVV-11871",
+        "ORVV-11536",
+        "ORVV-11872",
+        "ORVV-11544",
+        "ORVV-11359"
+      ]
+    },
+    {
+      "key": "G2",
+      "name": "명량해전⭐⭐",
+      "issues": [
+        "ORVV-10012",
+        "ORVV-11555",
+        "ORVV-11028",
+        "ORVV-11868",
+        "ORVV-11546",
+        "ORVV-11550",
+        "ORVV-11354"
+      ]
+    },
+    {
+      "key": "G3",
+      "name": "환영감옥⭐⭐",
+      "issues": [
+        "ORVV-8269",
+        "ORVV-11199",
+        "ORVV-11878",
+        "ORVV-11879",
+        "ORVV-11880",
+        "ORVV-11557",
+        "ORVV-11881",
+        "ORVV-11882",
+        "ORVV-11505",
+        "ORVV-11506"
+      ]
+    },
+    {
+      "key": "G4",
+      "name": "무장지대⭐⭐",
+      "issues": [
+        "ORVV-11863",
+        "ORVV-11865",
+        "ORVV-11866",
+        "ORVV-11867"
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "id": 1,
+      "name": "[배경] 쥬라기공원_블록아웃",
+      "owner": "양희승",
+      "start": "2026-09-28",
+      "end": "2026-10-16",
+      "status": "done",
+      "statusName": "완료",
+      "doneAt": "2026-10-14",
+      "epic": {
+        "key": "ORVV-10002",
+        "name": "[배경] 대한극장_쥬라기 공원"
+      },
+      "jira": "ORVV-10010",
+      "deps": []
+    },
+    {
+      "id": 2,
+      "name": "[배경] 쥬라기공원_원화 제작",
+      "owner": "임재훈",
+      "start": "2026-09-28",
+      "end": "2026-10-30",
+      "status": "review",
+      "statusName": "검수 요청",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-10002",
+        "name": "[배경] 대한극장_쥬라기 공원"
+      },
+      "jira": "ORVV-9523",
+      "deps": []
+    },
+    {
+      "id": 3,
+      "name": "[배경] 쥬라기공원_보스_디테일 목업",
+      "owner": "안유빈",
+      "start": "2026-10-19",
+      "end": "2026-11-06",
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-10039",
+        "name": "[플레이] 극장 던전 - 쥬라기 공원 플레이 구현"
+      },
+      "jira": "ORVV-11525",
+      "deps": []
+    },
+    {
+      "id": 4,
+      "name": "[배경] 쥬라기공원_보스_식생",
+      "owner": "안유빈",
+      "start": null,
+      "end": null,
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-10039",
+        "name": "[플레이] 극장 던전 - 쥬라기 공원 플레이 구현"
+      },
+      "jira": "ORVV-11870",
+      "deps": []
+    },
+    {
+      "id": 5,
+      "name": "[배경] 쥬라기공원_보스_랜드스케이프",
+      "owner": "안유빈",
+      "start": null,
+      "end": null,
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-10039",
+        "name": "[플레이] 극장 던전 - 쥬라기 공원 플레이 구현"
+      },
+      "jira": "ORVV-11871",
+      "deps": []
+    },
+    {
+      "id": 6,
+      "name": "[배경] 쥬라기공원_다이나믹오브젝트_ElecFence",
+      "owner": "김봉석",
+      "start": "2026-11-02",
+      "end": "2026-11-06",
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-10039",
+        "name": "[플레이] 극장 던전 - 쥬라기 공원 플레이 구현"
+      },
+      "jira": "ORVV-11536",
+      "deps": []
+    },
+    {
+      "id": 7,
+      "name": "[배경] 쥬라기공원_보스_모듈",
+      "owner": "안유빈",
+      "start": null,
+      "end": null,
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-10039",
+        "name": "[플레이] 극장 던전 - 쥬라기 공원 플레이 구현"
+      },
+      "jira": "ORVV-11872",
+      "deps": []
+    },
+    {
+      "id": 8,
+      "name": "[배경] 쥬라기공원_보스_드레싱",
+      "owner": "안유빈",
+      "start": "2026-11-09",
+      "end": "2026-11-27",
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-10039",
+        "name": "[플레이] 극장 던전 - 쥬라기 공원 플레이 구현"
+      },
+      "jira": "ORVV-11544",
+      "deps": []
+    },
+    {
+      "id": 9,
+      "name": "[라이팅] 대한극장 쥬라기공원 라이팅 환경 셋팅",
+      "owner": "박장호",
+      "start": "2026-11-09",
+      "end": "2026-12-04",
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-10039",
+        "name": "[플레이] 극장 던전 - 쥬라기 공원 플레이 구현"
+      },
+      "jira": "ORVV-11359",
+      "deps": [
+        3
+      ]
+    },
+    {
+      "id": 10,
+      "name": "[배경] 명량_블록아웃",
+      "owner": "양희승",
+      "start": "2026-10-06",
+      "end": "2026-10-30",
+      "status": "inprog",
+      "statusName": "진행 중",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-10003",
+        "name": "[배경] 대한극장_명량"
+      },
+      "jira": "ORVV-10012",
+      "deps": []
+    },
+    {
+      "id": 11,
+      "name": "[배경] 명량_원화 제작",
+      "owner": "이한나",
+      "start": "2026-10-06",
+      "end": "2026-10-30",
+      "status": "review",
+      "statusName": "검수 요청",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-10042",
+        "name": "[플레이] 극장던전 - 명량 플레이 구현"
+      },
+      "jira": "ORVV-11555",
+      "deps": []
+    },
+    {
+      "id": 12,
+      "name": "[배경] 명량해전_판옥선/대장선 디테일 목업",
+      "owner": "이민수",
+      "start": "2026-10-12",
+      "end": "2026-11-27",
+      "status": "inprog",
+      "statusName": "진행 중",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-10003",
+        "name": "[배경] 대한극장_명량"
+      },
+      "jira": "ORVV-11028",
+      "deps": []
+    },
+    {
+      "id": 13,
+      "name": "[배경] 명량해전_판옥선 파괴 모듈 제작",
+      "owner": "김재원",
+      "start": "2026-11-02",
+      "end": "2026-11-13",
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-10003",
+        "name": "[배경] 대한극장_명량"
+      },
+      "jira": "ORVV-11868",
+      "deps": []
+    },
+    {
+      "id": 14,
+      "name": "[배경] 명량해전_타일맵/트림시트 제작",
+      "owner": "김재원",
+      "start": "2026-10-26",
+      "end": "2026-11-20",
+      "status": "inprog",
+      "statusName": "진행 중",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-10042",
+        "name": "[플레이] 극장던전 - 명량 플레이 구현"
+      },
+      "jira": "ORVV-11546",
+      "deps": []
+    },
+    {
+      "id": 15,
+      "name": "[배경] 명량_드레싱",
+      "owner": "이민수",
+      "start": "2026-11-16",
+      "end": "2026-11-27",
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-10042",
+        "name": "[플레이] 극장던전 - 명량 플레이 구현"
+      },
+      "jira": "ORVV-11550",
+      "deps": []
+    },
+    {
+      "id": 16,
+      "name": "[라이팅] 대한극장 명량 라이팅 환경 셋팅",
+      "owner": "박장호",
+      "start": "2026-11-16",
+      "end": "2026-12-11",
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-10042",
+        "name": "[플레이] 극장던전 - 명량 플레이 구현"
+      },
+      "jira": "ORVV-11354",
+      "deps": []
+    },
+    {
+      "id": 17,
+      "name": "[배경원화] 환영감옥 컨셉 원화",
+      "owner": "이한나",
+      "start": "2026-07-06",
+      "end": "2026-08-31",
+      "status": "done",
+      "statusName": "완료",
+      "doneAt": "2026-08-11",
+      "epic": {
+        "key": "ORVV-7824",
+        "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
+      },
+      "jira": "ORVV-8269",
+      "deps": []
+    },
+    {
+      "id": 18,
+      "name": "[배경] 환영감옥_이현성/정희원_디테일 목업",
+      "owner": "임수연",
+      "start": "2026-10-06",
+      "end": "2026-10-30",
+      "status": "inprog",
+      "statusName": "진행 중",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-7824",
+        "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
+      },
+      "jira": "ORVV-11199",
+      "deps": []
+    },
+    {
+      "id": 19,
+      "name": "[배경] 환영감옥_이길영 에셋",
+      "owner": "임수연",
+      "start": "2026-11-02",
+      "end": "2026-11-27",
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-7824",
+        "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
+      },
+      "jira": "ORVV-11878",
+      "deps": []
+    },
+    {
+      "id": 20,
+      "name": "[배경] 환영감옥_정희원 에셋",
+      "owner": "임수연",
+      "start": "2026-11-02",
+      "end": "2026-11-27",
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-7824",
+        "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
+      },
+      "jira": "ORVV-11879",
+      "deps": []
+    },
+    {
+      "id": 21,
+      "name": "[배경] 환영감옥_이현성 에셋",
+      "owner": "임수연",
+      "start": "2026-11-02",
+      "end": "2026-11-27",
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-7824",
+        "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
+      },
+      "jira": "ORVV-11880",
+      "deps": []
+    },
+    {
+      "id": 22,
+      "name": "[배경] 환영감옥_이길영 드레싱",
+      "owner": "임수연",
+      "start": "2026-11-02",
+      "end": "2026-11-27",
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-7824",
+        "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
+      },
+      "jira": "ORVV-11557",
+      "deps": []
+    },
+    {
+      "id": 23,
+      "name": "[배경] 환영감옥_정희원 드레싱",
+      "owner": "임수연",
+      "start": "2026-11-02",
+      "end": "2026-11-27",
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-7824",
+        "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
+      },
+      "jira": "ORVV-11881",
+      "deps": []
+    },
+    {
+      "id": 24,
+      "name": "[배경] 환영감옥_이현성 드레싱",
+      "owner": "임수연",
+      "start": "2026-11-02",
+      "end": "2026-11-27",
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-7824",
+        "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
+      },
+      "jira": "ORVV-11882",
+      "deps": []
+    },
+    {
+      "id": 25,
+      "name": "[라이팅] 환영감옥 이길영 환경 라이팅",
+      "owner": "정재윤",
+      "start": null,
+      "end": null,
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-7824",
+        "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
+      },
+      "jira": "ORVV-11505",
+      "deps": []
+    },
+    {
+      "id": 26,
+      "name": "[라이팅] 환영감옥 정희원 환경 라이팅",
+      "owner": "정재윤",
+      "start": "2026-10-20",
+      "end": "2026-11-27",
+      "status": "inprog",
+      "statusName": "진행 중",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-7824",
+        "name": "[플레이] 스펙터 전투 - 환영감옥 플레이 구현"
+      },
+      "jira": "ORVV-11506",
+      "deps": []
+    },
+    {
+      "id": 27,
+      "name": "[배경] 충무로역_무장지대_블록아웃",
+      "owner": "안유빈",
+      "start": "2026-10-26",
+      "end": "2026-10-30",
+      "status": "review",
+      "statusName": "검수 요청",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-7553",
+        "name": "[배경] 충무로역"
+      },
+      "jira": "ORVV-11863",
+      "deps": []
+    },
+    {
+      "id": 28,
+      "name": "[배경] 충무로역_무장지대_태산부수기 시뮬레이션 모듈",
+      "owner": "안유빈",
+      "start": "2026-10-30",
+      "end": "2026-11-13",
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-7553",
+        "name": "[배경] 충무로역"
+      },
+      "jira": "ORVV-11865",
+      "deps": []
+    },
+    {
+      "id": 29,
+      "name": "[배경] 충무로역_무장지대_모듈",
+      "owner": "김명석",
+      "start": "2026-11-16",
+      "end": "2026-11-27",
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-7553",
+        "name": "[배경] 충무로역"
+      },
+      "jira": "ORVV-11866",
+      "deps": []
+    },
+    {
+      "id": 30,
+      "name": "[배경] 충무로역_무장지대_드레싱",
+      "owner": "김명석",
+      "start": "2026-11-16",
+      "end": "2026-11-27",
+      "status": "todo",
+      "statusName": "할 일",
+      "doneAt": null,
+      "epic": {
+        "key": "ORVV-7553",
+        "name": "[배경] 충무로역"
+      },
+      "jira": "ORVV-11867",
+      "deps": []
+    }
+  ]
+}
