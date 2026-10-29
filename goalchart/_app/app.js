@@ -1,5 +1,5 @@
 /* ---------- data model ---------- */
-const DAY_W = 46, ROW_H = 46, HEAD_H = 54, BAR_H = 26, EPIC_H = 34, SUB_H = 32;
+const DAY_W = 46, ROW_H = 46, HEAD_H = 54, BAR_H = 22, EPIC_H = 34, SUB_H = 32;
 const EPIC_COLORS = ["#2a78d6","#eb6834","#1baf7a","#eda100","#e87ba4","#008300","#4a3aa7","#e34948"];
 function hexA(h,a){const n=parseInt(h.slice(1),16); return "rgba("+((n>>16)&255)+","+((n>>8)&255)+","+(n&255)+","+a+")";}
 const STLABEL = {done:"완료", inprog:"진행중", review:"검수 요청", todo:"예정", risk:"기한 초과"};
@@ -353,9 +353,10 @@ function timelineHeadHtml(f, W){
     head+='<div class="wk" style="left:'+(w*7*DAY_W)+'px; width:'+(7*DAY_W)+'px">Week '+(w+1)+
           ' &nbsp;<span style="color:var(--muted);font-weight:500">'+mmdd(iso(ws))+'~'+mmdd(iso(wend))+'</span></div>';
   }
+  const ti=diffD(f.start,todayMid());
   for(let i=0;i<f.days;i++){
     const d=addD(f.start,i), wknd=(d.getDay()===0||d.getDay()===6);
-    head+='<div class="dcell'+(wknd?' wknd':'')+'" style="left:'+(i*DAY_W)+'px; width:'+DAY_W+'px">'+
+    head+='<div class="dcell'+(wknd?' wknd':'')+(i===ti?' tod':'')+'" style="left:'+(i*DAY_W)+'px; width:'+DAY_W+'px">'+
           '<span>'+WD[d.getDay()]+'</span><span class="dn">'+d.getDate()+'</span></div>';
   }
   head+='</div>';
@@ -363,7 +364,8 @@ function timelineHeadHtml(f, W){
 }
 
 // 롤업 막대 = 작업들의 전체 기간. 레인 줄과 서브 레인 줄이 함께 쓴다.
-function rollupHtml(f, tasks, y, h, color, title){
+// 색은 CSS(.ebar)가 중립색으로 정한다. 레인 색을 칠하면 상태 막대와 같은 계열이라 상태로 읽힌다.
+function rollupHtml(f, tasks, y, h, title){
   const sp=epicSpan(tasks);
   if(!sp) return "";
   const sIdx=diffD(f.start,pd(sp.start)), eIdx=diffD(f.start,pd(sp.end));
@@ -372,34 +374,32 @@ function rollupHtml(f, tasks, y, h, color, title){
   const clipL=sIdx<0, clipR=eIdx>f.days-1;
   const left=cs*DAY_W+4, width=Math.max((ce-cs+1)*DAY_W-8,10);
   return '<div class="ebar'+(clipL?' clipL':'')+(clipR?' clipR':'')+'" style="left:'+left+'px; top:'+
-         (y+(h-11)/2)+'px; width:'+width+'px; background:'+color+'" title="'+
+         (y+(h-6)/2)+'px; width:'+width+'px" title="'+
          esc(title)+' · '+mmdd(sp.start)+'~'+mmdd(sp.end)+'"></div>';
 }
 
 // 배경 격자 · 에픽 스윔레인 밴드와 롤업 막대 · 오늘 선 · 마감 깃발.
 function gridBackgroundHtml(f, lay, W, H){
+  const ti=diffD(f.start,todayMid());
   let grid='<div class="grid" style="width:'+W+'px; height:'+H+'px">';
   for(let i=0;i<f.days;i++){
     const d=addD(f.start,i), wknd=(d.getDay()===0||d.getDay()===6);
-    grid+='<div class="col'+(wknd?' wknd':'')+'" style="left:'+(i*DAY_W)+'px; width:'+DAY_W+'px"></div>';
+    grid+='<div class="col'+(wknd?' wknd':'')+(i===ti?' tod':'')+'" style="left:'+(i*DAY_W)+'px; width:'+DAY_W+'px"></div>';
   }
-  // epic swimlane bands
+  // 레인 머리 행은 중립 면이다. 레인 색은 좌측 라벨의 책등에만 쓴다.
+  // 롤업 막대는 하위 작업 전체 기간이고 접힘 여부와 무관하게 항상 그린다.
   lay.forEach(it=>{
     if(it.type==="epic"){
-      grid+='<div class="eband" style="top:'+it.y+'px; height:'+EPIC_H+'px; width:'+W+'px; background:'+hexA(it.g.color,0.07)+'; border-left:3px solid '+it.g.color+'"></div>';
-      // 롤업 막대: 하위 작업 전체 기간. 접힘 여부와 무관하게 항상 그린다.
-      // 레인 색은 상태 색(파랑·초록·빨강)과 같은 계열이라 포화색으로 칠하면 상태로 읽힌다.
-      // 옅게 칠해 '기간 틀'로 보이게 하고, 포화색은 작업 막대의 상태에만 남긴다.
-      grid+=rollupHtml(f, it.g.tasks, it.y, EPIC_H, hexA(it.g.color,0.5), it.g.name+' · '+epicSummary(it.g));
+      grid+='<div class="eband" style="top:'+it.y+'px; height:'+EPIC_H+'px; width:'+W+'px"></div>';
+      grid+=rollupHtml(f, it.g.tasks, it.y, EPIC_H, it.g.name+' · '+epicSummary(it.g));
     }else if(it.type==="sub"){
-      grid+='<div class="eband" style="top:'+it.y+'px; height:'+SUB_H+'px; width:'+W+'px; background:'+hexA(it.g.color,0.06)+'; border-left:3px solid '+it.g.color+'"></div>';
-      grid+=rollupHtml(f, it.s.tasks, it.y, SUB_H, hexA(it.g.color,0.45),it.g.name+' › '+it.s.name+' · '+epicSummary(it.s));
+      grid+='<div class="eband sub" style="top:'+it.y+'px; height:'+SUB_H+'px; width:'+W+'px"></div>';
+      grid+=rollupHtml(f, it.s.tasks, it.y, SUB_H, it.g.name+' › '+it.s.name+' · '+epicSummary(it.s));
     }
   });
   // today
-  const ti=diffD(f.start,todayMid());
   if(ti>=0 && ti<f.days){
-    const x=ti*DAY_W;
+    const x=ti*DAY_W+DAY_W/2;
     grid+='<div class="todayline" style="left:'+x+'px"></div>'+
           '<div class="todaytag" style="left:'+x+'px">오늘</div>';
   }
@@ -421,7 +421,7 @@ const DEP_R    = 6;    // 모서리 둥글기. 0 이면 직각.
 // 선행 막대 오른쪽 끝(x1,y1) → 후행 막대 왼쪽 끝(x2,y2) 을 잇는 꺾임점들.
 // 되돌아가는 링크(후행이 선행보다 왼쪽에서 시작)는 4점으로 못 그린다 — 가로로 되돌아가는
 // 구간이 필요하고, 그 구간은 **행 사이 빈 틈**을 타야 막대를 가로지르지 않는다
-// (ROW_H 46 > BAR_H 26 이라 위아래로 10px 씩 남는다).
+// (ROW_H 46 > BAR_H 22 이라 위아래로 12px 씩 남는다).
 function elbowPoints(x1, y1, x2, y2, minX, maxX, rowH){
   const cl=(x)=>Math.max(minX,Math.min(maxX,x));
   const a=cl(x1+DEP_STUB);
@@ -626,9 +626,14 @@ function renderStats(f){
   const risk=T.filter(t=>t.status==="risk").length;
   const hold=T.filter(isHold).length;
   const ddText = dday>0?("D-"+dday):(dday===0?"D-Day":("D+"+(-dday)));
+  // 상태 구성비. 순서는 끝난 일부터 남은 일 순이라 왼쪽이 채워질수록 진척이 보인다.
+  const comp='<div class="comp">'+["done","review","inprog","risk","todo"].map(function(k){
+    const c=T.filter(function(t){return t.status===k;}).length;
+    return c ? '<i class="'+k+'" style="flex:'+c+' 0 0" title="'+stLabel({status:k})+' '+c+'건"></i>' : "";
+  }).join("")+'</div>';
   document.getElementById("stats").innerHTML =
     stat("마감까지", ddText, "마감 "+mmdd(state.deadline)) +
-    stat("전체 진척률", prog+"%", done+" / "+n+" 완료", prog, "done") +
+    stat("전체 진척률", prog+"%", done+" / "+n+" 완료", prog, "done", comp) +
     // '대기 중'은 진행중에서 빼서 따로 센다 — statusCategory 로는 둘이 같은 칸에 접혀서,
     // 착수도 안 한 일이 진행 중으로 세어졌다(2026-08-20 기준 93건 중 17건이 그랬다).
     stat("진행중", (T.filter(t=>t.status==="inprog").length - hold)+"건",
@@ -637,8 +642,8 @@ function renderStats(f){
 }
 // kind 를 주면 눌러서 목록으로 들어가는 카드가 된다. onclick 은 인자 조립 없이
 // 리터럴 하나만 넣는다 — 문자열을 이어 붙이다 문법이 깨지면 핸들러가 통째로 죽는다.
-function stat(k,v,s,pct,kind){
-  const mini = (pct!==undefined) ? '<div class="bar-mini"><i style="width:'+pct+'%"></i></div>' : '';
+function stat(k,v,s,pct,kind,extra){
+  const mini = extra || ((pct!==undefined) ? '<div class="bar-mini"><i style="width:'+pct+'%"></i></div>' : '');
   if(!kind) return '<div class="stat"><div class="k">'+k+'</div><div class="v">'+v+'</div><div class="s">'+s+'</div>'+mini+'</div>';
   return '<div class="stat tap" role="button" tabindex="0" onclick="openDrill(\''+kind+'\')"'+
          ' onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();openDrill(\''+kind+'\');}">'+
