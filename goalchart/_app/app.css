@@ -1,8 +1,12 @@
+/* 한글 가변 폰트. 못 받으면 아래 body 의 시스템 서체로 물러난다. */
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css");
 :root{
   --surface-1:#fcfcfb; --page:#f9f9f7;
-  --ink:#0b0b0b; --ink-2:#52514e; --muted:#898781;
+  --ink:#0b0b0b; --ink-2:#52514e; --muted:#6f6e69;
   --grid:#e1e0d9; --axis:#c3c2b7; --border:rgba(11,11,11,.10);
-  --done:#0ca30c; --inprog:#2a78d6; --todo:#898781; --risk:#d03b3b; --review:#7c4dbe;
+  /* 막대 안 흰 글자가 4.5:1 을 넘도록 완료·진행중을 한 단계 어둡게 했다.
+     검수 요청은 진행중(파랑)과 구분이 안 돼(ΔE 13) 자주색에서 마젠타로 옮겼다. */
+  --done:#0b860b; --inprog:#2670cc; --todo:#898781; --risk:#d03b3b; --review:#a8389a;
   --weekend:rgba(137,135,129,.10); --today:#eb6834; --dep:#a9a8a2; --dep-block:#d03b3b;
   --chip:rgba(11,11,11,.05);
   --wait:#c2410c; --flag-risk-bg:rgba(208,59,59,.13); --flag-wait-bg:rgba(194,65,12,.13);
@@ -13,7 +17,7 @@ html[data-theme="dark"]{
   --surface-1:#1a1a19; --page:#0d0d0d;
   --ink:#ffffff; --ink-2:#c3c2b7; --muted:#898781;
   --grid:#2c2c2a; --axis:#383835; --border:rgba(255,255,255,.10);
-  --done:#0ca30c; --inprog:#3987e5; --todo:#6b6a66; --risk:#d03b3b; --review:#a06fe0;
+  --done:#0ca30c; --inprog:#3987e5; --todo:#6b6a66; --risk:#d03b3b; --review:#c75bb8;
   --weekend:rgba(137,135,129,.14); --today:#eb6834; --dep:#6b6a66; --dep-block:#e66767;
   --chip:rgba(255,255,255,.07);
   --wait:#fb923c; --flag-risk-bg:rgba(208,59,59,.20); --flag-wait-bg:rgba(251,146,60,.18);
@@ -23,9 +27,10 @@ html[data-theme="dark"]{
 *{box-sizing:border-box;}
 body{
   margin:0; background:var(--page); color:var(--ink);
-  font-family:system-ui,-apple-system,"Segoe UI","Malgun Gothic","Apple SD Gothic Neo",sans-serif;
-  font-size:14px; line-height:1.5;
+  font-family:"Pretendard Variable",Pretendard,system-ui,-apple-system,"Segoe UI","Malgun Gothic","Apple SD Gothic Neo",sans-serif;
+  font-size:14px; line-height:1.5; -webkit-font-smoothing:antialiased;
 }
+button:focus-visible,.lrow:focus-visible,.erow:focus-visible{outline:2px solid var(--inprog); outline-offset:2px;}
 /* 본문은 읽기 좋은 폭을 유지하되, 간트 카드만 화면 폭을 쓴다.
    간트는 하루 46px 라 1180px 안에서는 좌측 라벨(320px)을 빼고 17일치밖에 못 그린다. */
 .wrap{max-width:1180px; margin:0 auto; padding:22px 20px 60px;}
@@ -34,7 +39,9 @@ body{
 
 /* Header / toolbar */
 .top{display:flex; flex-wrap:wrap; gap:14px 18px; align-items:flex-end; justify-content:space-between; margin-bottom:16px;}
-.title-txt{font-size:22px; font-weight:700; color:var(--ink); padding:2px 4px;}
+/* 제목 아래 마감일과 표시 범위를 한 줄에 둔다 — 세 줄이면 카드가 화면 아래로 밀린다. */
+#topLeft{display:flex; flex-wrap:wrap; align-items:center; gap:4px 20px;}
+.title-txt{flex:0 0 100%; font-size:24px; font-weight:800; letter-spacing:-.02em; color:var(--ink); padding:2px 0;}
 .dl-field{display:flex; align-items:center; gap:8px; color:var(--ink-2); font-size:13px;}
 .dl-field input{font:inherit; color:var(--ink); background:var(--surface-1); border:1px solid var(--border); border-radius:8px; padding:5px 8px;}
 .btns{display:flex; flex-wrap:wrap; gap:8px;}
@@ -43,10 +50,12 @@ button:hover{border-color:var(--axis);}
 button.ghost{background:transparent;}
 
 /* Stats */
-.stats{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:16px;}
+/* 첫 카드(마감까지)가 주 지표다. 폭과 숫자를 키워 시선이 먼저 가게 하고 나머지는 같은 무게로 둔다. */
+.stats{display:grid; grid-template-columns:1.25fr 1fr 1fr 1fr; gap:12px; margin-bottom:16px;}
 .stat{background:var(--surface-1); border:1px solid var(--border); border-radius:14px; padding:14px 16px;}
 .stat .k{font-size:12px; color:var(--muted); letter-spacing:.02em;}
-.stat .v{font-size:26px; font-weight:700; margin-top:3px; font-variant-numeric:tabular-nums;}
+.stat .v{font-size:26px; font-weight:700; margin-top:3px; letter-spacing:-.02em; font-variant-numeric:tabular-nums;}
+.stat:first-child .v{font-size:34px; font-weight:800;}
 .stat .s{font-size:12px; color:var(--ink-2); margin-top:2px;}
 .bar-mini{height:6px; border-radius:4px; background:var(--chip); margin-top:9px; overflow:hidden;}
 .bar-mini>i{display:block; height:100%; background:var(--inprog); border-radius:4px;}
@@ -57,7 +66,7 @@ button.ghost{background:transparent;}
 .sync-note.bad{color:var(--risk);}
 /* 값이 확정되기 전에는 아예 그리지 않는다. 저장된 값(배포 시점에 굳은 것)을
    잠깐 보여줬다 바꾸면, 흐리게 하더라도 값이 튀는 게 보인다. */
-.loading{padding:64px 20px; text-align:center; color:var(--muted); font-size:14px;}
+.loading{padding:64px 20px; min-height:320px; display:flex; align-items:center; justify-content:center; text-align:center; color:var(--muted); font-size:14px;}
 .loading .spin{display:inline-block; width:14px; height:14px; margin-right:8px;
   border:2px solid var(--grid); border-top-color:var(--inprog); border-radius:50%;
   vertical-align:-2px; animation:spin .7s linear infinite;}
@@ -123,7 +132,7 @@ button.ghost{background:transparent;}
 .erow .esum{flex:0 0 auto; font-size:10.5px; font-weight:500; color:var(--muted); white-space:nowrap;}
 /* 끝난 레인. 배지만 또렷하게 두고 나머지는 채도를 낮춘다 — 남은 일을 찾는 화면이라
    완료가 시선을 가져가면 안 된다. 행 전체에 opacity 를 걸지 않는 이유가 이것이다. */
-.erow.done .enm,.erow.done .esum,.erow.done .edot,.erow.done .ecar,.erow.done .ekey{opacity:.45;}
+.erow.done .enm,.erow.done .esum,.erow.done .edot,.erow.done .ecar,.erow.done .ekey{opacity:.6;}
 .erow.done .edone{flex:0 0 auto; font-size:10.5px; font-weight:700; color:var(--done);
   background:var(--chip); border:1px solid var(--done); border-radius:999px; padding:1px 7px; white-space:nowrap;}
 /* 서브 레인 줄. 레인 줄보다 낮고 들여 써서 레인 안에 든 것으로 읽힌다.
@@ -137,7 +146,7 @@ button.ghost{background:transparent;}
   font-size:12px; font-weight:700; line-height:1; color:var(--ink-2);
   border:1px solid var(--border); border-radius:4px; background:var(--page);}
 .srow:hover .ecar{color:var(--inprog); border-color:var(--inprog);}
-.srow.done .enm,.srow.done .esum,.srow.done .ecar,.srow.done .edot{opacity:.45;}
+.srow.done .enm,.srow.done .esum,.srow.done .ecar,.srow.done .edot{opacity:.6;}
 .srow.done .edone{flex:0 0 auto; font-size:10px; font-weight:700; color:var(--done);
   background:var(--chip); border:1px solid var(--done); border-radius:999px; padding:0 6px; white-space:nowrap;}
 .lrow{position:relative;}

@@ -386,12 +386,14 @@ function gridBackgroundHtml(f, lay, W, H){
   // epic swimlane bands
   lay.forEach(it=>{
     if(it.type==="epic"){
-      grid+='<div class="eband" style="top:'+it.y+'px; height:'+EPIC_H+'px; width:'+W+'px; background:'+hexA(it.g.color,0.12)+'; border-left:3px solid '+it.g.color+'"></div>';
+      grid+='<div class="eband" style="top:'+it.y+'px; height:'+EPIC_H+'px; width:'+W+'px; background:'+hexA(it.g.color,0.07)+'; border-left:3px solid '+it.g.color+'"></div>';
       // 롤업 막대: 하위 작업 전체 기간. 접힘 여부와 무관하게 항상 그린다.
-      grid+=rollupHtml(f, it.g.tasks, it.y, EPIC_H, it.g.color, it.g.name+' · '+epicSummary(it.g));
+      // 레인 색은 상태 색(파랑·초록·빨강)과 같은 계열이라 포화색으로 칠하면 상태로 읽힌다.
+      // 옅게 칠해 '기간 틀'로 보이게 하고, 포화색은 작업 막대의 상태에만 남긴다.
+      grid+=rollupHtml(f, it.g.tasks, it.y, EPIC_H, hexA(it.g.color,0.5), it.g.name+' · '+epicSummary(it.g));
     }else if(it.type==="sub"){
-      grid+='<div class="eband" style="top:'+it.y+'px; height:'+SUB_H+'px; width:'+W+'px; background:'+hexA(it.g.color,0.10)+'; border-left:3px solid '+it.g.color+'"></div>';
-      grid+=rollupHtml(f, it.s.tasks, it.y, SUB_H, hexA(it.g.color,0.85), it.g.name+' › '+it.s.name+' · '+epicSummary(it.s));
+      grid+='<div class="eband" style="top:'+it.y+'px; height:'+SUB_H+'px; width:'+W+'px; background:'+hexA(it.g.color,0.06)+'; border-left:3px solid '+it.g.color+'"></div>';
+      grid+=rollupHtml(f, it.s.tasks, it.y, SUB_H, hexA(it.g.color,0.45),it.g.name+' › '+it.s.name+' · '+epicSummary(it.s));
     }
   });
   // today
@@ -740,7 +742,7 @@ function applyJiraIssues(tasks, issues, today, holdAt){
 // 뷰어는 열 때 자동 갱신에서, 편집본은 배포본으로 열렸을 때.
 function setLoading(on){
   const ld=document.getElementById("loading");
-  if(ld) ld.style.display = on ? "block" : "none";
+  if(ld) ld.style.display = on ? "flex" : "none";
   const body=document.getElementById("chartBody");
   if(body && on) body.style.display="none";   // 끌 때는 syncPanes 가 제 상태로 되돌린다
 }
@@ -1095,8 +1097,8 @@ document.getElementById("ovD").addEventListener("click",e=>{if(e.target.id==="ov
 
 const TOP_LEFT_VIEW =
   '<div class="title-txt" id="titleTxt"></div>' +
-  '<div class="dl-field" style="margin-top:6px;"><span>🎯 마감일</span><b id="deadlineTxt"></b></div>' +
-  '<div class="dl-field" style="margin-top:6px;"><span id="winTxt"></span></div>';
+  '<div class="dl-field"><span>🎯 마감일</span><b id="deadlineTxt"></b></div>' +
+  '<div class="dl-field"><span id="winTxt"></span></div>';
 const TOP_BTNS_VIEW =
   '<button class="ghost" id="viewBtn" onclick="toggleView()">표로 보기</button>' +
   '<button class="ghost" id="allBtn" onclick="toggleAllEpics()">전체 펼치기</button>' +
