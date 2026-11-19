@@ -15,7 +15,7 @@
 
   <div class="stats" id="stats"></div>
 
-  <div class="sync-note" id="syncNote"></div>
+  <div class="sync-note" id="syncNote" role="status" aria-live="polite"></div>
 
   <div class="legend">
     <span class="lg"><span class="sw done"></span>완료</span>
@@ -45,7 +45,7 @@
 
 <!-- Detail panel (읽기 전용) -->
 <div class="ov" id="ovD">
-  <div class="modal">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="dTitle">
     <h3 id="dTitle">작업</h3>
     <div id="dBody"></div>
     <div class="modal-actions" style="justify-content:flex-end">

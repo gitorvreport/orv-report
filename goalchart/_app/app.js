@@ -1,7 +1,6 @@
 /* ---------- data model ---------- */
 const DAY_W = 46, ROW_H = 46, HEAD_H = 54, BAR_H = 22, EPIC_H = 34, SUB_H = 32;
 const EPIC_COLORS = ["#2a78d6","#eb6834","#1baf7a","#eda100","#e87ba4","#008300","#4a3aa7","#e34948"];
-function hexA(h,a){const n=parseInt(h.slice(1),16); return "rgba("+((n>>16)&255)+","+((n>>8)&255)+","+(n&255)+","+a+")";}
 const STLABEL = {done:"완료", inprog:"진행중", review:"검수 요청", todo:"예정", risk:"기한 초과"};
 // **화면에 적는 상태 이름은 Jira 것을 그대로 쓴다.** t.status 는 statusCategory 로 접은
 // 값이라 '대기 중'이 '진행중'으로, '할 일'이 '예정'으로 둔갑한다 — 담당자가 자기 이슈를
@@ -23,6 +22,19 @@ function isHold(t){ return !!(t && t.status==="inprog" && t.statusName && HOLD_S
 // 확인만 남았다 — 둘 다 '늦었다'보다 '지금 무엇이 필요한지'를 보여주는 편이 낫다.
 const DONE_LIKE = {done:true, review:true};
 const STICON  = {done:"✓", inprog:"◐", review:"◆", todo:"○", risk:"▲"};
+// 화면의 작은 아이콘. 이모지는 운영체제마다 모양이 달라 쓰지 않는다. 색은 글자색을 따른다(currentColor).
+const ICO = (function(){
+  const s=function(d){ return '<svg class="ico" viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+d+'</svg>'; };
+  return {
+    target:   s('<circle cx="8" cy="8" r="6"/><circle cx="8" cy="8" r="2.4"/>'),
+    calendar: s('<rect x="2" y="3" width="12" height="11" rx="1.5"/><path d="M2 7h12M5.5 1.5v3M10.5 1.5v3"/>'),
+    moon:     s('<path d="M13.2 9.6A5.6 5.6 0 0 1 6.4 2.8a5.6 5.6 0 1 0 6.8 6.8z"/>'),
+    sun:      s('<circle cx="8" cy="8" r="2.8"/><path d="M8 1.5v1.8M8 12.7v1.8M1.5 8h1.8M12.7 8h1.8M3.4 3.4l1.3 1.3M11.3 11.3l1.3 1.3M3.4 12.6l1.3-1.3M11.3 4.7l1.3-1.3"/>'),
+    wait:     s('<circle cx="8" cy="8" r="6"/><path d="M8 4.6V8l2.3 1.5"/>'),
+    alert:    s('<path d="M8 2.2l6.3 11H1.7L8 2.2z"/><path d="M8 6.6v3M8 11.7v.1"/>'),
+    check:    s('<path d="M3 8.6l3.2 3.2L13 5"/>')
+  };
+})();
 const STVAR   = {done:"var(--done)", inprog:"var(--inprog)", review:"var(--review)", todo:"var(--todo)", risk:"var(--risk)"};
 
 // 데이터는 같은 폴더의 data.json 에서 온다. 셸이 모든 차트에서 동일할 수 있는 이유가
@@ -313,30 +325,32 @@ function labelsHtml(lay, gs, f){
       // 끝난 레인은 가라앉히고(.done 이 이름·요약의 채도를 낮춘다) 배지 하나만 또렷하게
       // 남긴다 — 남은 일을 찾는 화면이라 완료가 눈을 가져가면 안 된다.
       const fin = epicAllDone(g);
-      const done = fin ? '<span class="edone">✅ 완료</span>' : '';
+      const done = fin ? '<span class="edone">'+ICO.check+' 완료</span>' : '';
       // 좌측 폭이 좁으면 이름이 잘린다(요약·키가 자리를 먼저 가져간다). 잘린 채로 두면
       // 어느 에픽인지 알 수 없으므로 전체 이름과 현황을 툴팁에 담는다.
       const etip=esc(g.name+' — '+epicSummary(g)+(fin?' · 레인 완료':'')+(g.key?' ('+g.key+')':''))+'&#10;클릭해서 접기/펼치기';
-      lh += '<div class="erow'+(fin?' done':'')+'" style="border-left:3px solid '+g.color+'" onclick="toggleEpicAt('+it.gi+')" title="'+etip+'">'+
+      lh += '<div class="erow'+(fin?' done':'')+'" style="border-left:3px solid '+g.color+'" onclick="toggleEpicAt('+it.gi+')" role="button" tabindex="0" aria-expanded="'+(it.collapsed?'false':'true')+'" data-fk="e'+it.gi+'" title="'+etip+'">'+
         '<span class="ecar">'+(it.collapsed?'+':'−')+'</span>'+
         '<span class="edot" style="background:'+g.color+'"></span><span class="enm">'+esc(g.name)+'</span>'+done+sum+chip+'</div>';
     }else if(it.type==="sub"){
       // 서브 레인은 자기 작업만으로 요약·완료를 낸다. 상위 레인 줄이 전체 합산을 맡는다.
       const g=it.g, s=it.s, fin=epicAllDone(s), ssum=epicSummary(s);
       const stip=esc(g.name+' › '+s.name+' — '+ssum+(fin?' · 서브 레인 완료':''))+'&#10;클릭해서 접기/펼치기';
-      // 레인 색을 온전히 쓴다 — 옅게만 쓰면 회색 글씨와 함께 묻혀 서브 레인이 보이지 않았다.
-      lh += '<div class="srow'+(fin?' done':'')+'" style="border-left:3px solid '+g.color+'; background:'+hexA(g.color,0.08)+'" onclick="toggleSubAt('+it.gi+','+it.si+')" title="'+stip+'">'+
+      // 레인 색은 레인 머리 행의 띠 하나에만 쓴다. 서브 레인은 들여쓰기와 접기 표시로 구분한다.
+      lh += '<div class="srow'+(fin?' done':'')+'" onclick="toggleSubAt('+it.gi+','+it.si+')" role="button" tabindex="0" aria-expanded="'+(it.collapsed?'false':'true')+'" data-fk="s'+it.gi+'.'+it.si+'" title="'+stip+'">'+
         '<span class="ecar">'+(it.collapsed?'+':'−')+'</span>'+
-        '<span class="edot" style="background:'+g.color+'"></span><span class="enm">'+esc(s.name)+'</span>'+(fin?'<span class="edone">✅ 완료</span>':'')+
+        '<span class="enm">'+esc(s.name)+'</span>'+(fin?'<span class="edone">'+ICO.check+' 완료</span>':'')+
         '<span class="esum">'+esc(ssum)+'</span></div>';
     }else if(it.type==="task"){
       const t=it.t, blk=isBlocked(t);
       const jk = t.jira ? '<a class="jkey" href="'+jiraUrl(t.jira)+'" target="_blank" rel="noopener" onclick="event.stopPropagation()">'+esc(t.jira)+'</a> · ' : '';
-      // 서브 레인 작업은 한 단계 더 들여 쓰고 세로선을 레인 색으로 칠한다 — 그래야 마지막
+      // 서브 레인 작업은 한 단계 더 들여 쓰고 세로선을 굵게 한다 — 그래야 마지막
       // 서브 레인 아래에 오는 서브레인 빈 작업이 그 서브 레인 소속으로 보이지 않는다.
-      const insub = it.s ? ' insub" style="border-left-color:'+it.g.color : '';
-      lh += '<div class="lrow'+insub+'" onclick="openEdit('+t.id+')">'+
-        '<div class="nm"><span class="sdot" style="background:'+STVAR[t.status]+'"></span>'+esc(t.name)+(blk?' <span class="lock" title="선행 작업이 완료되지 않아 대기 중">⏳</span>':'')+'</div>'+
+      const insub = it.s ? ' insub' : '';
+      // 막대·칩·마일스톤은 마우스 전용이다. 같은 작업을 이 좌측 행이 키보드로 열어 주므로
+      // 막대까지 탭 순서에 넣으면 작업 수만큼 탭 정지점이 두 배로 는다.
+      lh += '<div class="lrow'+insub+'" onclick="openEdit('+t.id+')" role="button" tabindex="0" data-fk="t'+t.id+'">'+
+        '<div class="nm"><span class="sdot" style="background:'+STVAR[t.status]+'"></span>'+esc(t.name)+(blk?' <span class="lock" role="img" aria-label="선행 대기" title="선행 작업이 완료되지 않아 대기 중">'+ICO.wait+'</span>':'')+'</div>'+
         '<div class="meta">'+jk+esc(ownerParts(t.owner).name)+' · '+mmdd(t.start)+'~'+mmdd(t.end)+flagsHtml(t,f)+'</div></div>';
     }
   });
@@ -406,7 +420,7 @@ function gridBackgroundHtml(f, lay, W, H){
   // deadline flag
   const di=diffD(f.start,pd(state.deadline));
   if(di>=0 && di<f.days){
-    grid+='<div class="dlflag" style="left:'+(di*DAY_W+DAY_W/2)+'px" title="마감일">🎯</div>';
+    grid+='<div class="dlflag" style="left:'+(di*DAY_W+DAY_W/2)+'px" title="마감일">'+ICO.target+'</div>';
   }
   return grid;
 }
@@ -588,7 +602,10 @@ function render(){
   const gs=groups();
   const {lay, taskY, H}=layoutRows(gs);
 
+  // 접기·펼치기가 행을 새로 만들면 키보드 포커스가 body 로 떨어진다. 같은 행으로 되돌린다.
+  const ae=document.activeElement, fk=(ae && ae.getAttribute) ? ae.getAttribute("data-fk") : null;
   document.getElementById("labels").innerHTML = labelsHtml(lay, gs, f);
+  if(fk){ const again=document.querySelector('[data-fk="'+fk+'"]'); if(again) again.focus({preventScroll:true}); }
 
   const tl=document.getElementById("timeline");
   const W=f.days*DAY_W;
@@ -638,7 +655,7 @@ function renderStats(f){
     // 착수도 안 한 일이 진행 중으로 세어졌다(2026-08-20 기준 93건 중 17건이 그랬다).
     stat("진행중", (T.filter(t=>t.status==="inprog").length - hold)+"건",
          "검수 요청 "+T.filter(t=>t.status==="review").length+" · 예정 "+T.filter(t=>t.status==="todo").length+" · 대기 중 "+hold, undefined, "active") +
-    stat("선행 대기·기한 초과", (blocked+risk)+"건", "⏳ 선행 대기 "+blocked+" · ⚠ 기한 초과 "+risk, undefined, "attention");
+    stat("선행 대기·기한 초과", (blocked+risk)+"건", ICO.wait+" 선행 대기 "+blocked+" · "+ICO.alert+" 기한 초과 "+risk, undefined, "attention");
 }
 // kind 를 주면 눌러서 목록으로 들어가는 카드가 된다. onclick 은 인자 조립 없이
 // 리터럴 하나만 넣는다 — 문자열을 이어 붙이다 문법이 깨지면 핸들러가 통째로 죽는다.
@@ -756,18 +773,35 @@ function setLoading(on){
 
 // 페이지를 열 때마다 중계 Worker 에서 최신값을 받아 덮어쓴다.
 // 실패하면 저장된 데이터 그대로 보여준다 — 차트가 안 뜨는 것보다 조금 낡은 게 낫다.
-function showSyncNote(text, bad){
+// retry 를 주면 '다시 시도' 버튼이 붙는다. 갱신 실패는 화면 값이 낡았다는 뜻이라
+// 작은 글씨 한 줄로 두지 않고 배너로 알린다(.sync-note.bad).
+function showSyncNote(text, bad, retry){
   const el=document.getElementById("syncNote");
   if(!el) return;
   el.textContent=text;
   el.className="sync-note"+(bad?" bad":"");
+  el.setAttribute("role", bad?"alert":"status");
+  if(retry){
+    const b=document.createElement("button");
+    b.type="button"; b.className="retry"; b.textContent="다시 시도";
+    b.onclick=function(){ syncFromJira(true); };
+    el.appendChild(b);
+  }
+}
+// 저장된 값의 기준 시각. data.json 의 syncedAt 은 GAS 가 배포할 때 쓴 ISO 시각이다.
+function savedAtText(){
+  const d=state && state.syncedAt ? new Date(state.syncedAt) : null;
+  if(!d || isNaN(d.getTime())) return " 화면은 저장된 값입니다.";
+  return " 화면은 "+(d.getMonth()+1)+"/"+d.getDate()+" "+d.getHours()+":"+String(d.getMinutes()).padStart(2,"0")+" 배포 시점의 값입니다.";
 }
 
 const SYNC_TIMEOUT = 8000;   // Worker 가 느려도 로딩 화면에 갇히지 않게 한다
 
 // 뷰어의 첫 그리기는 여기서만 일어난다. 성공이든 실패든 **한 번만** 그리므로
 // 인라인 값이 잠깐 보였다 바뀌는 일이 없다.
-async function syncFromJira(){
+// retry 는 '다시 시도' 버튼이 부른 두 번째 이후 호출이다. 이미 차트가 떠 있으므로 로딩 화면으로
+// 되돌리지 않고, 저장값 날짜 채우기도 다시 하지 않는다.
+async function syncFromJira(retry){
   // 어느 차트인지는 data.json 이 싣고 온다. 셸은 모든 차트에서 같아야 하므로 여기에 박을 수
   // 없고, URL 경로에서 캐면 배포 위치가 바뀔 때 조용히 깨진다.
   //
@@ -779,12 +813,12 @@ async function syncFromJira(){
   //
   // 그리기 전에 저장된 값의 빈 날짜부터 메운다. 갱신을 못 하거나 실패하면 이 값으로 그린다.
   // 성공하면 applyJiraIssues 가 같은 규칙으로 다시 덮는다.
-  fillStoredDates(state.tasks, iso(todayMid()), holdDateOf(state));
+  if(!retry) fillStoredDates(state.tasks, iso(todayMid()), holdDateOf(state));
   const cantSync = !state.syncEndpoint ? ""
     : (!state.chartId ? "Jira 갱신 불가 — data.json 에 chartId 가 없습니다" : null);
   if(cantSync!==null){ setLoading(false); render(); syncPanes(); showSyncNote(cantSync, !!cantSync); return; }
   const url=String(state.syncEndpoint).replace(/\/+$/,"") + "/?chart=" + encodeURIComponent(state.chartId);
-  setLoading(true);
+  if(!retry) setLoading(true);
   showSyncNote("Jira 최신값 확인 중…");
   // AbortSignal.timeout 이 없는 브라우저도 있어 컨트롤러를 직접 쓴다.
   const ac=(typeof AbortController!=="undefined") ? new AbortController() : null;
@@ -808,8 +842,10 @@ async function syncFromJira(){
     const t=new Date();
     showSyncNote("Jira 최신 · "+t.getHours()+":"+String(t.getMinutes()).padStart(2,"0")+" 기준 "+n+"건 반영");
   }catch(e){
-    const why=(e && e.name==="AbortError") ? "응답이 너무 늦습니다" : (e.message||e);
-    showSyncNote("Jira 갱신 실패 — 저장된 데이터를 표시합니다 ("+why+")", true);
+    // 브라우저가 던지는 "Failed to fetch" 는 영어라 화면에서 뜻이 안 읽힌다.
+    const why=(e && e.name==="AbortError") ? "응답이 너무 늦습니다"
+      : (e instanceof TypeError ? "네트워크에 연결하지 못했습니다" : (e.message||e));
+    showSyncNote("Jira 갱신 실패 — "+why+"."+savedAtText(), true, true);
   }finally{
     if(timer) clearTimeout(timer);
     // 레인은 Jira 값(에픽)으로 정해지므로 갱신을 마친 지금이 기록을 정리할 때다.
@@ -904,7 +940,7 @@ const LEAD_DAYS = 1;
 // 기한 초과도 뺀다: 옆 칸에서 따로 세므로 여기서 또 세면 통계 카드가 같은 작업을 두 번
 // 센다(칩도 이미 risk 를 우선한다). 결과적으로 두 목록은 서로 겹치지 않는다.
 //
-// 차트의 ⏳ 와 점선 화살표는 isBlocked 를 그대로 쓴다 — 그쪽은 의존관계라는 사실 자체를
+// 차트의 선행 대기 아이콘과 점선 화살표는 isBlocked 를 그대로 쓴다 — 그쪽은 의존관계라는 사실 자체를
 // 그리는 것이고, 이 목록은 '지금 주목할 것'만 걸러내는 자리다. 그래서 진행중인데 선행이
 // 덜 끝난 작업도 차트에서는 여전히 보인다. 목록에서만 소리를 내지 않을 뿐이다.
 function isWaiting(t){
@@ -991,7 +1027,7 @@ function renderDrill(){
       const tail = x.g.cell
         ? '<td class="why">'+x.g.cell(t)+'</td>'
         : '<td>'+stLabel(t)+'</td>';
-      h+='<tr onclick="openEdit('+t.id+')" style="cursor:pointer">'+
+      h+='<tr onclick="openEdit('+t.id+')" tabindex="0" style="cursor:pointer">'+
          '<td>'+ep+'</td><td>'+jk+'</td>'+
          '<td><span class="sdot" style="background:'+STVAR[t.status]+'"></span>'+esc(t.name)+flagsHtml(t)+'</td>'+
          '<td>'+esc(ownerParts(t.owner).name)+'</td><td>'+mmdd(t.start)+'~'+mmdd(t.end)+'</td>'+tail+'</tr>';
@@ -1006,10 +1042,9 @@ function renderTable(){
   let h='<table><thead><tr><th>에픽</th><th>Jira</th><th>작업</th><th>담당</th><th>기간</th><th>상태</th><th>선행</th></tr></thead><tbody>';
   rows.forEach(t=>{
     const deps=(t.deps||[]).map(id=>{const p=state.tasks.find(x=>x.id===id);return p?(p.jira||p.name):"";}).filter(Boolean).join(", ");
-    const blk=isBlocked(t)?' ⏳':'';
     const ep=t.epic?esc(t.epic.name):'<span style="color:var(--muted)">미분류</span>';
     const jk=t.jira?'<a class="jkey" href="'+jiraUrl(t.jira)+'" target="_blank" rel="noopener" onclick="event.stopPropagation()">'+esc(t.jira)+'</a>':'—';
-    h+='<tr onclick="openEdit('+t.id+')" style="cursor:pointer">'+
+    h+='<tr onclick="openEdit('+t.id+')" tabindex="0" style="cursor:pointer">'+
        '<td>'+ep+'</td><td>'+jk+'</td>'+
        '<td><span class="sdot" style="background:'+STVAR[t.status]+'"></span>'+esc(t.name)+flagsHtml(t)+'</td>'+
        '<td>'+esc(ownerParts(t.owner).name)+'</td><td>'+mmdd(t.start)+'~'+mmdd(t.end)+'</td>'+
@@ -1057,7 +1092,9 @@ function openDetail(id){
   document.getElementById("dTitle").textContent=t.name;
   document.getElementById("dBody").innerHTML=rows.map(r=>
     '<div class="drow"><span class="dk">'+r[0]+'</span><span class="dv">'+r[1]+'</span></div>').join("");
+  detailReturn=document.activeElement;
   document.getElementById("ovD").classList.add("on");
+  const close=document.querySelector("#ovD .modal-actions button"); if(close) close.focus();
 }
 
 // 뷰어의 '선행 작업'은 지정된 선행만 보여주되, 각각의 현재 상태를 함께 읽게 한다.
@@ -1095,20 +1132,41 @@ function succDetailHtml(t){
     return depItemHtml(s, mmdd(s.start)+" 시작"+(s.owner?" · "+esc(s.owner):""));
   }).join("");
 }
-function closeDetail(){document.getElementById("ovD").classList.remove("on");}
+// 상세 창을 열기 전에 있던 요소. 닫을 때 키보드 포커스를 그리로 돌려준다.
+let detailReturn=null;
+function closeDetail(){
+  document.getElementById("ovD").classList.remove("on");
+  const back=detailReturn; detailReturn=null;
+  if(back && back.isConnected && back.focus) back.focus({preventScroll:true});
+}
 document.getElementById("ovD").addEventListener("click",e=>{if(e.target.id==="ovD")closeDetail();});
+// 키보드 조작 한 곳. 눌리는 div 는 role="button", 표 행은 tabindex 를 가진 tr 이다.
+// 통계 카드는 자기 onkeydown 이 있어 건너뛴다 — 겹치면 목록이 두 번 열린다.
+document.addEventListener("keydown",function(e){
+  if(e.key==="Escape"){
+    if(document.getElementById("ovD").classList.contains("on")) closeDetail();
+    return;
+  }
+  if(e.key!=="Enter" && e.key!==" ") return;
+  const el=e.target;
+  if(!el || !el.getAttribute || el.hasAttribute("onkeydown")) return;
+  const pressable = el.getAttribute("role")==="button" || (el.tagName==="TR" && el.hasAttribute("tabindex"));
+  if(!pressable) return;
+  e.preventDefault();
+  el.click();
+});
 
 /* ---------- toolbar actions ---------- */
 
 const TOP_LEFT_VIEW =
   '<div class="title-txt" id="titleTxt"></div>' +
-  '<div class="dl-field"><span>🎯 마감일</span><b id="deadlineTxt"></b></div>' +
+  '<div class="dl-field"><span>'+ICO.target+' 마감일</span><b id="deadlineTxt"></b></div>' +
   '<div class="dl-field"><span id="winTxt"></span></div>';
 const TOP_BTNS_VIEW =
   '<button class="ghost" id="viewBtn" onclick="toggleView()">표로 보기</button>' +
   '<button class="ghost" id="allBtn" onclick="toggleAllEpics()">전체 펼치기</button>' +
   '<button class="ghost" id="txtBtn" onclick="toggleBarText()">글자 전체</button>' +
-  '<button class="ghost" onclick="toggleTheme()" id="thBtn">🌙 다크</button>';
+  '<button class="ghost" onclick="toggleTheme()" id="thBtn">'+ICO.moon+' 다크</button>';
 
 // 부팅 때 한 번만. 편집본은 입력에 포커스가 살아 있어야 하므로 재빌드하지 않는다.
 function buildTop(){
@@ -1133,8 +1191,8 @@ function syncTop(){
   document.getElementById("titleTxt").textContent = state.title;
   document.getElementById("deadlineTxt").textContent = state.deadline;
   const w = state.window;
-  document.getElementById("winTxt").textContent =
-    (w && w.on) ? ("📅 표시 범위 " + w.start + " ~ " + w.end) : "📅 표시 범위 자동";
+  document.getElementById("winTxt").innerHTML = ICO.calendar +
+    ((w && w.on) ? (" 표시 범위 " + esc(w.start) + " ~ " + esc(w.end)) : " 표시 범위 자동");
 }
 
 let tableOn=false;
@@ -1147,7 +1205,7 @@ function toggleTheme(){
   const h=document.documentElement;
   const dark=h.getAttribute("data-theme")==="dark";
   h.setAttribute("data-theme",dark?"light":"dark");
-  document.getElementById("thBtn").textContent=dark?"🌙 다크":"☀️ 라이트";
+  document.getElementById("thBtn").innerHTML=dark?ICO.moon+" 다크":ICO.sun+" 라이트";
 }
 
 // 데이터가 없으면 그릴 것이 없다. 그래서 fetch 가 끝난 뒤에야 화면을 세운다 —
