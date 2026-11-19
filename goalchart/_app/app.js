@@ -351,7 +351,7 @@ function labelsHtml(lay, gs, f){
       // 막대까지 탭 순서에 넣으면 작업 수만큼 탭 정지점이 두 배로 는다.
       lh += '<div class="lrow'+insub+'" onclick="openEdit('+t.id+')" role="button" tabindex="0" data-fk="t'+t.id+'">'+
         '<div class="nm"><span class="sdot" style="background:'+STVAR[t.status]+'"></span>'+esc(t.name)+(blk?' <span class="lock" role="img" aria-label="선행 대기" title="선행 작업이 완료되지 않아 대기 중">'+ICO.wait+'</span>':'')+'</div>'+
-        '<div class="meta">'+jk+esc(ownerParts(t.owner).name)+' · '+mmdd(t.start)+'~'+mmdd(t.end)+flagsHtml(t,f)+'</div></div>';
+        '<div class="meta">'+jk+esc(ownerParts(t.owner).name)+' · <span class="num">'+mmdd(t.start)+'~'+mmdd(t.end)+'</span>'+flagsHtml(t,f)+'</div></div>';
     }
   });
   return lh;
@@ -387,9 +387,11 @@ function rollupHtml(f, tasks, y, h, title){
   const cs=Math.max(sIdx,0), ce=Math.min(eIdx,f.days-1);
   const clipL=sIdx<0, clipR=eIdx>f.days-1;
   const left=cs*DAY_W+4, width=Math.max((ce-cs+1)*DAY_W-8,10);
+  // 진한 부분은 작업 수 기준 완료 비율이다 — 접힌 레인도 얼마나 끝났는지 막대에서 읽힌다.
+  const pct=tasks.length ? Math.round(tasks.filter(t=>t.status==="done").length*100/tasks.length) : 0;
   return '<div class="ebar'+(clipL?' clipL':'')+(clipR?' clipR':'')+'" style="left:'+left+'px; top:'+
          (y+(h-6)/2)+'px; width:'+width+'px" title="'+
-         esc(title)+' · '+mmdd(sp.start)+'~'+mmdd(sp.end)+'"></div>';
+         esc(title)+' · '+mmdd(sp.start)+'~'+mmdd(sp.end)+' · 완료 '+pct+'%"><i style="width:'+pct+'%"></i></div>';
 }
 
 // 배경 격자 · 에픽 스윔레인 밴드와 롤업 막대 · 오늘 선 · 마감 깃발.
@@ -1030,7 +1032,7 @@ function renderDrill(){
       h+='<tr onclick="openEdit('+t.id+')" tabindex="0" style="cursor:pointer">'+
          '<td>'+ep+'</td><td>'+jk+'</td>'+
          '<td><span class="sdot" style="background:'+STVAR[t.status]+'"></span>'+esc(t.name)+flagsHtml(t)+'</td>'+
-         '<td>'+esc(ownerParts(t.owner).name)+'</td><td>'+mmdd(t.start)+'~'+mmdd(t.end)+'</td>'+tail+'</tr>';
+         '<td>'+esc(ownerParts(t.owner).name)+'</td><td class="num">'+mmdd(t.start)+'~'+mmdd(t.end)+'</td>'+tail+'</tr>';
     });
     h+='</tbody></table>';
   });
@@ -1047,7 +1049,7 @@ function renderTable(){
     h+='<tr onclick="openEdit('+t.id+')" tabindex="0" style="cursor:pointer">'+
        '<td>'+ep+'</td><td>'+jk+'</td>'+
        '<td><span class="sdot" style="background:'+STVAR[t.status]+'"></span>'+esc(t.name)+flagsHtml(t)+'</td>'+
-       '<td>'+esc(ownerParts(t.owner).name)+'</td><td>'+mmdd(t.start)+'~'+mmdd(t.end)+'</td>'+
+       '<td>'+esc(ownerParts(t.owner).name)+'</td><td class="num">'+mmdd(t.start)+'~'+mmdd(t.end)+'</td>'+
        '<td>'+stLabel(t)+'</td>'+
        '<td style="color:var(--muted)">'+esc(deps||'—')+'</td></tr>';
   });
@@ -1077,7 +1079,7 @@ function closeEdit(){const o=document.getElementById("ov"); if(o) o.classList.re
 /* ---------- detail panel (읽기 전용) ---------- */
 function openDetail(id){
   const t=state.tasks.find(x=>x.id===id); if(!t) return;
-  const jk=t.jira?'<a href="'+jiraUrl(t.jira)+'" target="_blank" rel="noopener" style="color:var(--inprog)">'+esc(t.jira)+' ↗</a>':"—";
+  const jk=t.jira?'<a href="'+jiraUrl(t.jira)+'" target="_blank" rel="noopener" class="dep-jk">'+esc(t.jira)+' ↗</a>':"—";
   const ep=t.epic?esc([t.epic.key,t.epic.name].filter(Boolean).join(" · ")):"—";
   const rows=[
     ["Jira 이슈", jk],
@@ -1222,6 +1224,8 @@ async function boot(){
     showSyncNote("차트 데이터를 불러오지 못했습니다 ("+(e.message||e)+")", true);
     return;
   }
+  // 브라우저 탭 제목은 차트마다 다르게 한다. 셸이 모든 차트에서 같아 기본 제목이 같기 때문이다.
+  if(state.title) document.title = state.title;
   buildTop();
   applyLabelWidth();
   initResizer();

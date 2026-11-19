@@ -23,13 +23,16 @@
     <span class="lg"><span class="sw review"></span>검수 요청</span>
     <span class="lg"><span class="sw todo"></span>예정</span>
     <span class="lg"><span class="sw risk"></span>기한 초과</span>
-    <span class="lg"><span class="sw span"></span>레인 기간</span>
+    <span class="lg"><span class="sw span"></span>레인 기간 · 진한 부분은 완료 비율</span>
     <span class="lg"><svg width="34" height="10"><line x1="0" y1="5" x2="26" y2="5" stroke="var(--dep)" stroke-width="2"/><path d="M26 5 l-6 -3 v6 z" fill="var(--dep)"/></svg>의존</span>
     <span class="lg"><svg width="34" height="10"><line x1="0" y1="5" x2="26" y2="5" stroke="var(--dep-block)" stroke-width="2" stroke-dasharray="4 3"/><path d="M26 5 l-6 -3 v6 z" fill="var(--dep-block)"/></svg>선행 미완료 (선행 대기)</span>
   </div>
 
   <div class="card">
-    <div class="loading" id="loading"><span class="spin"></span>Jira에서 최신 일정을 불러오는 중…</div>
+    <div class="loading" id="loading" role="status">
+      <div class="msg">Jira에서 최신 일정을 불러오는 중…</div>
+      <div class="skel" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    </div>
     <div class="chart-body" id="chartBody">
       <div class="labels" id="labels"></div>
       <div class="resizer" id="resizer" title="드래그해서 좌측 폭 조절"></div>
