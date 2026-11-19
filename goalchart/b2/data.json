@@ -1,15 +1,15 @@
 {
   "chartId": "b2",
   "title": "B2 마일스톤 차트",
-  "deadline": "2026-11-27",
+  "deadline": "2026-12-18",
   "window": {
     "on": true,
     "start": "2026-09-21",
-    "end": "2026-11-27"
+    "end": "2026-12-18"
   },
   "jiraBase": "https://offbeatplay.atlassian.net/browse/",
   "syncEndpoint": "https://orv-goalchart-jira.offbeat-696.workers.dev",
-  "syncedAt": "2026-11-19T07:26:22.598Z",
+  "syncedAt": "2026-11-19T07:29:11.469Z",
   "epicGroups": [
     {
       "key": "G1",
@@ -7505,7 +7505,7 @@
       "name": "[사운드] 그린 존 플레이 BGM",
       "owner": "[사운드]김주영",
       "start": "2026-11-12",
-      "end": "2026-11-20",
+      "end": "2026-12-22",
       "status": "inprog",
       "statusName": "진행 중",
       "doneAt": null,
@@ -8527,7 +8527,7 @@
       "name": "[사운드] 공필두 보스전 BGM",
       "owner": "[사운드]김주영",
       "start": "2026-11-12",
-      "end": "2026-11-27",
+      "end": "2026-12-22",
       "status": "inprog",
       "statusName": "진행 중",
       "doneAt": null,
