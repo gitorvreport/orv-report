@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>아트팀 최적화 작업체크</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* 레이아웃: 요약 막대와 필터를 위에 두고, 항목 카드를 한 열로 쌓는다. 카드는 개요와 작업 사항을 두 칸으로 나란히 보여 준다. */
+:root{
+  --bg:#f3f5f8;--surface:#ffffff;--detail:#f1f3f7;--todo:#0b6b5f;--todo-soft:#e3f3ef;--ink:#17202e;--muted:#5a6679;--line:#dde2ea;--accent:#2450d6;--accent-soft:#e8eefc;
+  --cpu:#8a4b00;--cpu-soft:#fdf0dc;--gpu:#5b3fc4;--gpu-soft:#eeeafc;--ok:#17703a;--warn:#a42828;--warn-soft:#fbe7e7;
+  --font:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;--mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:light}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0f141c;--surface:#171e29;--detail:#0e141d;--todo:#6fdcc4;--todo-soft:#123029;--ink:#e6eaf2;--muted:#9aa6ba;--line:#2a3445;--accent:#8fb0ff;--accent-soft:#1c2a4a;
+  --cpu:#f2b765;--cpu-soft:#3a2a10;--gpu:#b9a8ff;--gpu-soft:#2a2350;--ok:#5fd68a;--warn:#ff9c9c;--warn-soft:#3c1b1b;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f141c;--surface:#171e29;--detail:#0e141d;--todo:#6fdcc4;--todo-soft:#123029;--ink:#e6eaf2;--muted:#9aa6ba;--line:#2a3445;--accent:#8fb0ff;--accent-soft:#1c2a4a;
+  --cpu:#f2b765;--cpu-soft:#3a2a10;--gpu:#b9a8ff;--gpu-soft:#2a2350;--ok:#5fd68a;--warn:#ff9c9c;--warn-soft:#3c1b1b;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.65 var(--font);word-break:keep-all}
+.wrap{max-width:960px;margin:0 auto;padding:32px 16px 64px}
+h1{font-size:24px;font-weight:600;letter-spacing:-.01em;margin:0 0 6px;text-wrap:balance}
+.meta{color:var(--muted);font-size:13px;margin:0 0 24px}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
+.toolbar{display:flex;flex-wrap:wrap;gap:12px 16px;align-items:center;margin-bottom:16px}
+.prog{flex:1 1 220px;min-width:200px}
+.prog-t{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-bottom:6px;font-variant-numeric:tabular-nums}
+.track{height:6px;background:var(--line);border-radius:3px;overflow:hidden}
+.fill{height:100%;width:0;background:var(--ok);transition:width 150ms ease-out}
+.seg{display:flex;gap:4px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:3px}
+.seg button,.act{font:inherit;font-size:13px;color:var(--muted);background:transparent;border:0;border-radius:7px;padding:6px 12px;min-height:36px;cursor:pointer;transition:background-color 150ms ease-out,color 150ms ease-out}
+.seg button:hover,.act:hover{color:var(--ink)}
+.seg button[aria-pressed="true"]{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.act{border:1px solid var(--line);background:var(--surface)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;margin-bottom:12px;overflow:hidden}
+.card[hidden]{display:none}
+.card-head{display:grid;grid-template-columns:44px 1fr 44px;align-items:start}
+.check{display:flex;justify-content:center;padding-top:16px;min-height:44px}
+.check input{width:20px;height:20px;margin:0;accent-color:var(--ok);cursor:pointer}
+.main{padding:14px 0 16px 4px;cursor:pointer;user-select:text;-webkit-user-select:text;min-width:0}
+.main *{user-select:text;-webkit-user-select:text}
+.toggle{all:unset;box-sizing:border-box;display:flex;align-items:center;justify-content:center;width:44px;height:44px;margin-top:6px;cursor:pointer;border-radius:10px}
+.toggle:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.t-row{display:flex;gap:12px;justify-content:space-between;align-items:flex-start}
+.title{font-size:17px;font-weight:600;letter-spacing:-.01em;line-height:1.45;text-wrap:balance}
+.card.done .title{color:var(--muted);text-decoration:line-through}
+.chev{flex:none;width:20px;height:20px;color:var(--muted);transition:transform 150ms ease-out}
+.card.open .chev{transform:rotate(90deg)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chip{display:inline-block;font-size:12px;line-height:1.5;padding:1px 9px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+.chip.cpu{background:var(--cpu-soft);color:var(--cpu);border-color:transparent;font-weight:500}
+.chip.gpu{background:var(--gpu-soft);color:var(--gpu);border-color:transparent;font-weight:500}
+.chip.warn{background:var(--warn-soft);color:var(--warn);border-color:transparent;font-weight:500}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+@media(max-width:640px){.cols{grid-template-columns:1fr}}
+.col{border-radius:8px;padding:10px 14px 12px;font-size:14px;line-height:1.65}
+.lb{display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:2px}
+.col.ov{background:var(--bg);border:1px solid var(--line)}
+.col.td{background:var(--todo-soft);border:1px solid color-mix(in srgb,var(--todo) 28%,transparent)}
+.col.td .lb{color:var(--todo)}
+.detail{user-select:text;-webkit-user-select:text;display:none;background:var(--detail);border-top:1px solid var(--line);padding:4px 18px 20px 48px}
+.card.open .detail{display:block}
+@media(max-width:640px){.detail{padding-left:18px}}
+.detail h3{font-size:13px;font-weight:600;color:var(--muted);margin:20px 0 6px}
+.detail p{margin:12px 0 0}
+.detail ul{margin:0;padding-left:20px}
+.detail li{margin:4px 0}
+.callout{margin-top:16px;padding:12px 16px 14px;border-radius:10px;background:var(--todo-soft);border:1px solid color-mix(in srgb,var(--todo) 30%,transparent)}
+.callout h3{margin:0 0 6px;color:var(--todo);font-size:14px}
+.links{display:flex;flex-wrap:wrap;gap:8px}
+.links a{font-size:13px;text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:8px 12px;min-height:36px;transition:border-color 150ms ease-out}
+.links a:hover{border-color:var(--accent)}
+.tw{overflow-x:auto}
+table{border-collapse:collapse;font-size:13px;width:100%;font-variant-numeric:tabular-nums}
+th,td{border:1px solid var(--line);padding:6px 10px;text-align:left;white-space:nowrap}
+td{background:var(--surface)}
+th{background:color-mix(in srgb,var(--muted) 16%,var(--surface));font-weight:600}
+code{font-family:var(--mono);font-size:12.5px;background:var(--surface);border:1px solid var(--line);padding:0 5px;border-radius:4px;word-break:break-all}
+.foot{color:var(--muted);font-size:12px;margin-top:24px}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>아트팀 최적화 작업체크</h1>
+  <p class="meta">원본 <a href="https://offbeatplay.atlassian.net/wiki/spaces/OFFBEAT/pages/714768421/2026.B2." target="_blank" rel="noopener">2026.B2.최적화 일감</a> v13 (2026-11-26). 프로그램, 엔진, TA 항목은 제외했습니다.</p>
+  <div class="toolbar">
+    <div class="prog"><div class="prog-t"><span>완료</span><span id="pcount"></span></div><div class="track"><div class="fill" id="pfill"></div></div></div>
+    <div class="seg" role="group" aria-label="필터">
+      <button type="button" data-f="all" aria-pressed="true">전체</button>
+      <button type="button" data-f="CPU" aria-pressed="false">CPU</button>
+      <button type="button" data-f="GPU" aria-pressed="false">GPU</button>
+      <button type="button" data-f="todo" aria-pressed="false">미완료</button>
+    </div>
+    <button type="button" class="act" id="expand">모두 펼치기</button>
+    <button type="button" class="act" id="collapse">모두 접기</button>
+  </div>
+  <div id="list"></div>
+  <p class="foot">체크 상태는 이 브라우저에만 저장됩니다. 이미지와 캡처는 문서 링크에서 확인하십시오.</p>
+</div>
+<script>
+const BASE="https://offbeatplay.atlassian.net/wiki/spaces/OFFBEAT/pages/";
+const ITEMS=[
+{
+ id:"ism", cat:"CPU", title:"ISM 로딩/언로딩 최적화", team:"배경팀", note:"",
+ overview:"지하철에 들어가 지상 데이터 레이어가 언로딩되면 collision body 28,486개의 physics 갱신이 3프레임 연속으로 부하를 만듭니다. Shipping 최대 120.9ms입니다.",
+ todo:"ISM 컴포넌트의 Collision Preset을 No collision으로 바꿉니다. collision이 필요하면 메쉬 전체를 감싸는 collision 하나만 둡니다. PLA는 WP 셀 하나 크기로 나눕니다.",
+ summary:"ISM에 collision body가 많으면 WP 스트리밍이 ISM을 로딩하거나 언로딩할 때 physics acceleration structure를 갱신하느라 부하가 생깁니다.",
+ links:[["2026.11 ISM으로 인한 Collision 업데이트",BASE+"706248883/2026.11+ISM+Collision"]],
+ sections:[
+  ["부하 개요",[
+   "지상에서 지하철로 들어가면 지상 데이터 레이어가 언로딩되고 지하 데이터가 로딩됩니다. 이때 지상 PLA의 ISM 컴포넌트가 unregister되면서 부하가 3프레임 연속으로 생깁니다.",
+   "서울 돔의 <code>BPP_GHDtDoosanAPTSet_A_0</code>, <code>BPP_BrownStoneSet_A_01</code>, <code>BPPLV_GHDtOksuParkSet_A_01</code> 같은 아파트 PLA가 프레임 드랍을 일으킵니다.",
+   "금호역 지하의 <code>BPP_GHStScreenDoorSet_A_01</code>도 collision body가 1,380개라서 아파트보다 작지만 부하를 만듭니다."
+  ]],
+  ["원인",[
+   "두산 아파트 PLA는 ISM 컴포넌트 48개 중 46개가 collision body를 갖고 있고, collision body는 모두 28,486개입니다.",
+   "unregister할 때 Chaos Physics의 <code>ChaosPushData</code> 태스크와 <code>Destroy Pending Proxies</code> 태스크가 돌고, 세 번째 프레임에서 게임 스레드가 acceleration structure를 다시 만듭니다.",
+   "지금은 모든 PLA의 아파트가 WP에서 한꺼번에 로딩되고 언로딩됩니다."
+  ]],
+  ["작업 사항",[
+   "ISM 컴포넌트 디테일에서 <code>Collision → Collision Preset</code>을 No collision으로 바꿉니다.",
+   "collision이 필요하면 메쉬 전체를 감싸는 collision body를 하나만 추가합니다.",
+   "PLA에는 WP 스트리밍 셀 하나에 들어갈 만큼의 instance만 넣습니다. 아파트 건물 하나를 액터 하나로 나눠 배치하는 방법도 검토합니다.",
+   "PCG로 만든 ISM이 collision body를 너무 많이 갖거나 여러 WP cell에 걸치지 않게 주의합니다."
+  ]]
+ ],
+ table:{cap:"Shipping 부하 측정",head:["종류","프레임 수","미디언(ms)","99 퍼센틸(ms)","Max(ms)"],rows:[["ISM Collision 추가시","435","0.36","7.7","33.8"],["ISM Collision 제거","48,241","0.19","0.54","120.9"],["ISM Collision 제거(5ms 이상)","25","11.3","120.9","120.9"]]}
+},
+{
+ id:"fxcycle", cat:"CPU", title:"레벨 시퀀스에서 이펙트 소멸주기로 인한 부하", team:"연출팀 ? 이펙트팀 ?", warn:"담당팀 미확정",
+ note:"",
+ overview:"레벨 시퀀스의 나이아가라 섹션이 끝난 뒤에도 매 프레임 다시 activate되어 게임 스레드 부하가 생깁니다. Shipping median 12.1ms, worst 23.9ms입니다.",
+ todo:"life cycle 섹션이 세 조건을 동시에 만족하지 않도록 설정을 고칩니다. Evaluation Behavior를 바꾸거나 섹션 길이를 이펙트 수명에 맞춥니다. 원문의 원인 분석에서 추론한 작업입니다.",
+ summary:"블러드 웨이브 구간에서 나이아가라 이펙트가 잘 보이지 않게 된 뒤에도 레벨 시퀀스의 activation이 매 프레임 반복되어 게임 스레드 시간이 늘어납니다.",
+ links:[["2026.11 나이아가라 부하 (1. 레벨 시퀀스의 activation 반복)",BASE+"700383245/2026.11#1.-%EB%A0%88%EB%B2%A8-%EC%8B%9C%ED%80%80%EC%8A%A4%EC%9D%98-activation-%EB%B0%98%EB%B3%B5"]],
+ sections:[
+  ["부하 개요",[
+   "나이아가라 이펙트가 잘 보이지 않게 되는 시점부터 게임 스레드 부하가 올라갑니다.",
+   "<code>NS_FX_CUT_BloodWave_01</code>~<code>04</code>에서 확인했고, GPU 에미터만 쓰는 <code>NS_FX_CUT_Spark_01</code>이 나오는 프레임에서도 같은 부하가 생깁니다. 원문에는 CPU 에미터가 원인이라는 처음 추정이 취소선으로 지워져 있습니다."
+  ]],
+  ["원인 (life cycle 섹션이 아래 세 조건을 모두 만족할 때)",[
+   "섹션이 Desired age로 설정되어 있습니다. 섹션 age와 나이아가라 시스템 age가 같아집니다.",
+   "Evaluation Behavior가 Activate if Inactivate입니다.",
+   "나이아가라 시스템 수명이 life cycle 섹션보다 짧습니다."
+  ]],
+  ["매 프레임 일어나는 일",[
+   "섹션이 끝나 inactive 상태가 됩니다.",
+   "Activate if Inactivate 때문에 나이아가라 시스템이 age 0으로 리셋되고 다시 activate됩니다.",
+   "Desired age 때문에 섹션 age와 나이아가라 age가 같아질 때까지 시뮬레이션 tick이 반복됩니다."
+  ]],
+  ["작업 사항",[
+   "아래 작업은 원문의 원인 분석에서 추론한 내용입니다.",
+   "<code>NS_FX_CUT_BloodWave_01</code>~<code>04</code>와 <code>NS_FX_CUT_Spark_01</code>이 쓰이는 레벨 시퀀스에서 나이아가라 트랙의 life cycle 섹션이 세 조건을 모두 만족하는지 확인합니다.",
+   "Evaluation Behavior를 Activate if Inactivate가 아닌 값으로 바꿔, 섹션이 끝난 뒤 시스템이 age 0으로 다시 activate되지 않게 합니다.",
+   "life cycle 섹션 길이를 나이아가라 시스템 수명에 맞춰 줄입니다. 시스템의 첫 재생이 끝난 뒤 섹션이 남아 있지 않으면 재activate가 반복되지 않습니다.",
+   "이펙트가 끝난 뒤에도 섹션이 남아야 하는 연출이면 Desired age 설정을 풀어 시뮬레이션 tick 반복을 막습니다.",
+   "수정한 뒤 Insight로 같은 구간을 다시 측정해 Shipping 기준값(median 12.1ms, worst 23.9ms)과 비교합니다."
+  ]],
+  ["참고: 같은 문서의 나이아가라 리본 부하 (엔진팀 배정)",[
+   "철인호가 죽는 장면에서 정희원이 칼을 휘두를 때 긴 hitching이 생기며, 원인은 리본 <code>NS_FX_Cut_Wind_02</code>의 레이트레이싱 shared vertex 버퍼 생성입니다.",
+   "<code>NS_FX_Cut_Wind_02</code>에는 레이트레이싱이 필요해 보이지 않습니다. 레이트레이싱이 필요 없는 나이아가라 액터는 <code>Visible In Raytracing</code> 옵션을 해제해야 합니다.",
+   "전독시에 레이트레이싱이 필요한 리본이 없다면 <code>r.RayTracing.Geometry.NiagaraRibbons</code>를 0으로 설정하는 방법도 검토합니다."
+  ]]
+ ],
+ table:{cap:"Shipping 부하 측정",head:["Type","Frames","median(ms)","worst(ms)"],rows:[["나이아가라 re-activate","240","12.1","23.9"]]}
+},
+{
+ id:"treewpo", cat:"GPU", title:"나무 WPO 부하", team:"배경팀", note:"",
+ overview:"배경이 드러나면 나무 머티리얼이 Directional Light VSM 부하를 키워 GPU frame이 늘어납니다. Shipping 기준 GPU +4.8ms, ShadowDepths +2.85ms입니다.",
+ todo:"WPO 나무는 ISM/HISM 2개로 나눕니다. 가까운 쪽은 Masked + WPO, 먼 쪽은 Opaque입니다. 은행나무(Ginkgo)처럼 항상 움직이는 나무에도 WPO Disabled Distance를 설정합니다.",
+ summary:"지상에서 배경이 드러나면 나무 머티리얼이 Directional Light VSM 부하를 일으켜 GPU frame이 늘어납니다. 시작 지점에서는 FPS가 60 이하이고, 배경이 많이 가려져야 60 이상이 됩니다.",
+ links:[["2026.11 지상 나무 부하",BASE+"713293827/2026.11"],["WPO사용 나무 메쉬 셋팅법",BASE+"386793521/WPO"]],
+ sections:[
+  ["측정 조건",[
+   "RTX 4060, 그래픽 세팅 높음, TSR 최고 품질(스크린 퍼센티지 77%), 해상도 2560 x 1440 기준입니다."
+  ]],
+  ["부하 개요",[
+   "Nsight 캡처(Development)를 비교하면 배경이 드러났을 때 GPU frame이 24.63ms에서 31.35ms로 늘어납니다. 가장 많이 늘어난 항목은 ShadowDepths(+3.55)와 Nanite VisBuffer(+2.74)입니다.",
+   "머티리얼로는 <code>MI_TreeTest_A_01_Zelkova01</code>과 <code>MI_TreeTest_A_01_GinkgoYellow</code>가 VisBuffer main pass와 shadow map 양쪽에서 부하가 큽니다.",
+   "캡처한 씬의 나무는 대부분 <code>BPP_GHDtTreeZelkova_A_01</code>과 <code>BPP_GHDtTreeGinkgo_A_0</code> PLA 에셋에서 나옵니다."
+  ]],
+  ["원인",[
+   "Directional Light VSM에는 <code>WPO disabled distance</code>가 직접 적용되지 않습니다. 이 값으로 계산한 clip map 레벨에 따라 dynamic cache layer와 static cache layer 중 어디에 속할지 정해집니다.",
+   "clip map 레벨은 <code>floor(log2 D) + LodBias + R</code>입니다. D는 WPO disabled distance, LodBias는 <code>r.Shadow.Virtual.Clipmap.WPODisableDistance.LodBias</code>(기본 3), R은 <code>r.Shadow.Virtual.ResolutionLodBiasDirectional</code>입니다.",
+   "젤코바 나무는 WPO disabled distance가 2000이라 레벨 13이 되고, 레벨 13 이하 셀에서는 dynamic cache layer에 속합니다. 항상 움직이는 은행나무(Ginkgo)와 붙어 있어 dynamic page invalidation이 일어나고, 젤코바 머티리얼이 DL shadow map 갱신에 함께 들어갑니다."
+  ]],
+  ["작업 사항",[
+   "WPO를 쓰는 나무 메쉬는 문서의 셋팅법대로 ISM/HISM 2개로 구성합니다. a는 Masked + WPO로 가까운 거리에서 렌더링하고, b는 Opaque + WPO 미사용으로 먼 거리에서 렌더링합니다. 둘을 나누는 데는 InstanceMinDrawDistance와 InstanceEndCullDistance를 씁니다. 가이드의 전제는 Opaque 메쉬 100만 폴리곤, Masked 메쉬 3000 폴리곤입니다.",
+   "은행나무(Ginkgo)처럼 움직이는 나무에도 WPO Disabled Distance를 설정하고, 주변의 움직이는 오브젝트를 없애거나 줄이면 LodBias를 건드리지 않아도 됩니다."
+  ]],
+  ["참고: 실험 결과 (Development, 같은 카메라 뷰)",[
+   "<code>LodBias</code>를 3에서 0으로 낮추자 Zelkova shadow maps는 1.63ms에서 0.33ms로, ShadowDepths 합계는 5.10ms에서 3.91ms로, GPU frame은 33.37ms에서 31.27ms로 줄었습니다."
+  ]]
+ ],
+ table:{cap:"Shipping 측정: 배경 가려짐과 드러남 비교",head:["항목","가려짐","드러남","Δ"],rows:[["Frame (FPS)","15.1ms (66.2)","20.1ms (49.8)","+5.0"],["GPU","13.8","18.6","+4.8"],["ShadowDepths","1.07","3.92","+2.85"],["NaniteVisBuffer","0.53","2.08","+1.55"],["VSM non-Nanite draws / tris","22 / 137K","35 / 1,022K","ISM/HISM 6 / 17K → 16 / 921K"]]}
+},
+{
+ id:"wpodist", cat:"GPU", title:"WPO 거리 설정", team:"배경팀", note:"",
+ overview:"WPO Disabled Distance가 없는 나무 에셋이 있어, 움직이는 나무 근처의 shadow map 갱신에 나무 머티리얼이 함께 들어갑니다.",
+ todo:"모든 tree 에셋에 WPO Disabled Distance를 설정합니다. 거리가 0인 은행나무(Ginkgo) 에셋도 포함합니다.",
+ summary:"WPO Disabled Distance가 비어 있는 나무 에셋이 있어서 모든 나무에 설정이 필요합니다.",
+ links:[["2026.11 지상 나무 부하 (WPO Disabled Distance 관련 세팅)",BASE+"713293827/2026.11"],["배경 최적화 방안",BASE+"368574768"]],
+ sections:[
+  ["현황",[
+   "<code>BPP_GHDtTreeZelkova_A_01</code>은 WPO disabled distance가 2000입니다.",
+   "<code>BPP_GHDtTreeGinkgo_A_0</code>는 0이라 WPO가 항상 적용됩니다.",
+   "그 밖의 일부 tree 에셋도 WPO Disabled Distance가 비어 있습니다."
+  ]],
+  ["작업 사항",[
+   "모든 tree 에셋에 WPO Disabled Distance를 설정합니다.",
+   "움직이는 은행나무(Ginkgo)도 똑같이 설정합니다.",
+   "LodBias와 ResolutionLodBiasDirectional이 기본값이면 Directional Light shadow map에는 WPO Disabled Distance가 최대 8배까지 늘어나 반영될 수 있습니다. 모든 나무에 거리를 설정하고 주변의 움직이는 오브젝트를 줄이면 LodBias는 조정하지 않아도 됩니다."
+  ]],
+  ["배경 최적화 방안 문서의 관련 규칙",[
+   "Nanite 메쉬 머티리얼에서는 WPO를 쓰지 않습니다. WPO가 필요하면 Component에서 <code>WorldPositionOffsetDisableDistance</code>를 설정합니다.",
+   "Decal, VFX 같은 요소는 Component에서 Max Draw Distance를 설정합니다.",
+   "Nanite 메쉬는 Opaque만 쓰고, Pixel Depth Offset, Custom UV, Tessellation은 쓰지 않습니다."
+  ]]
+ ]
+}
+];
+
+const KEY="artcheck-b2-v1";
+let state={};
+try{state=JSON.parse(localStorage.getItem(KEY)||"{}")}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}}
+const list=document.getElementById("list");
+const CH='<svg class="chev" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4l6 6-6 6"/></svg>';
+const cards={};
+let filter="all";
+ITEMS.forEach(it=>{
+  const el=document.createElement("article");
+  el.className="card";el.id=it.id;cards[it.id]=el;
+  const w=it.sections.find(s=>s[0]==="작업 사항");
+  let d=`<p>${it.summary}</p>`;
+  if(w)d+=`<div class="callout"><h3>작업 사항</h3><ul>${w[1].map(x=>`<li>${x}</li>`).join("")}</ul></div>`;
+  d+=`<h3>문서 링크</h3><div class="links">${it.links.map(l=>`<a href="${l[1]}" target="_blank" rel="noopener">${l[0]} ↗</a>`).join("")}</div>`;
+  it.sections.forEach(s=>{if(s[0]==="작업 사항")return;d+=`<h3>${s[0]}</h3><ul>${s[1].map(x=>`<li>${x}</li>`).join("")}</ul>`});
+  if(it.table)d+=`<h3>${it.table.cap}</h3><div class="tw"><table><tr>${it.table.head.map(h=>`<th>${h}</th>`).join("")}</tr>${it.table.rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join("")}</tr>`).join("")}</table></div>`;
+  el.innerHTML=`<div class="card-head"><label class="check"><input type="checkbox" id="cb-${it.id}" aria-label="${it.title} 완료"></label><div class="main"><div class="t-row"><span class="title">${it.title}</span></div><span class="chips"><span class="chip ${it.cat.toLowerCase()}">${it.cat}</span><span class="chip">${it.team}</span>${it.warn?`<span class="chip warn">${it.warn}</span>`:""}</span><span class="cols"><span class="col ov"><span class="lb">부하 개요</span>${it.overview}</span><span class="col td"><span class="lb">작업 사항</span>${it.todo}</span></span></div><button type="button" class="toggle" aria-expanded="false" aria-controls="d-${it.id}" aria-label="${it.title} 상세 보기">${CH}</button></div><div class="detail" id="d-${it.id}">${d}</div>`;
+  const cb=el.querySelector("input"),tg=el.querySelector(".toggle");
+  cb.checked=!!state[it.id];el.classList.toggle("done",cb.checked);
+  cb.addEventListener("change",()=>{state[it.id]=cb.checked;el.classList.toggle("done",cb.checked);save();upd()});
+  const flip=()=>{const o=el.classList.toggle("open");tg.setAttribute("aria-expanded",o)};
+  tg.addEventListener("click",flip);
+  el.querySelector(".main").addEventListener("click",e=>{if(e.target.closest("a"))return;const s=window.getSelection();if(s&&s.toString().length)return;flip()});
+  list.appendChild(el);
+});
+function setOpen(o){document.querySelectorAll(".card").forEach(c=>{c.classList.toggle("open",o);c.querySelector(".toggle").setAttribute("aria-expanded",o)})}
+function upd(){
+  const n=ITEMS.filter(i=>state[i.id]).length;
+  document.getElementById("pcount").textContent=n+" / "+ITEMS.length;
+  document.getElementById("pfill").style.width=(n/ITEMS.length*100)+"%";
+  ITEMS.forEach(i=>{cards[i.id].hidden=!(filter==="all"||(filter==="todo"?!state[i.id]:i.cat===filter))});
+}
+document.querySelectorAll(".seg button").forEach(b=>b.addEventListener("click",()=>{filter=b.dataset.f;document.querySelectorAll(".seg button").forEach(x=>x.setAttribute("aria-pressed",x===b));upd()}));
+document.getElementById("expand").onclick=()=>setOpen(true);
+document.getElementById("collapse").onclick=()=>setOpen(false);
+upd();
+</script>
+</body>
+</html>
